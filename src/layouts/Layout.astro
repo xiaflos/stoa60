@@ -27,7 +27,9 @@ const { title } = Astro.props;
 		<!-- Wrapper component to make sure all content on the website is above the noise filter background -->
 		<Wrapper>
 			<NavBar />
-			<slot />
+			<main>
+				<slot />
+			</main>
 			<Footer />
 		</Wrapper>
 	</body>
