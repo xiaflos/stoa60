@@ -16,7 +16,7 @@ const { slug, featuredImage, title, client, category } = Astro.props;
 ---
 
 <div class="group m-auto">
-    <a href=`works/${slug}`>
+    <a href=`/works/${slug}`>
         <div class="relative xl:w-[350px] xl:h-[350px] lg:w-[300px] lg:h-[300px] md:w-[400px] md:h-[400px] sm:w-[350px] sm:h-[350px] w-[230px] h-[230px] overflow-visible mb-4">
             <div class="absolute top-2 left-2 z-40 bg-base-900 border-2 border-base-100 px-4 flex gap-2">
                 <Text variant={'lg'} class="text-base-100">{category}</Text>
