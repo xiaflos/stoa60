@@ -11,13 +11,13 @@ const navLinks = [
 ]
 ---
 
-<nav class="flex justify-end py-8 fixed top-0 right-6 left-0 z-50">
+<nav class="flex justify-end py-8 fixed top-0 left-0 right-0 z-50 w-full xl:max-w-8/10 mx-auto -translate-x-[100px]">
     <!-- Desktop Nav -->
     <ul class="hidden md:flex gap-8">
         {
             navLinks.map((link, index) => (
                 <li>
-                    <Link href={link.href} variant={'nav'}>{index + 1}. {link.title}</Link>
+                    <Link href={link.href} variant={'nav'}>{link.title}</Link>
                 </li>
             ))
         }

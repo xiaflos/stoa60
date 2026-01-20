@@ -6,18 +6,24 @@ import Text from "../../elements/Text.astro";
 import ImageContainer from "../../elements/ImageContainer.astro";
 
 // assets
-import peter from "../../../assets/images/peter.jpg";
+import about from "../../../assets/images/about.jpg";
 ---
 
-<Container variant={'xl'}>
-    <Heading tagName="h1" tagSize="h1" class="text-center">Meet Peter</Heading>
-    <div class="flex md:flex-row flex-col gap-16 md:items-center">
-        <div class="flex-1 flex flex-col gap-7">
+<Container variant={'xl'} class="flex flex-col gap-8">
+    <nav class="flex flex-wrap gap-4 md:gap-8">
+        <a href="/" class="text-base-900 font-grunge text-3xl hover:underline">Home</a>
+        <a href="/works" class="text-base-900 font-grunge text-3xl hover:underline">Posters</a>
+        <a href="/about" class="text-base-900 font-grunge text-3xl hover:underline">About</a>
+        <a href="/contact" class="text-base-900 font-grunge text-3xl hover:underline">Contact</a>
+    </nav>
+    <Heading tagName="h1" tagSize="h1" class="-translate-y-[90px]">about</Heading>
+    <div class="flex md:flex-row flex-col gap-16 md:items-center -translate-y-[280px]">
+        <div class="flex-1 flex flex-col gap-7 -translate-y-[15px]">
             <Text variant={'xl'} class="text-base-900">I'm a creative designer passionate about crafting experiences that connect brands with their audiences through thoughtful design and strategic thinking.</Text>
             <Text variant={'sm'} class="text-base-900">For the past 8 years, I've been helping startups and established companies solve complex challenges through design. I believe great design isn't just about making things look beautiful—it's about understanding people, solving problems, and creating meaningful connections between brands and their customers.</Text>
         </div>
-        <div class="flex-1 md:h-[500px] w-full">
-            <ImageContainer src={peter} alt="Peter"/>
+        <div class="flex-1 md:h-auto w-full -translate-y-[160px]">
+            <ImageContainer src={about} alt="About"/>
         </div>
     </div>
 </Container>
