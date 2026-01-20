@@ -10,31 +10,39 @@ import Link from "../../elements/Link.astro"
 import kvadrat from "../../../assets/images/kvadrat.jpg";
 ---
 
-<Container variant={"xl"} class="flex flex-col py-2 !gap-0 justify-between lg:h-[calc(100vh-5rem)] lg:max-h-[calc(100vh-5rem)]">
-    <nav class="flex flex-wrap gap-4 md:gap-8">
-        <a href="/" class="text-base-900 font-grunge text-2xl md:text-3xl hover:underline">Home</a>
-        <a href="/works" class="text-base-900 font-grunge text-2xl md:text-3xl hover:underline">Posters</a>
-        <a href="/about" class="text-base-900 font-grunge text-2xl md:text-3xl hover:underline">About</a>
-        <a href="/contact" class="text-base-900 font-grunge text-2xl md:text-3xl hover:underline">Contact</a>
-    </nav>
-
-    <div class="text-base-900 flex flex-col gap-2 mt-[5vh]">
-        <Text variant={'xl'} class="!text-[clamp(32pt,8vw,56pt)] mb-2">STOA60</Text>
-        <Text variant={'xl'}>underground gigspace in Iraqlion,</Text>
-        <Text variant={'xl'}>10 years, few hundred gigs and counting.</Text>
+<Container variant={"xl"} class="flex flex-col md:flex-row py-2 !gap-0 justify-between lg:h-[calc(100vh-5rem)] lg:max-h-[calc(100vh-5rem)]">
+    <!-- Left column: Poster -->
+    <div class="md:w-1/2 flex items-center justify-center order-2 md:order-none md:items-stretch">
+        <div class="w-full max-w-[20.8rem] lg:max-w-[24.96rem] md:flex md:flex-col md:justify-between md:pt-12 md:pb-[3rem]">
+            <div class="hidden md:block"></div>
+            <ImageContainer src={kvadrat} alt="Kvadrat poster" />
+        </div>
     </div>
 
-    <div class="flex flex-col md:flex-row gap-4">
-        <!-- Left column: next gig -->
-        <div class="contents md:flex md:flex-col md:items-start md:gap-6 md:w-1/2">
-            <div class="flex flex-col items-start md:items-end order-1 md:order-none w-full md:w-auto">
+    <!-- Right column: All text content -->
+    <div class="md:w-1/2 flex flex-col justify-between order-1 md:order-none">
+        <nav class="flex flex-wrap gap-4 md:gap-8 justify-center md:justify-start">
+            <a href="/" class="text-base-900 font-grunge text-2xl md:text-3xl underline underline-offset-4 decoration-2 hover:text-base-700">Home</a>
+            <a href="/works" class="text-base-900 font-grunge text-2xl md:text-3xl underline underline-offset-4 decoration-2 hover:text-base-700">Posters</a>
+            <a href="/about" class="text-base-900 font-grunge text-2xl md:text-3xl underline underline-offset-4 decoration-2 hover:text-base-700">About</a>
+            <a href="/contact" class="text-base-900 font-grunge text-2xl md:text-3xl underline underline-offset-4 decoration-2 hover:text-base-700">Contact</a>
+        </nav>
+
+        <div class="text-base-900 flex flex-col gap-2 mt-[5vh] md:mt-0 md:-translate-y-[0.625rem] items-center md:items-start text-center md:text-left">
+            <Text variant={'xl'} class="!text-[clamp(32pt,8vw,56pt)] mb-2">STOA60</Text>
+            <Text variant={'xl'} class="!text-[1.75rem] md:!text-40">underground venue in Iraqlion,</Text>
+            <Text variant={'xl'} class="!text-[1.75rem] md:!text-40">10 years, few hundred gigs and counting.</Text>
+        </div>
+
+        <div class="flex flex-col gap-6 md:-translate-y-[3rem]">
+            <div class="flex flex-col items-center md:items-start scale-75 md:scale-100">
                 <Heading tagName="h1" tagSize="h1">next gig</Heading>
-                <Text class="text-base-900 !text-[32pt] font-grunge">>>>>>>>>></Text>
+                <Text class="text-base-900 !text-[32pt] font-grunge hidden md:block">&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</Text>
             </div>
 
-            <!-- Newsletter subscription -->
-            <div class="w-full max-w-md order-3 md:order-none">
-                <Text variant={'sm'} class="text-base-900 mb-2">gig mail alert</Text>
+            <!-- Newsletter subscription - Desktop -->
+            <div class="w-full max-w-md hidden md:block">
+                <Text variant={'sm'} class="text-base-900 mb-2 font-grunge">gig mail alert</Text>
                 <form class="flex gap-2">
                     <input
                         type="email"
@@ -51,13 +59,25 @@ import kvadrat from "../../../assets/images/kvadrat.jpg";
                 </form>
             </div>
         </div>
+    </div>
 
-        <!-- Right column: Poster -->
-        <div class="md:w-1/2 flex items-end justify-center md:-translate-x-[20%] md:-translate-y-[32%] order-2 md:order-none">
-            <div class="w-full max-w-xs lg:max-w-sm">
-                <ImageContainer src={kvadrat} alt="Kvadrat poster" />
-            </div>
-        </div>
+    <!-- Newsletter subscription - Mobile (after poster) -->
+    <div class="w-full max-w-md order-3 md:hidden mt-4 mx-auto text-center">
+        <Text variant={'sm'} class="text-base-900 mb-2 font-grunge">gig mail alert</Text>
+        <form class="flex gap-2">
+            <input
+                type="email"
+                placeholder="your@email.com"
+                required
+                class="flex-1 px-4 py-2 border-2 border-base-900 bg-transparent text-base-900 font-mono placeholder:text-base-700 focus:outline-none focus:ring-2 focus:ring-base-900"
+            />
+            <button
+                type="submit"
+                class="px-4 py-2 bg-base-900 text-base-100 font-grunge text-xl hover:opacity-80 transition-opacity"
+            >
+                Subscribe
+            </button>
+        </form>
     </div>
 
 </Container>
