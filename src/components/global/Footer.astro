@@ -1,12 +1,17 @@
 ---
 // components
 import Container from "../elements/Container.astro";
+
+interface Props {
+    alignRight?: boolean;
+}
+
+const { alignRight = false } = Astro.props;
 ---
 
 <Container variant={'xl'} class="pt-8 pb-4">
-    <div class="flex flex-wrap items-center justify-start gap-6 md:gap-8 font-grunge text-xl text-base-900">
+    <div class:list={["flex flex-wrap items-center justify-center md:justify-start gap-6 md:gap-8 font-grunge text-xl text-base-900", alignRight && "md:pl-[50%]"]}>
         <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer" class="hover:underline">CC BY 4.0</a>
-        <span>ΣΤΟΑ60</span>
         <span>Contact: <a href="mailto:stoa60da@riseup.net" class="hover:underline">stoa60da@riseup.net</a></span>
         <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="hover:opacity-70">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
