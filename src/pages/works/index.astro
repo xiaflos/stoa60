@@ -61,23 +61,42 @@ const posters = [broken, chaotic, dot, dury, gnaal, gynoid, kvadrat, memory, pae
         // Get all poster image sources
         const posterSrcs = Array.from(thumbs).map(thumb => thumb.querySelector('img').src);
 
+        function openLightbox(index) {
+            lightboxImg.src = posterSrcs[index];
+            lightbox.classList.remove('hidden');
+            lightbox.classList.add('flex');
+            // Push history state so back button closes lightbox
+            history.pushState({ lightbox: true }, '');
+        }
+
+        function closeLightbox() {
+            lightbox.classList.add('hidden');
+            lightbox.classList.remove('flex');
+        }
+
         thumbs.forEach((thumb, index) => {
             thumb.addEventListener('click', () => {
-                lightboxImg.src = posterSrcs[index];
-                lightbox.classList.remove('hidden');
-                lightbox.classList.add('flex');
+                openLightbox(index);
             });
         });
 
         closeBtn.addEventListener('click', () => {
-            lightbox.classList.add('hidden');
-            lightbox.classList.remove('flex');
+            closeLightbox();
+            // Go back in history to remove the lightbox state
+            history.back();
         });
 
         lightbox.addEventListener('click', (e) => {
             if (e.target === lightbox) {
-                lightbox.classList.add('hidden');
-                lightbox.classList.remove('flex');
+                closeLightbox();
+                history.back();
+            }
+        });
+
+        // Handle browser back button
+        window.addEventListener('popstate', (e) => {
+            if (!e.state?.lightbox) {
+                closeLightbox();
             }
         });
     </script>
