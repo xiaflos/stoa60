@@ -7,19 +7,99 @@ import Heading from "../../components/elements/Heading.astro";
 import Container from "../../components/elements/Container.astro";
 import { Image } from "astro:assets";
 
-// posters
-import broken from "../../assets/images/broken.jpg";
-import chaotic from "../../assets/images/chaotic.jpg";
-import dot from "../../assets/images/dot.jpg";
-import dury from "../../assets/images/dury.jpg";
-import gnaal from "../../assets/images/gnaal.jpg";
-import gynoid from "../../assets/images/gynoid.jpg";
-import kvadrat from "../../assets/images/kvadrat.jpg";
-import memory from "../../assets/images/memory.jpg";
-import paeplo from "../../assets/images/paeplo.jpg";
-import zevedeus from "../../assets/images/zevedeus.jpg";
+// 2024-2025 posters
+import stolensimadi from "../../assets/images/2024-2025/stolensimadi.jpg";
+import klammers from "../../assets/images/2024-2025/klammers.jpg";
+import broken from "../../assets/images/2024-2025/broken.jpg";
+import chaotic from "../../assets/images/2024-2025/chaotic.jpg";
+import dot from "../../assets/images/2024-2025/dot.jpg";
+import dury from "../../assets/images/2024-2025/dury.jpg";
+import gnaal from "../../assets/images/2024-2025/gnaal.jpg";
+import gynoid from "../../assets/images/2024-2025/gynoid.jpg";
+import kvadrat from "../../assets/images/2024-2025/kvadrat.jpg";
+import memory from "../../assets/images/2024-2025/memory.jpg";
+import paeplo from "../../assets/images/2024-2025/paeplo.jpg";
+import zevedeus from "../../assets/images/2024-2025/zevedeus.jpg";
 
-const posters = [broken, chaotic, dot, dury, gnaal, gynoid, kvadrat, memory, paeplo, zevedeus];
+// 2022-2023 posters
+import dury_dava from "../../assets/images/2022-2023/20221002_dury_dava_green_was_greener.jpg";
+import kataxnia_manakoula from "../../assets/images/2022-2023/20221007_kataxnia_manakoula.jpg";
+import gemma27 from "../../assets/images/2022-2023/20221016_Gemma_27.jpg";
+import lame_beach from "../../assets/images/2022-2023/20221105_lame_beach_mellow_lizzard.jpg";
+import rampage_frenzee from "../../assets/images/2022-2023/20221119_rampage_frenzee.jpg";
+import bus from "../../assets/images/2022-2023/20221126_bus.jpg";
+import neo_teras from "../../assets/images/2022-2023/20221203_neo_teras_humachines.jpg";
+import ektos_elegxou from "../../assets/images/2022-2023/20221209_ektos_elegxou_otompritsi_flat_surfers.jpg";
+import hailsteel from "../../assets/images/2022-2023/20221217_ΗΑΙLSTEEL2_AXEON.jpg";
+import toksika from "../../assets/images/2022-2023/20230114_toksika_apovlita_manalula.png";
+import falkonera from "../../assets/images/2022-2023/20230128_falkonera_pirate_city.jpg";
+import junkwolvz from "../../assets/images/2022-2023/20230205_JUNKWOLVZ LEGACY.jpg";
+import psarogiorgis from "../../assets/images/2022-2023/20230218_psarogiorgis_ksefreno_aerostato.jpg";
+import neverhmisy from "../../assets/images/2022-2023/20230304_NEVERHMISY.jpg";
+import commuter from "../../assets/images/2022-2023/20230318_commuter.jpg";
+
+// 2021-2022 posters
+import nerves_babycult from "../../assets/images/2021-2022/210911_nerves_babycult.jpg";
+import adaeis from "../../assets/images/2021-2022/210918_adaeis.jpg";
+import mellow_otobritsi from "../../assets/images/2021-2022/210925_mellow_otobritsi_thymics.jpg";
+import proletkult from "../../assets/images/2021-2022/220430_proletkult.jpg";
+import lost_bodies from "../../assets/images/2021-2022/220514_lost_bodies_sclavos.jpg";
+import fertility_black from "../../assets/images/2021-2022/220611_fertility_black.jpg";
+import fertility_white from "../../assets/images/2021-2022/220611_fertility_white.jpg";
+import screaming_fly from "../../assets/images/2021-2022/220617_screaming_fly_afilokseno.jpg";
+import party_aspromavro from "../../assets/images/2021-2022/220716_party_aspromavro.png";
+import party_egxromo from "../../assets/images/2021-2022/220716_party_egxromo.png";
+
+// 2016-2017 posters
+import foxdevilswild from "../../assets/images/2016-2017/20161005_foxdevilswild_dirtydancing.jpg";
+import filmjacket35 from "../../assets/images/2016-2017/20161015_filmjacket35_thinbastards.jpg";
+import voiddroid from "../../assets/images/2016-2017/20161022_voiddroid_wiseastronomist.jpg";
+import handandleg from "../../assets/images/2016-2017/20161029_handandleg_thymics.jpg";
+import craang from "../../assets/images/2016-2017/20161119_craang_mandaray.jpg";
+import punkofonix from "../../assets/images/2016-2017/20161126_punkofonix_otobritsi.jpg";
+import ramdat from "../../assets/images/2016-2017/20170114_ramdat_ksefreno.jpg";
+import circassian from "../../assets/images/2016-2017/20170121_circassian_swimtocapesherpa.jpg";
+import babel from "../../assets/images/2016-2017/20170224_babel_feliformia.jpg";
+
+// 2015-2016 posters
+import party2015 from "../../assets/images/2015-2016/20151003_party.jpg";
+import wiseastr from "../../assets/images/2015-2016/20151128_wiseastr_thymics.jpg";
+import nerrves from "../../assets/images/2015-2016/20151205_nerrves_pmkultra.jpg";
+import axaireutoi from "../../assets/images/2015-2016/20151219_axaireutoi_manakula.jpg";
+import ritamosss1 from "../../assets/images/2015-2016/20160123_ritamosss_ldsex_1.jpg";
+import ritamosss2 from "../../assets/images/2015-2016/20160123_ritamosss_ldsex_2.jpg";
+import kataxnia_reprisal from "../../assets/images/2015-2016/20160130_kataxnia_reprisal.jpg";
+import fountoukia from "../../assets/images/2015-2016/20160206_fountoukia_sushi.jpg";
+import koonoopomana from "../../assets/images/2015-2016/20160312_koonoopomana_mellow.jpg";
+import procrastinate from "../../assets/images/2015-2016/20160326_procrastinate_outreign.jpg";
+import corpses from "../../assets/images/2015-2016/20160403_corpses_cosmicplunge_blue.jpg";
+import kamikazi from "../../assets/images/2015-2016/20160409_kamikazi_otobritsi.jpg";
+
+const seasons = [
+    {
+        year: "2024-2025",
+        posters: [stolensimadi, klammers, broken, chaotic, dot, dury, gnaal, gynoid, kvadrat, memory, paeplo, zevedeus]
+    },
+    {
+        year: "2022-2023",
+        posters: [dury_dava, kataxnia_manakoula, gemma27, lame_beach, rampage_frenzee, bus, neo_teras, ektos_elegxou, hailsteel, toksika, falkonera, junkwolvz, psarogiorgis, neverhmisy, commuter]
+    },
+    {
+        year: "2021-2022",
+        posters: [nerves_babycult, adaeis, mellow_otobritsi, proletkult, lost_bodies, fertility_black, fertility_white, screaming_fly, party_aspromavro, party_egxromo]
+    },
+    {
+        year: "2016-2017",
+        posters: [foxdevilswild, filmjacket35, voiddroid, handandleg, craang, punkofonix, ramdat, circassian, babel]
+    },
+    {
+        year: "2015-2016",
+        posters: [party2015, wiseastr, nerrves, axaireutoi, ritamosss1, ritamosss2, kataxnia_reprisal, fountoukia, koonoopomana, procrastinate, corpses, kamikazi]
+    }
+];
+
+// Flatten all posters for lightbox navigation
+const allPosters = seasons.flatMap(s => s.posters);
 ---
 
 <Layout title="Posters">
@@ -28,22 +108,29 @@ const posters = [broken, chaotic, dot, dury, gnaal, gynoid, kvadrat, memory, pae
             <a href="/" class="text-base-900 font-grunge text-3xl underline underline-offset-4 decoration-2 hover:text-base-700">Home</a>
             <a href="/works" class="text-base-900 font-grunge text-3xl underline underline-offset-4 decoration-2 hover:text-base-700">Posters</a>
             <a href="/about" class="text-base-900 font-grunge text-3xl underline underline-offset-4 decoration-2 hover:text-base-700">About</a>
-            <a href="/contact" class="text-base-900 font-grunge text-3xl underline underline-offset-4 decoration-2 hover:text-base-700">Contact</a>
         </nav>
         <Heading tagName="h1" tagSize="h1" class="text-left">Posters</Heading>
-        <h2 class="font-grunge text-4xl text-base-900">2025-2026</h2>
-        <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-8 w-full mt-2">
-            {posters.map((poster, index) => (
-                <div class="w-full cursor-pointer poster-thumb" data-index={index}>
-                    <Image
-                        src={poster}
-                        alt={`Poster ${index + 1}`}
-                        class="w-full h-auto object-contain hover:opacity-80 transition-opacity"
-                        loading="lazy"
-                    />
-                </div>
-            ))}
-        </div>
+
+        {seasons.map((season, seasonIndex) => {
+            const startIndex = seasons.slice(0, seasonIndex).reduce((acc, s) => acc + s.posters.length, 0);
+            return (
+                <section class="w-full mt-8 first:mt-0">
+                    <h2 class="font-grunge text-4xl text-base-900 mb-4">{season.year}</h2>
+                    <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-8 w-full">
+                        {season.posters.map((poster, index) => (
+                            <div class="w-full cursor-pointer poster-thumb" data-index={startIndex + index}>
+                                <Image
+                                    src={poster}
+                                    alt={`Poster from ${season.year}`}
+                                    class="w-full h-auto object-contain hover:opacity-80 transition-opacity"
+                                    loading="lazy"
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            );
+        })}
     </Container>
 
     <!-- Lightbox Modal -->
@@ -52,7 +139,7 @@ const posters = [broken, chaotic, dot, dury, gnaal, gynoid, kvadrat, memory, pae
         <img id="lightbox-img" src="" alt="Poster preview" class="max-h-[90vh] max-w-[90vw] object-contain" />
     </div>
 
-    <script define:vars={{ posters }}>
+    <script>
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
         const closeBtn = document.getElementById('close-lightbox');
@@ -74,8 +161,9 @@ const posters = [broken, chaotic, dot, dury, gnaal, gynoid, kvadrat, memory, pae
             lightbox.classList.remove('flex');
         }
 
-        thumbs.forEach((thumb, index) => {
+        thumbs.forEach((thumb) => {
             thumb.addEventListener('click', () => {
+                const index = parseInt(thumb.dataset.index);
                 openLightbox(index);
             });
         });
