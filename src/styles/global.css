@@ -1,6 +1,20 @@
 @import "tailwindcss";
 @plugin "tailwindcss-noise";
 
+@font-face {
+    font-family: 'PF Papernote';
+    src: url('../assets/fonts/PF Papernote/PFPAPERNOTEROUGHLIGHT-REGULAR.OTF') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PF Papernote';
+    src: url('../assets/fonts/PF Papernote/PFPAPERNOTEROUGHHEAVY-REGULAR.OTF') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+}
+
 @theme {
     /* COLORS */
     --color-base-100: oklch(14% 0.004 49.25);
@@ -16,6 +30,7 @@
     /* FONTS */
     --font-grunge: 'Road Rage', system-ui;
     --font-mono: 'JetBrains Mono Variable', monospace;
+    --font-papernote: 'PF Papernote', system-ui;
 
     /* TEXT SIZES */
     --text-216: 13.5rem;
