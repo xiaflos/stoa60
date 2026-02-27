@@ -43,46 +43,85 @@ const seasons = Object.keys(seasonMap)
         </nav>
         <Heading tagName="h1" tagSize="h1" class="text-left">Posters</Heading>
 
-        {seasons.map((season, seasonIndex) => {
-            const startIndex = seasons.slice(0, seasonIndex).reduce((acc, s) => acc + s.posters.length, 0);
-            return (
-                <section class="w-full mt-8">
-                    <h2 class="font-grunge text-4xl text-base-900 mb-4">{season.year}</h2>
-                    <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-8 w-full">
-                        {season.posters.map((poster, index) => (
-                            <div class="w-full cursor-pointer poster-thumb" data-index={startIndex + index}>
-                                <Image
-                                    src={poster}
-                                    alt={`Poster from ${season.year}`}
-                                    class="w-full h-auto object-contain hover:opacity-80 transition-opacity"
-                                    loading="lazy"
-                                />
-                            </div>
-                        ))}
+        <!-- Season accordion -->
+        {seasons.map((season, seasonIndex) => (
+            <details class="w-full mt-4 season-accordion" open={seasonIndex === 0}>
+                <summary class="font-grunge text-4xl md:text-5xl text-base-900 cursor-pointer list-none flex items-center gap-4 py-3 border-b border-base-900/20 hover:text-base-700 select-none">
+                    <svg
+                        class="season-chevron w-6 h-6 shrink-0 transition-transform duration-300 fill-current"
+                        viewBox="0 0 8 8"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path d="M1.5 1L0 2.5l4 4 4-4L6.5 1 4 3.5 1.5 1z"/>
+                    </svg>
+                    <span>{season.year}</span>
+                    <span class="text-base-900/40 font-mono text-sm ml-auto">{season.posters.length}</span>
+                </summary>
+                <div class="season-content grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-in-out">
+                    <div class="overflow-hidden">
+                        <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-8 w-full pt-6 pb-4">
+                            {season.posters.map((poster) => (
+                                <div class="w-full cursor-pointer poster-thumb">
+                                    <Image
+                                        src={poster}
+                                        alt={`Poster from ${season.year}`}
+                                        class="w-full h-auto object-contain hover:opacity-80 transition-opacity"
+                                        loading="lazy"
+                                    />
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                </section>
-            );
-        })}
+                </div>
+            </details>
+        ))}
     </Container>
 
     <!-- Lightbox Modal -->
-    <div id="lightbox" class="fixed inset-0 bg-black/90 z-50 hidden items-center justify-center p-8">
-        <button id="close-lightbox" class="absolute top-4 right-4 text-white text-4xl font-grunge hover:opacity-70">&times;</button>
-        <img id="lightbox-img" src="" alt="Poster preview" class="max-h-[90vh] max-w-[90vw] object-contain" />
+    <div id="lightbox" class="fixed inset-0 bg-black/90 z-50 hidden items-center justify-center">
+        <button id="close-lightbox" class="absolute top-4 right-4 text-white text-4xl font-grunge hover:opacity-70 z-10">&times;</button>
+        <button id="prev-lightbox" class="absolute left-4 top-1/2 -translate-y-1/2 text-white text-5xl font-grunge hover:opacity-70 z-10 select-none">&#8249;</button>
+        <button id="next-lightbox" class="absolute right-4 top-1/2 -translate-y-1/2 text-white text-5xl font-grunge hover:opacity-70 z-10 select-none">&#8250;</button>
+        <img id="lightbox-img" src="" alt="Poster preview" class="max-h-[90vh] max-w-[85vw] object-contain" />
     </div>
 
+    <style>
+        /* Hide native marker */
+        details summary::-webkit-details-marker { display: none; }
+
+        /* Rotate chevron when open */
+        details[open] .season-chevron { transform: rotate(180deg); }
+
+        /* Animate grid rows open */
+        details[open] .season-content { grid-template-rows: 1fr; }
+    </style>
+
     <script>
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        const closeBtn = document.getElementById('close-lightbox');
-        const thumbs = document.querySelectorAll('.poster-thumb');
+        // --- Dynamic lightbox indexing ---
+        const lightbox = document.getElementById('lightbox')!;
+        const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+        const closeBtn = document.getElementById('close-lightbox')!;
+        const prevBtn = document.getElementById('prev-lightbox')!;
+        const nextBtn = document.getElementById('next-lightbox')!;
 
-        const posterSrcs = Array.from(thumbs).map(thumb => thumb.querySelector('img').src);
+        let visiblePosters: HTMLElement[] = [];
+        let currentIndex = 0;
 
-        function openLightbox(index) {
-            lightboxImg.src = posterSrcs[index];
+        function rebuildIndex() {
+            visiblePosters = Array.from(
+                document.querySelectorAll<HTMLElement>('details[open] .poster-thumb')
+            );
+        }
+
+        function openLightbox(index: number) {
+            if (index < 0 || index >= visiblePosters.length) return;
+            currentIndex = index;
+            const img = visiblePosters[index].querySelector('img');
+            if (!img) return;
+            lightboxImg.src = img.src;
             lightbox.classList.remove('hidden');
             lightbox.classList.add('flex');
+            updateArrows();
             history.pushState({ lightbox: true }, '');
         }
 
@@ -91,26 +130,55 @@ const seasons = Object.keys(seasonMap)
             lightbox.classList.remove('flex');
         }
 
-        thumbs.forEach((thumb) => {
-            thumb.addEventListener('click', () => {
-                openLightbox(parseInt(thumb.dataset.index));
-            });
+        function updateArrows() {
+            prevBtn.style.visibility = currentIndex > 0 ? 'visible' : 'hidden';
+            nextBtn.style.visibility = currentIndex < visiblePosters.length - 1 ? 'visible' : 'hidden';
+        }
+
+        // Rebuild index whenever any season is toggled
+        document.querySelectorAll('.season-accordion').forEach(details => {
+            details.addEventListener('toggle', () => rebuildIndex());
         });
 
-        closeBtn.addEventListener('click', () => {
-            closeLightbox();
-            history.back();
+        // Delegate click on poster thumbs
+        document.addEventListener('click', (e) => {
+            const thumb = (e.target as HTMLElement).closest('.poster-thumb') as HTMLElement | null;
+            if (!thumb) return;
+            rebuildIndex();
+            const idx = visiblePosters.indexOf(thumb);
+            if (idx !== -1) openLightbox(idx);
         });
 
+        // Prev / Next
+        prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (currentIndex > 0) openLightbox(currentIndex - 1);
+        });
+        nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (currentIndex < visiblePosters.length - 1) openLightbox(currentIndex + 1);
+        });
+
+        // Close
+        closeBtn.addEventListener('click', () => { closeLightbox(); history.back(); });
         lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) {
-                closeLightbox();
-                history.back();
-            }
+            if (e.target === lightbox) { closeLightbox(); history.back(); }
         });
 
+        // Keyboard: arrows + escape
+        window.addEventListener('keydown', (e) => {
+            if (lightbox.classList.contains('hidden')) return;
+            if (e.key === 'Escape') { closeLightbox(); history.back(); }
+            if (e.key === 'ArrowLeft' && currentIndex > 0) openLightbox(currentIndex - 1);
+            if (e.key === 'ArrowRight' && currentIndex < visiblePosters.length - 1) openLightbox(currentIndex + 1);
+        });
+
+        // Browser back button
         window.addEventListener('popstate', (e) => {
             if (!e.state?.lightbox) closeLightbox();
         });
+
+        // Initial index build
+        rebuildIndex();
     </script>
 </Layout>

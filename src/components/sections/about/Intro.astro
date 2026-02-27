@@ -1,28 +1,46 @@
 ---
 // components
 import Container from "../../elements/Container.astro";
-import Heading from "../../elements/Heading.astro";
-import Text from "../../elements/Text.astro";
 import ImageContainer from "../../elements/ImageContainer.astro";
 
 // assets
 import about from "../../../assets/images/about.jpg";
 ---
 
-<Container variant={'xl'} class="flex flex-col gap-8">
-    <nav class="flex flex-wrap gap-4 md:gap-8">
-        <a href="/" class="text-base-900 font-grunge text-3xl underline underline-offset-4 decoration-2 hover:text-base-700">Home</a>
-        <a href="/works" class="text-base-900 font-grunge text-3xl underline underline-offset-4 decoration-2 hover:text-base-700">Posters</a>
-        <a href="/about" class="text-base-900 font-grunge text-3xl underline underline-offset-4 decoration-2 hover:text-base-700">About</a>
+<Container variant={'xl'} class="flex flex-col py-2 !gap-0 lg:h-[calc(100dvh-5rem)] lg:max-h-[calc(100dvh-5rem)]">
+
+    <!-- Nav -->
+    <nav class="flex flex-wrap gap-4 md:gap-8 justify-center md:justify-start shrink-0">
+        <a href="/" class="text-base-900 font-grunge text-2xl md:text-3xl underline underline-offset-4 decoration-2 hover:text-base-700">Home</a>
+        <a href="/works" class="text-base-900 font-grunge text-2xl md:text-3xl underline underline-offset-4 decoration-2 hover:text-base-700">Posters</a>
+        <a href="/about" class="text-base-900 font-grunge text-2xl md:text-3xl underline underline-offset-4 decoration-2 hover:text-base-700">About</a>
     </nav>
-    <Heading tagName="h1" tagSize="h1" class="md:-translate-y-[140px]">about</Heading>
-    <div class="flex md:flex-row flex-col gap-8 md:gap-16 md:items-center md:-translate-y-[280px]">
-        <div class="flex-1 flex flex-col gap-7 md:-translate-y-[15px]">
-            <Text variant={'xl'} class="text-base-900 font-papernote font-light">Η Στοα 60 είναι ένα αυτοδιαχειριζόμενο υπόγειο στο κέντρο του Ηρακλείου, στο οποίο μία ομάδα ξεκίνησε να οργανώνει συναυλίες σχεδόν εβδομαδιαία πριν περίπου δέκα χρόνια.</Text>
-            <Text variant={'sm'} class="text-base-900 font-papernote font-bold">Η ομάδα στηρίζει την ανεξάρτητη μουσική σκηνή και δεν βασίζεται στη λογική του κέρδους και της βιομηχανίας του θεάματος. Λειτουργεί σε ένα πλαίσιο ισότητας, χωρίς διαχωρισμούς μεταξύ μουσικών-κοινού-διοργανωτών, χωρίς περιορισμούς σε μουσικά είδη και ενάντια σε σεξιστικές, φασιστικές και ρατσιστικές συμπεριφορές. Βλέπουμε την μουσική σαν ένα μέσο έκφρασης, διάδοσης ιδεών και αφορμή κοινωνικοποίησης, αλληλεπίδρασης και συνδιαμόρφωσης. Τα λειτουργικά έξοδα καλύπτονται αποκλειστικά από το κουτί ενίσχυσης και το Bar, που λειτουργούν με ελεύθερη συνεισφορά. Είναι η ελάχιστη αναγκαιότητα για να υπάρχει ευπρεπής εξοπλισμός, να καλύπτονται τα μεταφορικά των καλλιτεχνών και τα λειτουργικά έξοδα του χώρου. Η βιωσιμότητα του εγχειρήματος βασίζεται στην</Text>
+
+    <!-- Main content: two columns on desktop -->
+    <div class="flex flex-col md:flex-row flex-1 min-h-0 gap-6 md:gap-10 lg:gap-16 mt-6 md:mt-0 items-center">
+
+        <!-- Left column: Title + text -->
+        <div class="md:w-1/2 flex flex-col justify-center gap-4 lg:gap-6 order-2 md:order-none">
+            <!-- Title -->
+            <h1 class="font-grunge uppercase text-base-900 tracking-tight leading-none text-64 md:text-80 lg:text-128">about</h1>
+
+            <!-- Intro line -->
+            <p class="text-base-900 font-papernote font-light text-20 lg:text-24 leading-relaxed">
+                Η Στοα 60 είναι μία ομάδα που οργανώνει συναυλίες σχεδόν εβδομαδιαία εδώ και μία δεκαετία, σε ένα υπόγειο στο κέντρο του Ηρακλείου Κρήτης.
+            </p>
+
+            <!-- Manifesto -->
+            <p class="text-base-900 font-papernote font-bold text-12 lg:text-16 leading-relaxed">
+                Η ομάδα στηρίζει την ανεξάρτητη μουσική σκηνή και δεν βασίζεται στη λογική του κέρδους και της βιομηχανίας του θεάματος. Λειτουργεί σε ένα πλαίσιο ισότητας, χωρίς διαχωρισμούς μεταξύ μουσικών-κοινού-διοργανωτών, χωρίς περιορισμούς σε μουσικά είδη και ενάντια σε σεξιστικές, φασιστικές και ρατσιστικές συμπεριφορές. Βλέπουμε την μουσική σαν ένα μέσο έκφρασης, διάδοσης ιδεών και αφορμή κοινωνικοποίησης, αλληλεπίδρασης και συνδιαμόρφωσης. Τα λειτουργικά έξοδα καλύπτονται αποκλειστικά από το κουτί ενίσχυσης και το Bar, που λειτουργούν με ελεύθερη συνεισφορά.
+            </p>
         </div>
-        <div class="flex-1 md:h-auto w-full md:-translate-y-[160px]">
-            <ImageContainer src={about} alt="About"/>
+
+        <!-- Right column: Rat logo -->
+        <div class="md:w-1/2 flex items-center justify-center order-1 md:order-none">
+            <div class="w-full max-w-[16rem] md:max-w-[20rem] lg:max-w-[24rem]">
+                <ImageContainer src={about} alt="ΣΤΟΑ60 logo — rat carrying the venue name" />
+            </div>
         </div>
+
     </div>
 </Container>
