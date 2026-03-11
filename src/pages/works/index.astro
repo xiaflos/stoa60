@@ -29,7 +29,7 @@ const seasons = Object.keys(seasonMap)
     .map(year => ({
         year,
         posters: seasonMap[year]
-            .sort((a, b) => a.filename.localeCompare(b.filename, undefined, { numeric: true, sensitivity: "base" }))
+            .sort((a, b) => b.filename.localeCompare(a.filename, undefined, { numeric: true, sensitivity: "base" }))
             .map(item => item.image)
     }));
 ---
