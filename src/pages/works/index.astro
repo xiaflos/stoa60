@@ -5,6 +5,7 @@ import Layout from "../../layouts/Layout.astro";
 // components
 import Heading from "../../components/elements/Heading.astro";
 import Container from "../../components/elements/Container.astro";
+import LanguageToggle from "../../components/elements/LanguageToggle.astro";
 import { Image } from "astro:assets";
 
 // Import all posters from season folders
@@ -13,35 +14,66 @@ const allImages = import.meta.glob<{ default: ImageMetadata }>(
     { eager: true }
 );
 
-// Group by season and sort files naturally by filename
+// Separate season folders (YYYY-YYYY) from special categories
+const seasonPattern = /^\d{4}-\d{4}$/;
 const seasonMap: Record<string, { filename: string; image: ImageMetadata }[]> = {};
+const categoryMap: Record<string, { filename: string; image: ImageMetadata }[]> = {};
 
 for (const [path, module] of Object.entries(allImages)) {
     const parts = path.split("/");
-    const season = parts[parts.length - 2];
+    const folder = parts[parts.length - 2];
     const filename = parts[parts.length - 1];
-    if (!seasonMap[season]) seasonMap[season] = [];
-    seasonMap[season].push({ filename, image: module.default });
+    const entry = { filename, image: module.default };
+
+    if (seasonPattern.test(folder)) {
+        if (!seasonMap[folder]) seasonMap[folder] = [];
+        seasonMap[folder].push(entry);
+    } else {
+        if (!categoryMap[folder]) categoryMap[folder] = [];
+        categoryMap[folder].push(entry);
+    }
 }
 
+// Seasons: newest first, posters newest first
 const seasons = Object.keys(seasonMap)
-    .sort((a, b) => b.localeCompare(a)) // newest first
+    .sort((a, b) => b.localeCompare(a))
     .map(year => ({
         year,
         posters: seasonMap[year]
             .sort((a, b) => b.filename.localeCompare(a.filename, undefined, { numeric: true, sensitivity: "base" }))
             .map(item => item.image)
     }));
+
+// Extract year from filename (YYYY-MM-DD prefix)
+function extractYear(filename: string): string {
+    const match = filename.match(/^(\d{4})/);
+    return match ? match[1] : '';
+}
+
+// Special categories: sorted alphabetically, posters newest first
+const categories = Object.keys(categoryMap)
+    .sort((a, b) => a.localeCompare(b))
+    .map(name => ({
+        name,
+        posters: categoryMap[name]
+            .sort((a, b) => b.filename.localeCompare(a.filename, undefined, { numeric: true, sensitivity: "base" }))
+            .map(item => ({
+                image: item.image,
+                year: extractYear(item.filename)
+            }))
+    }));
 ---
 
 <Layout title="Posters">
     <Container variant={'xl'} class="flex flex-col !gap-2 items-start">
-        <nav class="flex flex-wrap gap-4 md:gap-8 justify-start">
-            <a href="/" class="text-base-900 font-grunge text-3xl underline underline-offset-4 decoration-2 hover:text-base-700">Home</a>
-            <a href="/works" class="text-base-900 font-grunge text-3xl underline underline-offset-4 decoration-2 hover:text-base-700">Posters</a>
-            <a href="/about" class="text-base-900 font-grunge text-3xl underline underline-offset-4 decoration-2 hover:text-base-700">About</a>
+        <nav class="flex flex-wrap gap-4 md:gap-8 justify-start items-center">
+            <a href="/" class="text-base-900 font-grunge text-3xl underline underline-offset-4 decoration-2 hover:text-base-700" data-i18n="nav.home">Home</a>
+            <a href="/works" class="text-base-900 font-grunge text-3xl underline underline-offset-4 decoration-2 hover:text-base-700" data-i18n="nav.posters">Posters</a>
+            <a href="/about" class="text-base-900 font-grunge text-3xl underline underline-offset-4 decoration-2 hover:text-base-700" data-i18n="nav.about">About</a>
+            <LanguageToggle />
         </nav>
-        <Heading tagName="h1" tagSize="h1" class="text-left">Posters</Heading>
+        <Heading tagName="h1" tagSize="h1" class="text-left" data-i18n="works.title">Posters</Heading>
+        <a href="https://drive.google.com/drive/folders/1nie729Boi20WuEhENw9cHMDtSr02pK-M?usp=sharing" target="_blank" rel="noopener noreferrer" class="font-papernote text-base uppercase tracking-wide text-base-900/60 underline underline-offset-2 hover:text-base-900 transition-colors -mt-2">Posters in high quality for printing</a>
 
         <!-- Season accordion -->
         {seasons.map((season, seasonIndex) => (
@@ -68,6 +100,42 @@ const seasons = Object.keys(seasonMap)
                                         class="w-full h-auto object-contain hover:opacity-80 transition-opacity"
                                         loading="lazy"
                                     />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </details>
+        ))}
+
+        <!-- Special category accordion -->
+        {categories.map((cat) => (
+            <details class="w-full mt-4 season-accordion">
+                <summary class="font-grunge text-4xl md:text-5xl text-base-900 cursor-pointer list-none flex items-center gap-4 py-3 border-b border-base-900/20 hover:text-base-700 select-none">
+                    <svg
+                        class="season-chevron w-6 h-6 shrink-0 transition-transform duration-300 fill-current"
+                        viewBox="0 0 8 8"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path d="M1.5 1L0 2.5l4 4 4-4L6.5 1 4 3.5 1.5 1z"/>
+                    </svg>
+                    <span>{cat.name}</span>
+                    <span class="text-base-900/40 font-mono text-sm ml-auto">{cat.posters.length}</span>
+                </summary>
+                <div class="season-content grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-in-out">
+                    <div class="overflow-hidden">
+                        <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-8 w-full pt-6 pb-4">
+                            {cat.posters.map((poster) => (
+                                <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
+                                    <Image
+                                        src={poster.image}
+                                        alt={`Poster from ${cat.name}`}
+                                        class="w-full h-auto object-contain hover:opacity-80 transition-opacity"
+                                        loading="lazy"
+                                    />
+                                    {poster.year && (
+                                        <span class="font-grunge text-2xl text-base-900/50 mt-2">{poster.year}</span>
+                                    )}
                                 </div>
                             ))}
                         </div>

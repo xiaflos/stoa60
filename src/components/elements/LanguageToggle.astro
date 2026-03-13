@@ -1,0 +1,36 @@
+---
+// No props needed — fully client-side
+---
+
+<button
+  id="lang-toggle"
+  class="flex items-center gap-1 font-grunge text-base-900 text-lg md:text-xl cursor-pointer select-none hover:opacity-80 transition-opacity"
+  aria-label="Toggle language"
+>
+  <span class="lang-toggle-el opacity-100 transition-opacity">GR</span>
+  <span class="text-base-900/40">|</span>
+  <span class="lang-toggle-en opacity-40 transition-opacity">EN</span>
+</button>
+
+<script>
+  import { getLang, toggleLang, applyTranslations } from "../../i18n/i18n";
+
+  // Apply saved language on load
+  const lang = getLang();
+  applyTranslations(lang);
+
+  // Update toggle visual state on load
+  document.querySelectorAll<HTMLElement>(".lang-toggle-el").forEach((el) => {
+    el.classList.toggle("opacity-100", lang === "el");
+    el.classList.toggle("opacity-40", lang !== "el");
+  });
+  document.querySelectorAll<HTMLElement>(".lang-toggle-en").forEach((el) => {
+    el.classList.toggle("opacity-100", lang === "en");
+    el.classList.toggle("opacity-40", lang !== "en");
+  });
+
+  // Toggle on click
+  document.querySelectorAll("#lang-toggle").forEach((btn) => {
+    btn.addEventListener("click", () => toggleLang());
+  });
+</script>
