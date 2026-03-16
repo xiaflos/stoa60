@@ -8,20 +8,22 @@ import Link from "../../elements/Link.astro"
 import LanguageToggle from "../../elements/LanguageToggle.astro"
 
 // assets
-import stolensimadi from "../../../assets/images/posters/2025-2026/15.INVALTA-WEB.jpg";
+import stolensimadi from "../../../assets/images/posters/Upcoming/aetherian_photoshop_copy.jpg";
 ---
 
 <Container variant={"xl"} class="flex flex-col md:flex-row py-2 !gap-0 justify-between lg:h-[calc(100vh-5rem)] lg:max-h-[calc(100vh-5rem)]">
-    <!-- Left column: Poster -->
-    <div class="md:w-1/2 flex items-center justify-center order-2 md:order-none md:items-stretch">
-        <div class="w-full max-w-[20.8rem] lg:max-w-[24.96rem] md:flex md:flex-col md:justify-between md:pt-12 md:pb-[3rem]">
-            <div class="hidden md:block"></div>
-            <ImageContainer src={stolensimadi} alt="Stolen Simadi poster" />
+
+    <!-- Left column: Poster — defines the row height -->
+    <div class="md:w-1/2 flex items-center justify-center order-2 md:order-none">
+        <div class="w-full max-w-[20.8rem] lg:max-w-[24.96rem]">
+            <ImageContainer src={stolensimadi} alt="Upcoming gig poster" />
         </div>
     </div>
 
-    <!-- Right column: All text content -->
-    <div class="md:w-1/2 flex flex-col justify-between order-1 md:order-none">
+    <!-- Right column -->
+    <div class="md:w-1/2 flex flex-col order-1 md:order-none md:py-8">
+
+        <!-- Nav -->
         <nav class="flex flex-wrap gap-4 md:gap-8 justify-center md:justify-start items-center">
             <a href="/" class="text-base-900 font-grunge text-2xl md:text-3xl underline underline-offset-4 decoration-2 hover:text-base-700" data-i18n="nav.home">Home</a>
             <a href="/works" class="text-base-900 font-grunge text-2xl md:text-3xl underline underline-offset-4 decoration-2 hover:text-base-700" data-i18n="nav.posters">Posters</a>
@@ -29,20 +31,21 @@ import stolensimadi from "../../../assets/images/posters/2025-2026/15.INVALTA-WE
             <LanguageToggle />
         </nav>
 
-        <div class="text-base-900 flex flex-col gap-2 mt-[5vh] md:mt-0 md:-translate-y-[0.625rem] items-center md:items-start text-center md:text-left">
-            <Text variant={'xl'} class="!text-[clamp(32pt,8vw,56pt)] mb-2" data-i18n="hero.title">STOA60</Text>
+        <!-- Title + subtitles -->
+        <div class="text-base-900 flex flex-col gap-1 items-center md:items-start text-center md:text-left mt-6 md:mt-10">
+            <Text variant={'xl'} class="!text-[clamp(32pt,8vw,56pt)] mb-1" data-i18n="hero.title">STOA60</Text>
             <Text variant={'xl'} class="!text-[1.75rem] md:!text-40" data-i18n="hero.subtitle1">underground venue in Iraqlion,</Text>
             <Text variant={'xl'} class="!text-[1.75rem] md:!text-40" data-i18n="hero.subtitle2">10 years, few hundred gigs and counting.</Text>
         </div>
 
-        <div class="flex flex-col gap-6 md:-translate-y-[3rem]">
-            <div class="flex flex-col items-center md:items-start scale-75 md:scale-100">
+        <!-- Next gig + newsletter -->
+        <div class="flex flex-col gap-4 items-center md:items-start mt-10 md:mt-12">
+            <div class="flex flex-col items-center md:items-start">
                 <Heading tagName="h1" tagSize="h1" data-i18n="hero.nextgig">next gig</Heading>
                 <Text class="text-base-900 !text-[32pt] font-grunge hidden md:block">&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</Text>
             </div>
 
-            <!-- Newsletter subscription - Desktop -->
-            <div class="w-full max-w-md hidden md:block">
+            <div class="w-full max-w-md">
                 <Text variant={'sm'} class="text-base-900 mb-2 font-grunge" data-i18n="hero.newsletter">gig mail alert</Text>
                 <form class="flex gap-2">
                     <input
@@ -50,11 +53,11 @@ import stolensimadi from "../../../assets/images/posters/2025-2026/15.INVALTA-WE
                         placeholder="your@email.com"
                         required
                         data-i18n-placeholder="hero.placeholder"
-                        class="flex-1 px-4 py-2 border-2 border-base-900 bg-transparent text-base-900 font-mono placeholder:text-base-700 focus:outline-none focus:ring-2 focus:ring-base-900"
+                        class="min-w-0 flex-1 px-4 py-2 border-2 border-base-900 bg-transparent text-base-900 font-mono placeholder:text-base-700 focus:outline-none focus:ring-2 focus:ring-base-900"
                     />
                     <button
                         type="submit"
-                        class="px-4 py-2 bg-base-900 text-base-100 font-grunge text-xl hover:opacity-80 transition-opacity"
+                        class="px-4 py-2 bg-base-900 text-base-100 font-grunge text-xl hover:opacity-80 transition-opacity whitespace-nowrap"
                         data-i18n="hero.subscribe"
                     >
                         Subscribe
@@ -62,28 +65,7 @@ import stolensimadi from "../../../assets/images/posters/2025-2026/15.INVALTA-WE
                 </form>
             </div>
         </div>
-    </div>
 
-    <!-- Newsletter subscription - Mobile (after poster) -->
-    <div class="w-full max-w-md order-3 md:hidden mt-4 mx-auto text-center px-4">
-        <Text variant={'sm'} class="text-base-900 mb-2 font-grunge" data-i18n="hero.newsletter">gig mail alert</Text>
-        <form class="flex gap-2">
-            <input
-                type="email"
-                placeholder="your@email.com"
-                required
-                data-i18n-placeholder="hero.placeholder"
-                class="min-w-0 flex-1 px-3 py-2 border-2 border-base-900 bg-transparent text-base-900 font-mono placeholder:text-base-700 focus:outline-none focus:ring-2 focus:ring-base-900"
-            />
-            <button
-                type="submit"
-                class="px-3 py-2 bg-base-900 text-base-100 font-grunge text-xl hover:opacity-80 transition-opacity whitespace-nowrap"
-                data-i18n="hero.subscribe"
-            >
-                Subscribe
-            </button>
-        </form>
     </div>
 
 </Container>
-

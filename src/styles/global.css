@@ -2,16 +2,9 @@
 @plugin "tailwindcss-noise";
 
 @font-face {
-    font-family: 'PF Papernote';
-    src: url('../assets/fonts/PF Papernote/PFPAPERNOTEROUGHLIGHT-REGULAR.OTF') format('opentype');
-    font-weight: 300;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'PF Papernote';
-    src: url('../assets/fonts/PF Papernote/PFPAPERNOTEROUGHHEAVY-REGULAR.OTF') format('opentype');
-    font-weight: 700;
+    font-family: 'Bahnschrift';
+    src: url('../assets/fonts/bahnschrift.ttf') format('truetype');
+    font-weight: 100 900;
     font-style: normal;
 }
 
@@ -30,7 +23,7 @@
     /* FONTS */
     --font-grunge: 'Road Rage', system-ui;
     --font-mono: 'JetBrains Mono Variable', monospace;
-    --font-papernote: 'PF Papernote', system-ui;
+--font-bahnschrift: 'Bahnschrift', system-ui;
 
     /* TEXT SIZES */
     --text-216: 13.5rem;
