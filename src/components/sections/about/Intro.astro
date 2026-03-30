@@ -6,9 +6,13 @@ import LanguageToggle from "../../elements/LanguageToggle.astro";
 
 // assets
 import about from "../../../assets/images/about.jpg";
+import stoastage from "../../../assets/images/stoastage.jpg";
+import stoabar from "../../../assets/images/stoabar.jpg";
+
+import { Image } from "astro:assets";
 ---
 
-<Container variant={'xl'} class="flex flex-col py-2 !gap-0 lg:h-[calc(100dvh-5rem)] lg:max-h-[calc(100dvh-5rem)]">
+<Container variant={'xl'} class="flex flex-col py-2 !gap-0">
 
     <!-- Nav -->
     <nav class="flex flex-wrap gap-4 md:gap-8 justify-center md:justify-start shrink-0 items-center">
@@ -45,4 +49,11 @@ import about from "../../../assets/images/about.jpg";
         </div>
 
     </div>
+
+    <!-- Photo strip -->
+    <div class="grid grid-cols-2 gap-4 mt-8 md:mt-12">
+        <Image src={stoastage} alt="Stoa 60 stage" class="w-full h-64 md:h-80 object-cover" />
+        <Image src={stoabar} alt="Stoa 60 bar" class="w-full h-64 md:h-80 object-cover" />
+    </div>
+
 </Container>

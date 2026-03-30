@@ -14,7 +14,7 @@ import stolensimadi from "../../../assets/images/posters/Upcoming/2.SUBATOMIC.jp
 <Container variant={"xl"} class="flex flex-col md:flex-row py-2 !gap-0 justify-between lg:h-[calc(100vh-5rem)] lg:max-h-[calc(100vh-5rem)]">
 
     <!-- Left column: Poster — defines the row height -->
-    <div class="md:w-1/2 flex items-center justify-center order-2 md:order-none">
+    <div class="md:w-1/2 flex items-end justify-center order-2 md:order-none md:pb-8">
         <div class="w-full max-w-[20.8rem] lg:max-w-[24.96rem]">
             <ImageContainer src={stolensimadi} alt="Upcoming gig poster" />
         </div>
@@ -32,14 +32,14 @@ import stolensimadi from "../../../assets/images/posters/Upcoming/2.SUBATOMIC.jp
         </nav>
 
         <!-- Title + subtitles -->
-        <div class="text-base-900 flex flex-col gap-1 items-center md:items-start text-center md:text-left mt-6 md:mt-10">
+        <div class="text-base-900 flex flex-col gap-1 items-center md:items-start text-center md:text-left mt-6 md:mt-16">
             <Text variant={'xl'} class="!text-[clamp(32pt,8vw,56pt)] mb-1" data-i18n="hero.title">STOA60</Text>
             <Text variant={'xl'} class="!text-[1.75rem] md:!text-40" data-i18n="hero.subtitle1">underground venue in Iraqlion,</Text>
             <Text variant={'xl'} class="!text-[1.75rem] md:!text-40" data-i18n="hero.subtitle2">10 years, few hundred gigs and counting.</Text>
         </div>
 
         <!-- Next gig + newsletter -->
-        <div class="flex flex-col gap-4 items-center md:items-start mt-10 md:mt-12">
+        <div class="flex flex-col gap-4 items-center md:items-start mt-10 md:mt-4">
             <div class="flex flex-col items-center md:items-start">
                 <Heading tagName="h1" tagSize="h1" data-i18n="hero.nextgig">next gig</Heading>
                 <Text class="text-base-900 !text-[32pt] font-grunge hidden md:block">&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</Text>
