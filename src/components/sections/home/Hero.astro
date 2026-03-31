@@ -27,6 +27,27 @@ const calendarUrl = "https://docs.google.com/document/d/1wk6XvPDLUO-vUwxzuHhtYlP
                 class="font-grunge text-2xl text-base-900 underline underline-offset-4 decoration-2 hover:text-base-700 mt-3 block text-center"
                 data-i18n="hero.calendar"
             >GIG CALENDAR</a>
+
+            <!-- Newsletter: shown on mobile only, below poster -->
+            <div class="md:hidden w-full mt-6">
+                <Text variant={'sm'} class="text-base-900 mb-2 font-grunge" data-i18n="hero.newsletter">gig mail alert</Text>
+                <form class="flex gap-2">
+                    <input
+                        type="email"
+                        placeholder="your@email.com"
+                        required
+                        data-i18n-placeholder="hero.placeholder"
+                        class="min-w-0 flex-1 px-4 py-2 border-2 border-base-900 bg-transparent text-base-900 font-mono placeholder:text-base-700 focus:outline-none focus:ring-2 focus:ring-base-900"
+                    />
+                    <button
+                        type="submit"
+                        class="px-4 py-2 bg-base-900 text-base-100 font-grunge text-xl hover:opacity-80 transition-opacity whitespace-nowrap"
+                        data-i18n="hero.subscribe"
+                    >
+                        Subscribe
+                    </button>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -55,7 +76,8 @@ const calendarUrl = "https://docs.google.com/document/d/1wk6XvPDLUO-vUwxzuHhtYlP
                 <Text class="text-base-900 !text-[32pt] font-grunge hidden md:block">&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</Text>
             </div>
 
-            <div class="w-full max-w-md">
+            <!-- Newsletter: hidden on mobile, shown on desktop -->
+            <div class="hidden md:block w-full max-w-md">
                 <Text variant={'sm'} class="text-base-900 mb-2 font-grunge" data-i18n="hero.newsletter">gig mail alert</Text>
                 <form class="flex gap-2">
                     <input
