@@ -84,20 +84,6 @@ for (const gig of gigs) {
                             !isEven && "flex-row-reverse"
                         ]}>
 
-                            <!-- Poster (or placeholder) -->
-                            <div class="shrink-0 w-24 md:w-32">
-                                {poster ? (
-                                    <Image
-                                        src={poster}
-                                        alt={`Poster for ${gig.bands.join(" × ")}`}
-                                        class="w-full h-auto object-contain"
-                                        loading="lazy"
-                                    />
-                                ) : (
-                                    <div class="w-full aspect-[2/3] border border-dashed border-base-900/30" />
-                                )}
-                            </div>
-
                             <!-- Date + Bands -->
                             <div class:list={[
                                 "flex items-center gap-4 md:gap-8 flex-1",
@@ -118,6 +104,20 @@ for (const gig of gigs) {
                                     ))}
                                     <span class="font-mono text-xs text-base-900/30 mt-1 uppercase tracking-widest">{gig.location ?? "STOA 60"}</span>
                                 </div>
+                            </div>
+
+                            <!-- Poster (or placeholder) -->
+                            <div class="shrink-0 w-24 md:w-32">
+                                {poster ? (
+                                    <Image
+                                        src={poster}
+                                        alt={`Poster for ${gig.bands.join(" × ")}`}
+                                        class="w-full h-auto object-contain"
+                                        loading="lazy"
+                                    />
+                                ) : (
+                                    <div class="w-full aspect-[2/3] border border-dashed border-base-900/30" />
+                                )}
                             </div>
 
                         </div>
