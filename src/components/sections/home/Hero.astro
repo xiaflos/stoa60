@@ -40,12 +40,12 @@ for (const gig of gigs) {
     <!-- Left column: Poster + newsletter -->
     <div class="md:w-1/2 flex items-center justify-center order-2 md:order-none">
         <div class="w-full max-w-[20.8rem] lg:max-w-[24.96rem] flex flex-col">
-            <Heading tagName="h2" tagSize="h5" class="mb-2" data-i18n="hero.nextgig">next gig</Heading>
+            <Heading tagName="h2" tagSize="h5" class="mb-2 text-center" data-i18n="hero.nextgig">next gig</Heading>
             <ImageContainer src={stolensimadi} alt="Upcoming gig poster" />
 
             <!-- Newsletter: below poster on all screen sizes -->
             <div class="w-full mt-4">
-                <Text variant={'sm'} class="text-base-900 mb-2 font-grunge" data-i18n="hero.newsletter">gig mail alert</Text>
+                <Text variant={'sm'} class="text-base-900 mb-2 font-grunge text-center" data-i18n="hero.newsletter">gig mail alert</Text>
                 <form class="flex gap-2">
                     <input
                         type="email"
