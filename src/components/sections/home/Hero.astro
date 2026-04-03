@@ -26,6 +26,12 @@ const gigs: Gig[] = [
     { monthKey: "cal.may",   date: "23", bands: ["State of Loss", "TBA"] },
 ];
 
+// Default (Greek) month labels for SSR — overridden by JS i18n on client
+const monthLabels: Record<string, string> = {
+    "cal.april": "Απρίλιος",
+    "cal.may":   "Μάιος",
+};
+
 // Group by month
 const gigsByMonth: { monthKey: string; gigs: Gig[] }[] = [];
 for (const gig of gigs) {
@@ -89,7 +95,7 @@ for (const gig of gigs) {
                 <div class="mb-4">
                     <!-- Month label -->
                     <div class="border-b border-base-900/30 mb-1 pb-0.5">
-                        <span class="font-bahnschrift font-bold text-sm text-base-900/40 uppercase tracking-widest" data-i18n={monthKey}></span>
+                        <span class="font-bahnschrift font-bold text-sm text-base-900/40 uppercase tracking-widest" data-i18n={monthKey}>{monthLabels[monthKey]}</span>
                     </div>
                     <!-- Gig rows -->
                     {gigs.map((gig) => (

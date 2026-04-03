@@ -23,7 +23,7 @@
     /* FONTS */
     --font-grunge: 'Road Rage', system-ui;
     --font-mono: 'JetBrains Mono Variable', monospace;
---font-bahnschrift: 'Bahnschrift', system-ui;
+    --font-bahnschrift: 'Bahnschrift', system-ui;
 
     /* TEXT SIZES */
     --text-216: 13.5rem;
