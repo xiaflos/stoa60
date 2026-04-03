@@ -12,6 +12,6 @@ export const gigs: Gig[] = [
     { month: "Απρίλιος", monthShort: "ΑΠΡ", date: "25", bands: ["Junkheart", "Ποντικια"],     poster: "4..junkpontfn16b11111.jpg" },
     { month: "Μάιος",    monthShort: "ΜΑΙ", date: "2",  bands: ["SOMA", "Malhotra"],          poster: null },
     { month: "Μάιος",    monthShort: "ΜΑΙ", date: "9",  bands: ["Tiffany", "Thymics"],        poster: null },
-    { month: "Μάιος",    monthShort: "ΜΑΙ", date: "16", bands: ["Καθαρός Χαλκός", "Αρκούδες των αγωγών της πολυκατοικίας"], poster: null },
+    { month: "Μάιος",    monthShort: "ΜΑΙ", date: "16", bands: ["Καθαρος Χαλκος", "Αρκουδες των αγωγων της πολυκατοικιας"], poster: null },
     { month: "Μάιος",    monthShort: "ΜΑΙ", date: "23", bands: ["State of Loss"],             poster: null },
 ];
