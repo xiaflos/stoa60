@@ -10,27 +10,27 @@ import LanguageToggle from "../../elements/LanguageToggle.astro"
 // assets
 import stolensimadi from "../../../assets/images/posters/Upcoming/3.axeon_veil2.jpg";
 
-// Gig calendar data (edit src/data/gigs.ts to update)
+// Gig calendar data (edit here to update)
 interface Gig {
-    month: string;
+    monthKey: string;
     date: string;
     bands: string[];
 }
 
 const gigs: Gig[] = [
-    { month: "Απρίλιος", date: "18", bands: ["Axeon", "Veil Omega"] },
-    { month: "Απρίλιος", date: "25", bands: ["Junkheart", "Ποντικια"] },
-    { month: "Μάιος",    date: "2",  bands: ["SOMA", "Malhotra"] },
-    { month: "Μάιος",    date: "9",  bands: ["Tiffany", "Thymics"] },
-    { month: "Μάιος",    date: "16", bands: ["ΚΑΘΑΡΟΣ ΧΑΛΚΟΣ", "ΑΡΚΟΥΔΕΣ ΤΩΝ ΑΓΩΓΩΝ ΤΗΣ ΠΟΛΥΚΑΤΟΙΚΙΑΣ"] },
-    { month: "Μάιος",    date: "23", bands: ["State of Loss"] },
+    { monthKey: "cal.april", date: "18", bands: ["Axeon", "Veil Omega"] },
+    { monthKey: "cal.april", date: "25", bands: ["Junkheart", "Ποντικια"] },
+    { monthKey: "cal.may",   date: "2",  bands: ["SOMA", "Malhotra"] },
+    { monthKey: "cal.may",   date: "9",  bands: ["Tiffany", "Thymics"] },
+    { monthKey: "cal.may",   date: "16", bands: ["ΚΑΘΑΡΟΣ ΧΑΛΚΟΣ", "ΑΡΚΟΥΔΕΣ ΤΩΝ ΑΓΩΓΩΝ ΤΗΣ ΠΟΛΥΚΑΤΟΙΚΙΑΣ"] },
+    { monthKey: "cal.may",   date: "23", bands: ["State of Loss"] },
 ];
 
 // Group by month
-const gigsByMonth: { name: string; gigs: Gig[] }[] = [];
+const gigsByMonth: { monthKey: string; gigs: Gig[] }[] = [];
 for (const gig of gigs) {
-    let group = gigsByMonth.find(m => m.name === gig.month);
-    if (!group) { group = { name: gig.month, gigs: [] }; gigsByMonth.push(group); }
+    let group = gigsByMonth.find(m => m.monthKey === gig.monthKey);
+    if (!group) { group = { monthKey: gig.monthKey, gigs: [] }; gigsByMonth.push(group); }
     group.gigs.push(gig);
 }
 ---
@@ -85,18 +85,25 @@ for (const gig of gigs) {
 
         <!-- Inline gig calendar -->
         <div class="flex-1 min-h-0 overflow-y-auto mt-6 md:mt-4 w-full scrollbar-none" role="region" aria-label="Upcoming gigs">
-            {gigsByMonth.map(({ name, gigs }) => (
+            {gigsByMonth.map(({ monthKey, gigs }) => (
                 <div class="mb-4">
                     <!-- Month label -->
                     <div class="border-b border-base-900/30 mb-1 pb-0.5">
-                        <span class="font-bahnschrift font-bold text-sm text-base-900/40 uppercase tracking-widest">{name}</span>
+                        <span class="font-bahnschrift font-bold text-sm text-base-900/40 uppercase tracking-widest" data-i18n={monthKey}></span>
                     </div>
                     <!-- Gig rows -->
                     {gigs.map((gig) => (
                         <div class="flex items-baseline gap-3 py-1.5 border-b border-base-900/10">
                             <span class="font-bahnschrift font-bold text-2xl text-base-900/40 leading-none w-8 shrink-0">{gig.date}</span>
-                            <span class="font-bahnschrift font-bold text-base text-base-900 uppercase leading-snug">
-                                {gig.bands.join(" × ")}
+                            <span class="font-bahnschrift font-bold text-base text-base-900 uppercase leading-snug flex flex-wrap items-baseline gap-x-2">
+                                {gig.bands.map((band, i) => (
+                                    <>
+                                        <span>{band}</span>
+                                        {i < gig.bands.length - 1 && (
+                                            <span class="text-base-900/50 font-black text-lg leading-none">×</span>
+                                        )}
+                                    </>
+                                ))}
                             </span>
                         </div>
                     ))}
