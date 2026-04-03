@@ -93,33 +93,46 @@ for (const gig of gigs) {
             <Text variant={'xl'} class="!text-[1.75rem] md:!text-40" data-i18n="hero.subtitle2">10 years, few hundred gigs and counting.</Text>
         </div>
 
-        <!-- Next gig + newsletter -->
-        <div class="flex flex-col gap-4 items-center md:items-start mt-10 md:mt-4">
-            <div class="flex flex-col items-center md:items-start">
-                <Heading tagName="h1" tagSize="h1" data-i18n="hero.nextgig">next gig</Heading>
-                <Text class="text-base-900 !text-[32pt] font-grunge hidden md:block">&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</Text>
-            </div>
+        <!-- Inline gig calendar -->
+        <div class="flex-1 min-h-0 overflow-y-auto mt-6 md:mt-4 w-full scrollbar-none">
+            {gigsByMonth.map(({ name, gigs }) => (
+                <div class="mb-4">
+                    <!-- Month label -->
+                    <div class="border-b border-base-900/30 mb-1 pb-0.5">
+                        <span class="font-bahnschrift font-bold text-sm text-base-900/40 uppercase tracking-widest">{name}</span>
+                    </div>
+                    <!-- Gig rows -->
+                    {gigs.map((gig) => (
+                        <div class="flex items-baseline gap-3 py-1.5 border-b border-base-900/10">
+                            <span class="font-bahnschrift font-bold text-2xl text-base-900/40 leading-none w-8 shrink-0">{gig.date}</span>
+                            <span class="font-bahnschrift font-bold text-base text-base-900 uppercase leading-snug">
+                                {gig.bands.join(" × ")}
+                            </span>
+                        </div>
+                    ))}
+                </div>
+            ))}
+        </div>
 
-            <!-- Newsletter: hidden on mobile, shown on desktop -->
-            <div class="hidden md:block w-full max-w-md">
-                <Text variant={'sm'} class="text-base-900 mb-2 font-grunge" data-i18n="hero.newsletter">gig mail alert</Text>
-                <form class="flex gap-2">
-                    <input
-                        type="email"
-                        placeholder="your@email.com"
-                        required
-                        data-i18n-placeholder="hero.placeholder"
-                        class="min-w-0 flex-1 px-4 py-2 border-2 border-base-900 bg-transparent text-base-900 font-mono placeholder:text-base-700 focus:outline-none focus:ring-2 focus:ring-base-900"
-                    />
-                    <button
-                        type="submit"
-                        class="px-4 py-2 bg-base-900 text-base-100 font-grunge text-xl hover:opacity-80 transition-opacity whitespace-nowrap"
-                        data-i18n="hero.subscribe"
-                    >
-                        Subscribe
-                    </button>
-                </form>
-            </div>
+        <!-- Newsletter: hidden on mobile, shown on desktop -->
+        <div class="hidden md:block w-full max-w-md mt-4 shrink-0">
+            <Text variant={'sm'} class="text-base-900 mb-2 font-grunge" data-i18n="hero.newsletter">gig mail alert</Text>
+            <form class="flex gap-2">
+                <input
+                    type="email"
+                    placeholder="your@email.com"
+                    required
+                    data-i18n-placeholder="hero.placeholder"
+                    class="min-w-0 flex-1 px-4 py-2 border-2 border-base-900 bg-transparent text-base-900 font-mono placeholder:text-base-700 focus:outline-none focus:ring-2 focus:ring-base-900"
+                />
+                <button
+                    type="submit"
+                    class="px-4 py-2 bg-base-900 text-base-100 font-grunge text-xl hover:opacity-80 transition-opacity whitespace-nowrap"
+                    data-i18n="hero.subscribe"
+                >
+                    Subscribe
+                </button>
+            </form>
         </div>
 
     </div>
