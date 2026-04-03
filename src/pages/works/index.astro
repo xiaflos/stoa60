@@ -188,7 +188,7 @@ upcomingPosters.sort((a, b) =>
                             {s.posters.map(p => (
                                 <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
                                     {p.isOutdoor && p.venue && (
-                                        <span class="font-bahnschrift text-sm text-base-900/40 mb-1 uppercase tracking-wider text-center">{p.venue}</span>
+                                        <span class="font-bahnschrift text-base text-base-900/40 mb-1 uppercase tracking-wider text-center">{p.venue}</span>
                                     )}
                                     <Image
                                         src={p.image}
@@ -207,7 +207,7 @@ upcomingPosters.sort((a, b) =>
                         <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full">
                             {v.posters.map(p => (
                                 <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
-                                    <span class="font-bahnschrift text-sm text-base-900/40 mb-1 uppercase tracking-wider text-center">{p.filename.slice(0, 10)}</span>
+                                    <span class="font-bahnschrift text-base text-base-900/40 mb-1 uppercase tracking-wider text-center">{p.filename.slice(0, 10)}</span>
                                     <Image
                                         src={p.image}
                                         alt={`Poster from ${v.name}`}
