@@ -5,7 +5,6 @@ export const translations: Record<string, Record<Lang, string>> = {
   "nav.home":     { el: "Home", en: "Home" },
   "nav.posters":  { el: "Posters", en: "Posters" },
   "nav.about":    { el: "About", en: "About" },
-  "nav.calendar": { el: "Gig Calendar", en: "Gig Calendar" },
 
   // ─── Hero (Home) ───
   "hero.title":       { el: "STOA60", en: "STOA60" },
