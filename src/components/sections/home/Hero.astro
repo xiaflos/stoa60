@@ -10,9 +10,6 @@ import LanguageToggle from "../../elements/LanguageToggle.astro"
 // assets
 import stolensimadi from "../../../assets/images/posters/Upcoming/3.axeon_veil2.jpg";
 
-// External links — update URL here to change the calendar link
-const calendarUrl = "https://docs.google.com/document/d/1wk6XvPDLUO-vUwxzuHhtYlPorfJ3c7xHFEzT7XPb-Os/edit?usp=sharing";
-
 // Gig calendar data (keep in sync with src/pages/gig-calendar.astro)
 interface Gig {
     month: string;
@@ -44,13 +41,6 @@ for (const gig of gigs) {
     <div class="md:w-1/2 flex items-center justify-center order-2 md:order-none">
         <div class="w-full max-w-[20.8rem] lg:max-w-[24.96rem]">
             <ImageContainer src={stolensimadi} alt="Upcoming gig poster" />
-            <a
-                href={calendarUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="font-grunge text-2xl text-base-900 underline underline-offset-4 decoration-2 hover:text-base-700 mt-3 block text-center"
-                data-i18n="hero.calendar"
-            >GIG CALENDAR</a>
 
             <!-- Newsletter: shown on mobile only, below poster -->
             <div class="md:hidden w-full mt-6">
