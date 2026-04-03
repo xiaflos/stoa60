@@ -12,6 +12,30 @@ import stolensimadi from "../../../assets/images/posters/Upcoming/3.axeon_veil2.
 
 // External links — update URL here to change the calendar link
 const calendarUrl = "https://docs.google.com/document/d/1wk6XvPDLUO-vUwxzuHhtYlPorfJ3c7xHFEzT7XPb-Os/edit?usp=sharing";
+
+// Gig calendar data (keep in sync with src/pages/gig-calendar.astro)
+interface Gig {
+    month: string;
+    date: string;
+    bands: string[];
+}
+
+const gigs: Gig[] = [
+    { month: "Απρίλιος", date: "18", bands: ["Axeon", "Veil Omega"] },
+    { month: "Απρίλιος", date: "25", bands: ["Junkheart", "Ποντικια"] },
+    { month: "Μάιος",    date: "2",  bands: ["SOMA", "Malhotra"] },
+    { month: "Μάιος",    date: "9",  bands: ["Tiffany", "Thymics"] },
+    { month: "Μάιος",    date: "16", bands: ["Καθαρός Χαλκός", "Αρκούδες των αγωγών της πολυκατοικίας"] },
+    { month: "Μάιος",    date: "23", bands: ["State of Loss"] },
+];
+
+// Group by month
+const gigsByMonth: { name: string; gigs: Gig[] }[] = [];
+for (const gig of gigs) {
+    let group = gigsByMonth.find(m => m.name === gig.month);
+    if (!group) { group = { name: gig.month, gigs: [] }; gigsByMonth.push(group); }
+    group.gigs.push(gig);
+}
 ---
 
 <Container variant={"xl"} class="flex flex-col md:flex-row py-2 !gap-0 justify-between lg:h-[calc(100vh-5rem)] lg:max-h-[calc(100vh-5rem)]">
