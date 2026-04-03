@@ -66,7 +66,7 @@ for (const gig of gigs) {
     </div>
 
     <!-- Right column -->
-    <div class="md:w-1/2 flex flex-col order-1 md:order-none md:py-8 md:h-full md:min-h-0">
+    <div class="md:w-1/2 flex flex-col order-1 md:order-none md:py-8 lg:h-full lg:min-h-0">
 
         <!-- Nav -->
         <nav class="flex flex-wrap gap-4 md:gap-8 justify-center md:justify-start items-center">
@@ -84,7 +84,7 @@ for (const gig of gigs) {
         </div>
 
         <!-- Inline gig calendar -->
-        <div class="flex-1 min-h-0 overflow-y-auto mt-6 md:mt-4 w-full scrollbar-none">
+        <div class="flex-1 min-h-0 overflow-y-auto mt-6 md:mt-4 w-full scrollbar-none" role="region" aria-label="Upcoming gigs">
             {gigsByMonth.map(({ name, gigs }) => (
                 <div class="mb-4">
                     <!-- Month label -->
