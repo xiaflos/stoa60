@@ -8,174 +8,171 @@ import Container from "../../components/elements/Container.astro";
 import LanguageToggle from "../../components/elements/LanguageToggle.astro";
 import { Image } from "astro:assets";
 
-// Import all posters from season folders
 const allImages = import.meta.glob<{ default: ImageMetadata }>(
     "../../assets/images/posters/**/*.{jpg,jpeg,png}",
     { eager: true }
 );
 
-// Separate season folders (YYYY-YYYY) from special categories
+interface PosterEntry {
+    image: ImageMetadata;
+    filename: string;
+    isOutdoor: boolean;
+    venue?: string;
+}
+
 const seasonPattern = /^\d{4}-\d{4}$/;
-const seasonMap: Record<string, { filename: string; image: ImageMetadata }[]> = {};
-const categoryMap: Record<string, { filename: string; image: ImageMetadata }[]> = {};
+
+const outdoorDisplayNames: Record<string, string> = {
+    GEORGIADIS: "Georgiadis Park",
+    KARABOLAS:  "Karabolas",
+    VOUTES:     "Voutes",
+    XENIA:      "Xenia",
+};
+
+function filenameToSeason(filename: string): string {
+    const m = filename.match(/^(\d{4})-(\d{2})/);
+    if (!m) return "";
+    const year  = parseInt(m[1]);
+    const month = parseInt(m[2]);
+    if (month > 12 || month === 0) return `${year}-${year + 1}`;
+    return month >= 9 ? `${year}-${year + 1}` : `${year - 1}-${year}`;
+}
+
+const seasonMap: Record<string, PosterEntry[]> = {};
+const venueMap:  Record<string, PosterEntry[]> = {};
+const upcomingPosters: PosterEntry[] = [];
 
 for (const [path, module] of Object.entries(allImages)) {
-    const parts = path.split("/");
-    const folder = parts[parts.length - 2];
+    const parts    = path.split("/");
+    const folder   = parts[parts.length - 2];
     const filename = parts[parts.length - 1];
-    const entry = { filename, image: module.default };
+
+    if (folder === "Upcoming") {
+        upcomingPosters.push({ image: module.default, filename, isOutdoor: false });
+        continue;
+    }
 
     if (seasonPattern.test(folder)) {
         if (!seasonMap[folder]) seasonMap[folder] = [];
-        seasonMap[folder].push(entry);
-    } else {
-        if (!categoryMap[folder]) categoryMap[folder] = [];
-        categoryMap[folder].push(entry);
+        seasonMap[folder].push({ image: module.default, filename, isOutdoor: false });
+    } else if (outdoorDisplayNames[folder]) {
+        const entry: PosterEntry = {
+            image: module.default,
+            filename,
+            isOutdoor: true,
+            venue: outdoorDisplayNames[folder],
+        };
+        const season = filenameToSeason(filename);
+        if (season) {
+            if (!seasonMap[season]) seasonMap[season] = [];
+            seasonMap[season].push(entry);
+        }
+        if (!venueMap[folder]) venueMap[folder] = [];
+        venueMap[folder].push(entry);
     }
 }
 
-// Seasons: newest first, posters newest first
-const seasons = Object.keys(seasonMap)
-    .sort((a, b) => b.localeCompare(a))
-    .map(year => ({
-        year,
-        posters: seasonMap[year]
-            .sort((a, b) => b.filename.localeCompare(a.filename, undefined, { numeric: true, sensitivity: "base" }))
-            .map(item => item.image)
-    }));
-
-// Extract year from filename (YYYY-MM-DD prefix)
-function extractYear(filename: string): string {
-    const match = filename.match(/^(\d{4})/);
-    return match ? match[1] : '';
+for (const key of Object.keys(seasonMap)) {
+    seasonMap[key].sort((a, b) => {
+        if (a.isOutdoor !== b.isOutdoor) return a.isOutdoor ? 1 : -1;
+        return b.filename.localeCompare(a.filename, undefined, { numeric: true, sensitivity: "base" });
+    });
 }
 
-// Special categories: sorted alphabetically, posters newest first
-const allCategories = Object.keys(categoryMap)
-    .sort((a, b) => a.localeCompare(b))
-    .map(name => ({
-        name,
-        posters: categoryMap[name]
-            .sort((a, b) => name === 'Upcoming'
-                ? a.filename.localeCompare(b.filename, undefined, { numeric: true, sensitivity: "base" })
-                : b.filename.localeCompare(a.filename, undefined, { numeric: true, sensitivity: "base" })
-            )
-            .map(item => ({
-                image: item.image,
-                year: extractYear(item.filename)
-            }))
+const seasons = Object.keys(seasonMap)
+    .sort((a, b) => b.localeCompare(a))
+    .map(year => ({ year, posters: seasonMap[year] }));
+
+const venueOrder = ["GEORGIADIS", "KARABOLAS", "VOUTES", "XENIA"];
+const venues = venueOrder
+    .filter(v => venueMap[v])
+    .map(v => ({
+        key: v,
+        name: outdoorDisplayNames[v],
+        posters: venueMap[v].sort((a, b) =>
+            b.filename.localeCompare(a.filename, undefined, { numeric: true, sensitivity: "base" })
+        ),
     }));
 
-// Upcoming is pinned first
-const upcoming = allCategories.find(c => c.name === 'Upcoming');
-
-// Outdoor venue categories (in display order)
-const outdoorVenueOrder = ['GEORGIADIS', 'KARABOLAS', 'VOUTES', 'XENIA'];
-const venueDisplayNames: Record<string, string> = {
-    'GEORGIADIS': 'GEORGIADIS PARK'
-};
-const outdoorCategories = allCategories
-    .filter(c => outdoorVenueOrder.includes(c.name))
-    .sort((a, b) => outdoorVenueOrder.indexOf(a.name) - outdoorVenueOrder.indexOf(b.name));
-
-// Determine the first active tab ID
-const firstActiveId = upcoming
-    ? 'section-upcoming'
-    : seasons.length > 0
-        ? 'section-season-0'
-        : outdoorCategories.length > 0
-            ? `section-outdoor-${outdoorCategories[0].name.toLowerCase()}`
-            : '';
+upcomingPosters.sort((a, b) =>
+    a.filename.localeCompare(b.filename, undefined, { numeric: true, sensitivity: "base" })
+);
 ---
 
 <Layout title="Posters">
-    <Container variant={'xl'} class="flex flex-col !gap-2 items-start">
-        <nav class="flex flex-wrap gap-4 md:gap-8 justify-start items-center">
-            <a href="/" class="text-base-900 font-grunge text-2xl md:text-3xl underline underline-offset-4 decoration-2 hover:text-base-700" data-i18n="nav.home">Home</a>
-            <a href="/gig-calendar" class="text-base-900 font-grunge text-2xl md:text-3xl underline underline-offset-4 decoration-2 hover:text-base-700" data-i18n="nav.calendar">Gig Calendar</a>
-            <a href="/about" class="text-base-900 font-grunge text-2xl md:text-3xl underline underline-offset-4 decoration-2 hover:text-base-700" data-i18n="nav.about">About</a>
-            <LanguageToggle />
-        </nav>
-        <Heading tagName="h1" tagSize="h1" class="text-left" data-i18n="works.title">Posters</Heading>
-        <a href="https://drive.google.com/drive/folders/1nie729Boi20WuEhENw9cHMDtSr02pK-M?usp=sharing" target="_blank" rel="noopener noreferrer" class="font-bahnschrift text-base uppercase tracking-wide text-base-900/60 underline underline-offset-2 hover:text-base-900 transition-colors -mt-2" data-i18n="works.print_link">Posters in high quality for printing</a>
+    <Container variant={'xl'} class="flex flex-col !gap-0 items-start">
 
-        <!-- Sticky category tab bar -->
-        <div id="category-nav" class="sticky top-0 z-20 w-full py-3 bg-base-100/95 backdrop-blur-sm border-b border-base-900/15 -mx-2 px-2">
-            <div class="flex flex-col gap-4">
+        <!-- Mobile filter toggle (hidden on desktop) -->
+        <button id="filter-toggle" class="md:hidden mt-3 mb-1 flex items-center gap-2 font-grunge text-base text-base-900/50 border border-base-900/20 px-3 py-1 hover:text-base-900/80 hover:border-base-900/40 transition-colors select-none">
+            <span id="filter-icon">☰</span>
+            <span id="filter-label">Categories</span>
+        </button>
 
-                <!-- Group 1: Season / Year tabs -->
-                <div class="flex flex-col gap-2">
-                    <span class="font-grunge text-2xl md:text-3xl text-base-900/40 select-none">SEASONS</span>
-                    <div class="flex flex-wrap gap-2">
-                    {upcoming && (
-                        <button
-                            class:list={[
-                                "category-tab font-grunge text-xl md:text-2xl px-3 py-1 border border-base-900/40 text-base-900 transition-colors select-none hover:border-base-900 hover:bg-base-900/10",
-                                firstActiveId === 'section-upcoming' && "tab-active"
-                            ]}
-                            data-target="section-upcoming"
-                        >
-                            Upcoming
-                        </button>
-                    )}
-                    {seasons.map((season, i) => (
-                        <button
-                            class:list={[
-                                "category-tab font-grunge text-xl md:text-2xl px-3 py-1 border border-base-900/40 text-base-900 transition-colors select-none hover:border-base-900 hover:bg-base-900/10",
-                                firstActiveId === `section-season-${i}` && "tab-active"
-                            ]}
-                            data-target={`section-season-${i}`}
-                        >
-                            {season.year}
-                        </button>
-                    ))}
-                    </div>
-                </div>
+        <!-- Two-column layout: sidebar tabs | main content -->
+        <div id="main-layout" class="w-full flex gap-0 pt-2">
 
-                <!-- Group 2: Outdoor gigs tabs -->
-                {outdoorCategories.length > 0 && (
-                    <div class="flex flex-col gap-2">
-                        <span class="font-grunge text-2xl md:text-3xl text-base-900/40 select-none">OUTDOOR GIGS</span>
-                        <div class="flex flex-wrap gap-2">
-                        {outdoorCategories.map((cat) => (
+            <!-- Sidebar: hidden on mobile, always visible on desktop -->
+            <div id="cat-sidebar" class="hidden md:flex flex-col shrink-0 w-24 md:w-36 border-r border-base-900/20 pr-2 md:pr-4 gap-0.5 pt-2">
+
+                {upcomingPosters.length > 0 && (
+                    <button
+                        class="category-tab font-grunge text-base md:text-xl text-left px-2 py-1.5 text-base-900/60 border-l-2 border-transparent select-none"
+                        data-target="section-upcoming"
+                    >Upcoming</button>
+                )}
+                {seasons.map(s => (
+                    <button
+                        class="category-tab font-grunge text-base md:text-xl text-left px-2 py-1.5 text-base-900/60 border-l-2 border-transparent select-none"
+                        data-target={`section-${s.year}`}
+                    >{s.year}</button>
+                ))}
+
+                {venues.length > 0 && (
+                    <>
+                        <div class="sidebar-divider border-t border-base-900/20 my-2" />
+                        <span class="font-grunge text-xs text-base-900/30 px-2 uppercase tracking-widest mb-0.5 select-none">Locations</span>
+                        {venues.map(v => (
                             <button
-                                class:list={[
-                                    "category-tab font-grunge text-xl md:text-2xl px-3 py-1 border border-base-900/40 text-base-900 transition-colors select-none hover:border-base-900 hover:bg-base-900/10",
-                                    firstActiveId === `section-outdoor-${cat.name.toLowerCase()}` && "tab-active"
-                                ]}
-                                data-target={`section-outdoor-${cat.name.toLowerCase()}`}
-                            >
-                                {venueDisplayNames[cat.name] ?? cat.name}
-                            </button>
+                                class="category-tab font-grunge text-base md:text-xl text-left px-2 py-1.5 text-base-900/60 border-l-2 border-transparent select-none"
+                                data-target={`section-venue-${v.key.toLowerCase()}`}
+                            >{v.name}</button>
                         ))}
-                        </div>
-                    </div>
+                    </>
                 )}
 
-            </div>
-        </div>
+                <!-- Print archive link at bottom of sidebar -->
+                <div class="border-t border-base-900/20 mt-auto pt-4 mt-6">
+                    <a
+                        href="https://drive.google.com/drive/folders/1nie729Boi20WuEhENw9cHMDtSr02pK-M?usp=sharing"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="font-grunge text-xs text-base-900/30 px-2 uppercase tracking-widest hover:text-base-900/60 transition-colors leading-tight block"
+                    >For Print</a>
+                </div>
 
-        <!-- Upcoming accordion (pinned first, open by default) -->
-        {upcoming && (
-            <details id="section-upcoming" class="w-full mt-4 season-accordion" open>
-                <summary class="font-grunge text-4xl md:text-5xl text-base-900 cursor-pointer list-none flex items-center gap-4 py-3 border-b border-base-900/20 hover:text-base-700 select-none">
-                    <svg
-                        class="season-chevron w-6 h-6 shrink-0 transition-transform duration-300 fill-current"
-                        viewBox="0 0 8 8"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path d="M1.5 1L0 2.5l4 4 4-4L6.5 1 4 3.5 1.5 1z"/>
-                    </svg>
-                    <span>{upcoming.name}</span>
-                    <span class="text-base-900/40 font-mono text-sm ml-auto">{upcoming.posters.length}</span>
-                </summary>
-                <div class="season-content grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-in-out">
-                    <div class="overflow-hidden">
-                        <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-8 w-full pt-6 pb-4">
-                            {upcoming.posters.map((poster) => (
+            </div>
+
+            <!-- Main content: nav + title + poster grid -->
+            <div id="main-content" class="flex-1 pl-4 md:pl-8 min-w-0 flex flex-col gap-2">
+
+                <!-- Nav aligned with poster grid -->
+                <nav class="flex flex-wrap gap-4 md:gap-8 justify-start items-center pt-2">
+                    <a href="/" class="text-base-900 font-grunge text-2xl md:text-3xl underline underline-offset-4 decoration-2 hover:text-base-700" data-i18n="nav.home">Home</a>
+                    <a href="/gig-calendar" class="text-base-900 font-grunge text-2xl md:text-3xl underline underline-offset-4 decoration-2 hover:text-base-700" data-i18n="nav.calendar">Gig Calendar</a>
+                    <a href="/about" class="text-base-900 font-grunge text-2xl md:text-3xl underline underline-offset-4 decoration-2 hover:text-base-700" data-i18n="nav.about">About</a>
+                    <LanguageToggle />
+                </nav>
+
+                <Heading tagName="h1" tagSize="h3" class="text-left mt-2" data-i18n="works.title">Posters</Heading>
+
+                <!-- Poster sections (shown/hidden by tab) -->
+                {upcomingPosters.length > 0 && (
+                    <div id="section-upcoming" class="poster-section hidden">
+                        <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full">
+                            {upcomingPosters.map(p => (
                                 <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
                                     <Image
-                                        src={poster.image}
+                                        src={p.image}
                                         alt="Upcoming poster"
                                         class="w-full h-auto object-contain hover:opacity-80 transition-opacity"
                                         loading="eager"
@@ -184,91 +181,53 @@ const firstActiveId = upcoming
                             ))}
                         </div>
                     </div>
-                </div>
-            </details>
-        )}
+                )}
 
-        <!-- Season accordions -->
-        {seasons.map((season, seasonIndex) => (
-            <details id={`section-season-${seasonIndex}`} class="w-full mt-4 season-accordion">
-                <summary class="font-grunge text-4xl md:text-5xl text-base-900 cursor-pointer list-none flex items-center gap-4 py-3 border-b border-base-900/20 hover:text-base-700 select-none">
-                    <svg
-                        class="season-chevron w-6 h-6 shrink-0 transition-transform duration-300 fill-current"
-                        viewBox="0 0 8 8"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path d="M1.5 1L0 2.5l4 4 4-4L6.5 1 4 3.5 1.5 1z"/>
-                    </svg>
-                    <span>{season.year}</span>
-                    <span class="text-base-900/40 font-mono text-sm ml-auto">{season.posters.length}</span>
-                </summary>
-                <div class="season-content grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-in-out">
-                    <div class="overflow-hidden">
-                        <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-8 w-full pt-6 pb-4">
-                            {season.posters.map((poster) => (
-                                <div class="w-full cursor-pointer poster-thumb">
-                                    <Image
-                                        src={poster}
-                                        alt={`Poster from ${season.year}`}
-                                        class="w-full h-auto object-contain hover:opacity-80 transition-opacity"
-                                        loading="lazy"
-                                    />
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </details>
-        ))}
-
-        <!-- Outdoor venues section heading -->
-        {outdoorCategories.length > 0 && (
-            <div class="w-full mt-12 pt-6 border-t border-base-900/20">
-                <p class="font-grunge text-4xl md:text-5xl text-base-900/50 uppercase tracking-wide">
-                    OUTDOOR GIGS
-                </p>
-            </div>
-        )}
-
-        <!-- Outdoor category accordions -->
-        {outdoorCategories.map((cat) => (
-            <details id={`section-outdoor-${cat.name.toLowerCase()}`} class="w-full mt-4 season-accordion">
-                <summary class="font-grunge text-4xl md:text-5xl text-base-900 cursor-pointer list-none flex items-center gap-4 py-3 border-b border-base-900/20 hover:text-base-700 select-none">
-                    <svg
-                        class="season-chevron w-6 h-6 shrink-0 transition-transform duration-300 fill-current"
-                        viewBox="0 0 8 8"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path d="M1.5 1L0 2.5l4 4 4-4L6.5 1 4 3.5 1.5 1z"/>
-                    </svg>
-                    <span>{venueDisplayNames[cat.name] ?? cat.name}</span>
-                    <span class="text-base-900/40 font-mono text-sm ml-auto">{cat.posters.length}</span>
-                </summary>
-                <div class="season-content grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-in-out">
-                    <div class="overflow-hidden">
-                        <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-8 w-full pt-6 pb-4">
-                            {cat.posters.map((poster) => (
+                {seasons.map(s => (
+                    <div id={`section-${s.year}`} class="poster-section hidden">
+                        <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full">
+                            {s.posters.map(p => (
                                 <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
                                     <Image
-                                        src={poster.image}
-                                        alt={`Poster from ${venueDisplayNames[cat.name] ?? cat.name}`}
+                                        src={p.image}
+                                        alt={`Poster ${s.year}`}
                                         class="w-full h-auto object-contain hover:opacity-80 transition-opacity"
                                         loading="lazy"
                                     />
-                                    {poster.year && (
-                                        <span class="font-grunge text-2xl text-base-900/50 mt-2">{poster.year}</span>
+                                    {p.isOutdoor && p.venue && (
+                                        <span class="font-bahnschrift text-xs text-base-900/40 mt-1 uppercase tracking-wider text-center">{p.venue}</span>
                                     )}
                                 </div>
                             ))}
                         </div>
                     </div>
-                </div>
-            </details>
-        ))}
+                ))}
+
+                {venues.map(v => (
+                    <div id={`section-venue-${v.key.toLowerCase()}`} class="poster-section hidden">
+                        <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full">
+                            {v.posters.map(p => (
+                                <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
+                                    <Image
+                                        src={p.image}
+                                        alt={`Poster from ${v.name}`}
+                                        class="w-full h-auto object-contain hover:opacity-80 transition-opacity"
+                                        loading="lazy"
+                                    />
+                                    <span class="font-bahnschrift text-xs text-base-900/40 mt-1 uppercase tracking-wider text-center">{p.filename.slice(0, 10)}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+
+            </div>
+        </div>
+
     </Container>
 
     <!-- Lightbox Modal -->
-    <div id="lightbox" class="fixed inset-0 bg-black/90 z-50 hidden items-center justify-center">
+    <div id="lightbox" class="fixed inset-0 bg-black/90 z-50 items-center justify-center" style="display:none">
         <button id="close-lightbox" class="absolute top-4 right-4 text-white text-4xl font-grunge hover:opacity-70 z-10">&times;</button>
         <button id="prev-lightbox" class="absolute left-4 top-1/2 -translate-y-1/2 text-white text-5xl font-grunge hover:opacity-70 z-10 select-none">&#8249;</button>
         <button id="next-lightbox" class="absolute right-4 top-1/2 -translate-y-1/2 text-white text-5xl font-grunge hover:opacity-70 z-10 select-none">&#8250;</button>
@@ -276,146 +235,192 @@ const firstActiveId = upcoming
     </div>
 
     <style>
-        /* Hide native marker */
-        details summary::-webkit-details-marker { display: none; }
-
-        /* Rotate chevron when open */
-        details[open] .season-chevron { transform: rotate(180deg); }
-
-        /* Animate grid rows open */
-        details[open] .season-content { grid-template-rows: 1fr; }
-
-        /* Tab hover */
-        .category-tab:hover {
-            border-color: oklch(14% 0.004 49.25);
-            background-color: oklch(14% 0.004 49.25 / 10%);
+        .category-tab {
+            position: relative;
+            overflow: hidden;
+            transition: color 0.25s ease, border-color 0.25s ease;
         }
 
-        /* Active tab */
+        /* Sweep fill — slides in from left on hover / active */
+        .category-tab::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: oklch(98% 0.001 106.423 / 7%);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            pointer-events: none;
+        }
+
+        .category-tab:hover::before,
+        .category-tab.tab-active::before {
+            transform: translateX(0);
+        }
+
+        /* Thin accent line at bottom that grows on hover */
+        .category-tab::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 2px;
+            right: 2px;
+            height: 1px;
+            background: oklch(98% 0.001 106.423 / 20%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+            pointer-events: none;
+        }
+
+        .category-tab:hover::after { transform: scaleX(1); }
+
+        .category-tab:hover {
+            border-left-color: oklch(98% 0.001 106.423 / 50%);
+            color: oklch(98% 0.001 106.423 / 80%);
+        }
+
         .category-tab.tab-active {
-            background-color: oklch(98% 0.001 106.423);
-            color: oklch(14% 0.004 49.25);
-            border-color: oklch(98% 0.001 106.423);
+            border-left-color: oklch(98% 0.001 106.423);
+            color: oklch(98% 0.001 106.423);
+        }
+
+        .category-tab.tab-active::after {
+            transform: scaleX(1);
+            background: oklch(98% 0.001 106.423 / 40%);
+        }
+
+        /* Mobile: sidebar shown as horizontal wrapping panel above content */
+        @media (max-width: 767px) {
+            #cat-sidebar.mobile-open {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid oklch(98% 0.001 106.423 / 15%);
+                padding-right: 0;
+                padding-bottom: 0.75rem;
+                margin-bottom: 0.5rem;
+            }
+
+            #cat-sidebar.mobile-open .sidebar-divider {
+                width: 100%;
+                margin: 0.25rem 0;
+            }
+
+            #main-layout.sidebar-open {
+                flex-direction: column;
+            }
+
+            #main-layout.sidebar-open #main-content {
+                padding-left: 0;
+            }
         }
     </style>
 
     <script>
-        // --- Category tab navigation ---
-        const tabs = document.querySelectorAll<HTMLButtonElement>('.category-tab');
-        const allAccordions = document.querySelectorAll<HTMLDetailsElement>('.season-accordion');
-        const stickyNav = document.getElementById('category-nav')!;
+        // --- Mobile sidebar toggle ---
+        const filterToggle  = document.getElementById("filter-toggle");
+        const catSidebar    = document.getElementById("cat-sidebar")!;
+        const mainLayout    = document.getElementById("main-layout")!;
+        const mainContent   = document.getElementById("main-content")!;
+        const filterLabel   = document.getElementById("filter-label")!;
 
-        function activateTab(btn: HTMLButtonElement) {
-            const targetId = btn.dataset.target!;
-            const target = document.getElementById(targetId) as HTMLDetailsElement | null;
-            if (!target) return;
-
-            // Close all, open target
-            allAccordions.forEach(d => d.removeAttribute('open'));
-            target.setAttribute('open', '');
-
-            // Update active tab styling
-            tabs.forEach(b => b.classList.remove('tab-active'));
-            btn.classList.add('tab-active');
-
-            // Scroll so the accordion content starts just below the sticky nav
-            const navHeight = stickyNav.offsetHeight;
-            const targetTop = target.getBoundingClientRect().top + window.scrollY - navHeight - 8;
-            window.scrollTo({ top: targetTop, behavior: 'smooth' });
-
-            rebuildIndex();
-        }
-
-        tabs.forEach(btn => {
-            btn.addEventListener('click', () => activateTab(btn));
+        filterToggle?.addEventListener("click", () => {
+            const isOpen = catSidebar.classList.contains("mobile-open");
+            if (isOpen) {
+                catSidebar.classList.remove("mobile-open");
+                mainLayout.classList.remove("sidebar-open");
+                mainContent.style.paddingLeft = "";
+                filterLabel.textContent = "Categories";
+            } else {
+                catSidebar.classList.add("mobile-open");
+                mainLayout.classList.add("sidebar-open");
+                filterLabel.textContent = "Close";
+            }
         });
 
-        // Sync active tab when accordion is toggled manually
-        allAccordions.forEach(details => {
-            details.addEventListener('toggle', () => {
-                if ((details as HTMLDetailsElement).open) {
-                    const matchingTab = Array.from(tabs).find(b => b.dataset.target === details.id);
-                    if (matchingTab) {
-                        tabs.forEach(b => b.classList.remove('tab-active'));
-                        matchingTab.classList.add('tab-active');
-                    }
-                }
-                rebuildIndex();
+        // --- Category tab navigation ---
+        const tabs     = document.querySelectorAll<HTMLButtonElement>(".category-tab");
+        const sections = document.querySelectorAll<HTMLElement>(".poster-section");
+
+        function activateTab(btn: HTMLButtonElement) {
+            tabs.forEach(b => b.classList.remove("tab-active"));
+            sections.forEach(s => s.classList.add("hidden"));
+            btn.classList.add("tab-active");
+            document.getElementById(btn.dataset.target!)?.classList.remove("hidden");
+            // Auto-close sidebar on mobile after selection
+            if (window.innerWidth < 768 && catSidebar.classList.contains("mobile-open")) {
+                catSidebar.classList.remove("mobile-open");
+                mainLayout.classList.remove("sidebar-open");
+                filterLabel.textContent = "Categories";
+            }
+        }
+
+        tabs.forEach(btn => btn.addEventListener("click", () => activateTab(btn)));
+
+        const firstTab = document.querySelector<HTMLButtonElement>(".category-tab");
+        if (firstTab) activateTab(firstTab);
+
+        // --- Lightbox ---
+        const lightbox    = document.getElementById("lightbox") as HTMLElement;
+        const lightboxImg = document.getElementById("lightbox-img") as HTMLImageElement;
+        const closeBtn    = document.getElementById("close-lightbox") as HTMLElement;
+        const prevBtn     = document.getElementById("prev-lightbox") as HTMLElement;
+        const nextBtn     = document.getElementById("next-lightbox") as HTMLElement;
+
+        let currentSrcs: string[] = [];
+        let currentIdx  = 0;
+
+        function getVisibleSrcs(): string[] {
+            return Array.from(
+                document.querySelectorAll<HTMLImageElement>(".poster-section:not(.hidden) .poster-thumb img")
+            ).map(img => img.currentSrc || img.getAttribute("src") || "");
+        }
+
+        function showLightbox(srcs: string[], idx: number) {
+            currentSrcs = srcs;
+            currentIdx  = idx;
+            lightboxImg.src = currentSrcs[currentIdx];
+            prevBtn.style.opacity = currentIdx > 0 ? "1" : "0.2";
+            nextBtn.style.opacity = currentIdx < currentSrcs.length - 1 ? "1" : "0.2";
+            lightbox.style.display = "flex";
+        }
+
+        function hideLightbox() {
+            lightbox.style.display = "none";
+        }
+
+        // Attach direct click listener to every poster thumb
+        document.querySelectorAll<HTMLElement>(".poster-thumb").forEach(thumb => {
+            thumb.addEventListener("click", () => {
+                const srcs = getVisibleSrcs();
+                const img  = thumb.querySelector("img");
+                if (!img) return;
+                const src = img.currentSrc || img.getAttribute("src") || "";
+                const idx = srcs.indexOf(src);
+                showLightbox(srcs, idx !== -1 ? idx : 0);
             });
         });
 
-        // --- Lightbox ---
-        const lightbox = document.getElementById('lightbox')!;
-        const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
-        const closeBtn = document.getElementById('close-lightbox')!;
-        const prevBtn = document.getElementById('prev-lightbox')!;
-        const nextBtn = document.getElementById('next-lightbox')!;
-
-        let visiblePosters: HTMLElement[] = [];
-        let currentIndex = 0;
-
-        function rebuildIndex() {
-            visiblePosters = Array.from(
-                document.querySelectorAll<HTMLElement>('details[open] .poster-thumb')
-            );
-        }
-
-        function openLightbox(index: number) {
-            if (index < 0 || index >= visiblePosters.length) return;
-            currentIndex = index;
-            const img = visiblePosters[index].querySelector('img');
-            if (!img) return;
-            lightboxImg.src = img.src;
-            lightbox.classList.remove('hidden');
-            lightbox.classList.add('flex');
-            updateArrows();
-            history.pushState({ lightbox: true }, '');
-        }
-
-        function closeLightbox() {
-            lightbox.classList.add('hidden');
-            lightbox.classList.remove('flex');
-        }
-
-        function updateArrows() {
-            prevBtn.style.visibility = currentIndex > 0 ? 'visible' : 'hidden';
-            nextBtn.style.visibility = currentIndex < visiblePosters.length - 1 ? 'visible' : 'hidden';
-        }
-
-        // Delegate click on poster thumbs
-        document.addEventListener('click', (e) => {
-            const thumb = (e.target as HTMLElement).closest('.poster-thumb') as HTMLElement | null;
-            if (!thumb) return;
-            rebuildIndex();
-            const idx = visiblePosters.indexOf(thumb);
-            if (idx !== -1) openLightbox(idx);
-        });
-
-        prevBtn.addEventListener('click', (e) => {
+        prevBtn.addEventListener("click", (e) => {
             e.stopPropagation();
-            if (currentIndex > 0) openLightbox(currentIndex - 1);
+            if (currentIdx > 0) showLightbox(currentSrcs, currentIdx - 1);
         });
-        nextBtn.addEventListener('click', (e) => {
+
+        nextBtn.addEventListener("click", (e) => {
             e.stopPropagation();
-            if (currentIndex < visiblePosters.length - 1) openLightbox(currentIndex + 1);
+            if (currentIdx < currentSrcs.length - 1) showLightbox(currentSrcs, currentIdx + 1);
         });
 
-        closeBtn.addEventListener('click', () => { closeLightbox(); history.back(); });
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) { closeLightbox(); history.back(); }
-        });
+        closeBtn.addEventListener("click", hideLightbox);
+        lightbox.addEventListener("click", (e) => { if (e.target === lightbox) hideLightbox(); });
 
-        window.addEventListener('keydown', (e) => {
-            if (lightbox.classList.contains('hidden')) return;
-            if (e.key === 'Escape') { closeLightbox(); history.back(); }
-            if (e.key === 'ArrowLeft' && currentIndex > 0) openLightbox(currentIndex - 1);
-            if (e.key === 'ArrowRight' && currentIndex < visiblePosters.length - 1) openLightbox(currentIndex + 1);
+        window.addEventListener("keydown", (e) => {
+            if (lightbox.style.display === "none" || !lightbox.style.display) return;
+            if (e.key === "Escape") hideLightbox();
+            if (e.key === "ArrowLeft"  && currentIdx > 0)                          showLightbox(currentSrcs, currentIdx - 1);
+            if (e.key === "ArrowRight" && currentIdx < currentSrcs.length - 1)     showLightbox(currentSrcs, currentIdx + 1);
         });
-
-        window.addEventListener('popstate', (e) => {
-            if (!e.state?.lightbox) closeLightbox();
-        });
-
-        rebuildIndex();
     </script>
 </Layout>
