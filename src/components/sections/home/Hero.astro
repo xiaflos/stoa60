@@ -32,22 +32,49 @@ const monthLabels: Record<string, string> = {
     "cal.may":   "Μάιος",
 };
 
+// Max gigs shown on homepage — add more to the array freely, only this many will render
+const MAX_GIGS = 8;
+const visibleGigs = gigs.slice(0, MAX_GIGS);
+
 // Group by month
 const gigsByMonth: { monthKey: string; gigs: Gig[] }[] = [];
-for (const gig of gigs) {
+for (const gig of visibleGigs) {
     let group = gigsByMonth.find(m => m.monthKey === gig.monthKey);
     if (!group) { group = { monthKey: gig.monthKey, gigs: [] }; gigsByMonth.push(group); }
     group.gigs.push(gig);
 }
 ---
 
-<Container variant={"xl"} class="flex flex-col md:flex-row py-2 !gap-0 justify-between lg:h-[calc(100vh-5rem)] lg:max-h-[calc(100vh-5rem)]">
+<Container variant={"xl"} class="grid md:grid-cols-2 py-2 !gap-0 md:h-[calc(100vh-5rem)] md:max-h-[calc(100vh-5rem)] md:overflow-hidden md:[grid-template-rows:auto_1fr]">
 
-    <!-- Left column: Poster + newsletter -->
-    <div class="md:w-1/2 flex items-center justify-center order-2 md:order-none">
-        <div class="w-full max-w-[20.8rem] lg:max-w-[24.96rem] flex flex-col">
+    <!-- 1. Title + nav + subtitles (mobile: top / desktop: right col top) -->
+    <div class="md:col-start-2 md:row-start-1 flex flex-col md:pt-5 md:pb-8">
+
+        <!-- STOA60 + Nav inline -->
+        <div class="flex flex-wrap gap-4 md:gap-8 items-baseline justify-center md:justify-start text-base-900 md:mt-5 lg:mt-7">
+            <Text variant={'xl'} class="!text-[clamp(40pt,9vw,80pt)] !leading-none" data-i18n="hero.title">STOA60</Text>
+            <nav class="flex flex-wrap gap-4 md:gap-8 items-center">
+                <a href="/works" class="text-base-900 font-grunge text-2xl md:text-3xl underline underline-offset-4 decoration-2 hover:text-base-700" data-i18n="nav.posters">Posters</a>
+                <a href="/about" class="text-base-900 font-grunge text-2xl md:text-3xl underline underline-offset-4 decoration-2 hover:text-base-700" data-i18n="nav.about">About</a>
+                <LanguageToggle />
+            </nav>
+        </div>
+
+        <!-- Subtitles -->
+        <div class="text-base-900 flex flex-col gap-1 items-center md:items-start text-center md:text-left mt-4">
+            <Text variant={'xl'} class="!text-base md:!text-lg !font-bahnschrift font-bold uppercase" data-i18n="hero.subtitle1">DIY underground venue in Iraqlion,</Text>
+            <Text variant={'xl'} class="!text-base md:!text-lg !font-bahnschrift font-bold uppercase" data-i18n="hero.subtitle2">10 years, few hundred gigs and counting.</Text>
+        </div>
+
+    </div>
+
+    <!-- 2. Poster + newsletter (mobile: middle / desktop: left col spanning both rows) -->
+    <div class="md:col-start-1 md:row-start-1 md:row-span-2 flex items-start justify-center mt-6 md:mt-0 md:pt-8">
+        <div class="w-full max-w-[17rem] lg:max-w-[21rem] flex flex-col">
             <Heading tagName="h2" tagSize="h5" class="mb-2 text-center" data-i18n="hero.nextgig">next gig</Heading>
-            <ImageContainer src={stolensimadi} alt="Upcoming gig poster" />
+            <button id="hero-poster-btn" class="w-full cursor-pointer hover:opacity-80 transition-opacity" aria-label="View poster fullscreen">
+                <ImageContainer src={stolensimadi} alt="Upcoming gig poster" />
+            </button>
 
             <!-- Newsletter: below poster on all screen sizes -->
             <div class="w-full mt-4">
@@ -72,52 +99,57 @@ for (const gig of gigs) {
         </div>
     </div>
 
-    <!-- Right column -->
-    <div class="md:w-1/2 flex flex-col order-1 md:order-none md:py-8 lg:h-full lg:min-h-0">
-
-        <!-- Nav -->
-        <nav class="flex flex-wrap gap-4 md:gap-8 justify-center md:justify-start items-center">
-            <a href="/works" class="text-base-900 font-grunge text-2xl md:text-3xl underline underline-offset-4 decoration-2 hover:text-base-700" data-i18n="nav.posters">Posters</a>
-            <a href="/about" class="text-base-900 font-grunge text-2xl md:text-3xl underline underline-offset-4 decoration-2 hover:text-base-700" data-i18n="nav.about">About</a>
-            <LanguageToggle />
-        </nav>
-
-        <!-- Title + subtitles -->
-        <div class="text-base-900 flex flex-col gap-1 items-center md:items-start text-center md:text-left mt-6 md:mt-16">
-            <Text variant={'xl'} class="!text-[clamp(32pt,8vw,56pt)] mb-1" data-i18n="hero.title">STOA60</Text>
-            <Text variant={'xl'} class="!text-[1.75rem] md:!text-40" data-i18n="hero.subtitle1">underground venue in Iraqlion,</Text>
-            <Text variant={'xl'} class="!text-[1.75rem] md:!text-40" data-i18n="hero.subtitle2">10 years, few hundred gigs and counting.</Text>
-        </div>
-
-        <!-- Inline gig calendar -->
-        <div class="flex-1 min-h-0 overflow-y-auto mt-6 md:mt-4 w-full scrollbar-none" role="region" aria-label="Upcoming gigs">
-            {gigsByMonth.map(({ monthKey, gigs }) => (
-                <div class="mb-4">
-                    <!-- Month label -->
-                    <div class="border-b border-base-900/30 mb-1 pb-0.5">
-                        <span class="font-bahnschrift font-bold text-sm text-base-900/40 uppercase tracking-widest" data-i18n={monthKey}>{monthLabels[monthKey]}</span>
-                    </div>
-                    <!-- Gig rows -->
-                    {gigs.map((gig) => (
-                        <div class="flex items-baseline gap-3 py-1.5 border-b border-base-900/10">
-                            <span class="font-bahnschrift font-bold text-2xl text-base-900/40 leading-none w-8 shrink-0">{gig.date}</span>
-                            <span class="font-bahnschrift font-bold text-base text-base-900 uppercase leading-snug flex flex-wrap items-baseline gap-x-2">
-                                {gig.bands.map((band, i) => (
-                                    <>
-                                        <span>{band}</span>
-                                        {i < gig.bands.length - 1 && (
-                                            <span class="text-base-900/50 font-black text-lg leading-none">×</span>
-                                        )}
-                                    </>
-                                ))}
-                            </span>
-                        </div>
-                    ))}
+    <!-- 3. Calendar (mobile: below poster / desktop: right col bottom) -->
+    <div class="md:col-start-2 md:row-start-2 overflow-y-auto mt-6 md:mt-0 scrollbar-none md:min-h-0 [mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)] md:[mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)]" role="region" aria-label="Upcoming gigs">
+        {gigsByMonth.map(({ monthKey, gigs }) => (
+            <div class="mb-4">
+                <!-- Month label -->
+                <div class="border-b border-base-900/30 mb-1 pb-0.5">
+                    <span class="font-bahnschrift font-bold text-sm text-base-900/40 uppercase tracking-widest" data-i18n={monthKey}>{monthLabels[monthKey]}</span>
                 </div>
-            ))}
-        </div>
-
-
+                <!-- Gig rows -->
+                {gigs.map((gig) => (
+                    <div class="flex items-baseline gap-3 py-1.5 border-b border-base-900/10">
+                        <span class="font-bahnschrift font-bold text-2xl text-base-900/40 leading-none w-8 shrink-0">{gig.date}</span>
+                        <span class="font-bahnschrift font-bold text-base text-base-900 uppercase leading-snug flex flex-wrap items-baseline gap-x-2">
+                            {gig.bands.map((band, i) => (
+                                <>
+                                    <span>{band}</span>
+                                    {i < gig.bands.length - 1 && (
+                                        <span class="text-base-900/50 font-black text-lg leading-none">×</span>
+                                    )}
+                                </>
+                            ))}
+                        </span>
+                    </div>
+                ))}
+            </div>
+        ))}
     </div>
 
 </Container>
+
+<!-- Lightbox -->
+<div id="hero-lightbox" class="fixed inset-0 bg-black/90 z-50 items-center justify-center" style="display:none">
+    <button id="hero-lightbox-close" class="absolute top-4 right-4 text-white text-4xl font-grunge hover:opacity-70 z-10">&times;</button>
+    <img id="hero-lightbox-img" src="" alt="Poster fullscreen" class="max-h-[90vh] max-w-[85vw] object-contain" />
+</div>
+
+<script>
+    const btn       = document.getElementById("hero-poster-btn")!;
+    const lightbox  = document.getElementById("hero-lightbox") as HTMLElement;
+    const img       = document.getElementById("hero-lightbox-img") as HTMLImageElement;
+    const closeBtn  = document.getElementById("hero-lightbox-close")!;
+
+    function open() {
+        const src = btn.querySelector("img")?.currentSrc || btn.querySelector("img")?.getAttribute("src") || "";
+        img.src = src;
+        lightbox.style.display = "flex";
+    }
+    function close() { lightbox.style.display = "none"; }
+
+    btn.addEventListener("click", open);
+    closeBtn.addEventListener("click", close);
+    lightbox.addEventListener("click", (e) => { if (e.target === lightbox) close(); });
+    window.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+</script>

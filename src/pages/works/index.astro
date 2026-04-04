@@ -17,16 +17,32 @@ interface PosterEntry {
     image: ImageMetadata;
     filename: string;
     isOutdoor: boolean;
-    venue?: string;
+    venue?: string;    // Greek display name (SSR default)
+    venueKey?: string; // i18n key for client-side translation
 }
 
 const seasonPattern = /^\d{4}-\d{4}$/;
 
-const outdoorDisplayNames: Record<string, string> = {
-    GEORGIADIS: "Georgiadis Park",
-    KARABOLAS:  "Karabolas",
-    VOUTES:     "Voutes",
-    XENIA:      "Xenia",
+const outdoorDisplayNames: Record<string, { en: string; el: string; key: string }> = {
+    GEORGIADIS: { en: "Georgiadis Park", el: "Πάρκο Γεωργιάδη", key: "loc.georgiadis" },
+    KARABOLAS:  { en: "Karabolas",       el: "Καραβολάς",        key: "loc.karabolas"  },
+    VOUTES:     { en: "Voutes",          el: "Βούτες",           key: "loc.voutes"     },
+    XENIA:      { en: "Xenia",           el: "Ξένια",            key: "loc.xenia"      },
+};
+
+// Festival posters — add filenames here to include them under the Festivals tab
+const festivalFilenames: string[] = [];
+
+// BA2037 — separate label / project, edit description and add filenames below
+const ba2037: {
+    description: { el: string; en: string };
+    filenames: string[];
+} = {
+    description: {
+        el: "Περιγραφή της σχέσης BA2037 και Στοά 60 — συμπλήρωσε εδώ.",
+        en: "Description of the relationship between BA2037 and Stoa60 — fill in here.",
+    },
+    filenames: [],
 };
 
 function filenameToSeason(filename: string): string {
@@ -60,7 +76,8 @@ for (const [path, module] of Object.entries(allImages)) {
             image: module.default,
             filename,
             isOutdoor: true,
-            venue: outdoorDisplayNames[folder],
+            venue:    outdoorDisplayNames[folder].el,
+            venueKey: outdoorDisplayNames[folder].key,
         };
         const season = filenameToSeason(filename);
         if (season) {
@@ -87,12 +104,31 @@ const venueOrder = ["GEORGIADIS", "KARABOLAS", "VOUTES", "XENIA"];
 const venues = venueOrder
     .filter(v => venueMap[v])
     .map(v => ({
-        key: v,
-        name: outdoorDisplayNames[v],
+        key:     v,
+        i18nKey: outdoorDisplayNames[v].key,
+        name:    outdoorDisplayNames[v].el,
         posters: venueMap[v].sort((a, b) =>
             b.filename.localeCompare(a.filename, undefined, { numeric: true, sensitivity: "base" })
         ),
     }));
+
+// Collect festival posters from allImages by filename
+const festivalPosters: PosterEntry[] = [];
+for (const [path, module] of Object.entries(allImages)) {
+    const filename = path.split("/").pop()!;
+    if (festivalFilenames.includes(filename)) {
+        festivalPosters.push({ image: module.default, filename, isOutdoor: false });
+    }
+}
+
+// Collect BA2037 posters from allImages by filename
+const ba2037Posters: PosterEntry[] = [];
+for (const [path, module] of Object.entries(allImages)) {
+    const filename = path.split("/").pop()!;
+    if (ba2037.filenames.includes(filename)) {
+        ba2037Posters.push({ image: module.default, filename, isOutdoor: false });
+    }
+}
 
 upcomingPosters.sort((a, b) =>
     a.filename.localeCompare(b.filename, undefined, { numeric: true, sensitivity: "base" })
@@ -116,13 +152,14 @@ upcomingPosters.sort((a, b) =>
 
                 {upcomingPosters.length > 0 && (
                     <button
-                        class="category-tab font-grunge text-base md:text-xl text-left px-2 py-1.5 text-base-900/60 border-l-2 border-transparent select-none"
+                        class="category-tab font-bahnschrift font-bold uppercase text-base md:text-lg text-left px-2 py-1.5 text-base-900/60 border-l-2 border-transparent select-none"
                         data-target="section-upcoming"
-                    >Upcoming</button>
+                        data-i18n="works.upcoming"
+                    >Προσεχώς</button>
                 )}
                 {seasons.map(s => (
                     <button
-                        class="category-tab font-grunge text-base md:text-xl text-left px-2 py-1.5 text-base-900/60 border-l-2 border-transparent select-none"
+                        class="category-tab font-bahnschrift font-bold uppercase text-base md:text-lg text-left px-2 py-1.5 text-base-900/60 border-l-2 border-transparent select-none"
                         data-target={`section-${s.year}`}
                     >{s.year}</button>
                 ))}
@@ -130,25 +167,40 @@ upcomingPosters.sort((a, b) =>
                 {venues.length > 0 && (
                     <>
                         <div class="sidebar-divider border-t border-base-900/20 my-2" />
-                        <span class="font-grunge text-xs text-base-900/30 px-2 uppercase tracking-widest mb-0.5 select-none">Locations</span>
+                        <span class="font-grunge text-xs text-base-900/30 px-2 uppercase tracking-widest mb-0.5 select-none" data-i18n="loc.locations">Τοποθεσίες</span>
                         {venues.map(v => (
                             <button
-                                class="category-tab font-grunge text-base md:text-xl text-left px-2 py-1.5 text-base-900/60 border-l-2 border-transparent select-none"
+                                class="category-tab font-bahnschrift font-bold uppercase text-base md:text-lg text-left px-2 py-1.5 text-base-900/60 border-l-2 border-transparent select-none"
                                 data-target={`section-venue-${v.key.toLowerCase()}`}
+                                data-i18n={v.i18nKey}
                             >{v.name}</button>
                         ))}
                     </>
                 )}
 
-                <!-- Print archive link at bottom of sidebar -->
-                <div class="border-t border-base-900/20 mt-auto pt-4">
-                    <a
-                        href="https://drive.google.com/drive/folders/1nie729Boi20WuEhENw9cHMDtSr02pK-M?usp=sharing"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="font-grunge text-xs text-base-900/30 px-2 uppercase tracking-widest hover:text-base-900/60 transition-colors leading-tight block"
-                    >For Print</a>
-                </div>
+                <div class="sidebar-divider border-t border-base-900/20 my-2" />
+                <button
+                    class="category-tab font-bahnschrift font-bold uppercase text-base md:text-lg text-left px-2 py-1.5 text-base-900/60 border-l-2 border-transparent select-none"
+                    data-target="section-festivals"
+                    data-i18n="loc.festivals"
+                >Φεστιβάλ</button>
+
+                <!-- BA2037 tab -->
+                <div class="sidebar-divider border-t border-base-900/20 my-2" />
+                <button
+                    class="category-tab font-bahnschrift font-bold uppercase text-base md:text-lg text-left px-2 py-1.5 text-base-900/60 border-l-2 border-transparent select-none"
+                    data-target="section-ba2037"
+                >BA2037</button>
+
+                <!-- Print archive tab -->
+                <div class="sidebar-divider border-t border-base-900/20 my-2" />
+                <a
+                    href="https://drive.google.com/drive/folders/1nie729Boi20WuEhENw9cHMDtSr02pK-M?usp=sharing"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="font-bahnschrift font-bold uppercase text-base md:text-lg text-left px-2 py-1.5 text-base-900/50 border border-dashed border-base-900/20 bg-base-900/10 hover:bg-base-900/25 hover:border-base-900/40 transition-colors leading-tight block select-none"
+                data-i18n="works.for_print"
+                >Για τύπωμα</a>
 
             </div>
 
@@ -157,12 +209,11 @@ upcomingPosters.sort((a, b) =>
 
                 <!-- Nav aligned with poster grid -->
                 <nav class="flex flex-wrap gap-4 md:gap-8 justify-start items-center pt-2">
+                    <Heading tagName="h1" tagSize="h3" data-i18n="works.title">Posters</Heading>
                     <a href="/" class="text-base-900 font-grunge text-2xl md:text-3xl underline underline-offset-4 decoration-2 hover:text-base-700" data-i18n="nav.home">Home</a>
                     <a href="/about" class="text-base-900 font-grunge text-2xl md:text-3xl underline underline-offset-4 decoration-2 hover:text-base-700" data-i18n="nav.about">About</a>
                     <LanguageToggle />
                 </nav>
-
-                <Heading tagName="h1" tagSize="h3" class="text-left mt-2" data-i18n="works.title">Posters</Heading>
 
                 <!-- Poster sections (shown/hidden by tab) -->
                 {upcomingPosters.length > 0 && (
@@ -187,33 +238,67 @@ upcomingPosters.sort((a, b) =>
                         <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full">
                             {s.posters.map(p => (
                                 <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
-                                    {p.isOutdoor && p.venue && (
-                                        <span class="font-bahnschrift text-base text-base-900/40 mb-1 uppercase tracking-wider text-center">{p.venue}</span>
-                                    )}
                                     <Image
                                         src={p.image}
                                         alt={`Poster ${s.year}`}
                                         class="w-full h-auto object-contain hover:opacity-80 transition-opacity"
                                         loading="lazy"
                                     />
+                                    {p.isOutdoor && p.venue && (
+                                        <span class="font-bahnschrift text-base text-base-900/40 mt-1 uppercase tracking-wider text-center" data-i18n={p.venueKey}>{p.venue}</span>
+                                    )}
                                 </div>
                             ))}
                         </div>
                     </div>
                 ))}
 
+                <div id="section-festivals" class="poster-section hidden">
+                    <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full">
+                        {festivalPosters.map(p => (
+                            <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
+                                <Image
+                                    src={p.image}
+                                    alt="Festival poster"
+                                    class="w-full h-auto object-contain hover:opacity-80 transition-opacity"
+                                    loading="lazy"
+                                />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <!-- BA2037 section -->
+                <div id="section-ba2037" class="poster-section hidden flex flex-col gap-4">
+                    <p class="font-bahnschrift text-sm text-base-900/60 leading-relaxed max-w-prose" data-i18n="ba2037.description">{ba2037.description.el}</p>
+                    {ba2037Posters.length > 0 && (
+                        <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full">
+                            {ba2037Posters.map(p => (
+                                <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
+                                    <Image
+                                        src={p.image}
+                                        alt="BA2037 poster"
+                                        class="w-full h-auto object-contain hover:opacity-80 transition-opacity"
+                                        loading="lazy"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
                 {venues.map(v => (
                     <div id={`section-venue-${v.key.toLowerCase()}`} class="poster-section hidden">
                         <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full">
                             {v.posters.map(p => (
                                 <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
-                                    <span class="font-bahnschrift text-base text-base-900/40 mb-1 uppercase tracking-wider text-center">{p.filename.slice(0, 10)}</span>
                                     <Image
                                         src={p.image}
                                         alt={`Poster from ${v.name}`}
                                         class="w-full h-auto object-contain hover:opacity-80 transition-opacity"
                                         loading="lazy"
                                     />
+                                    <span class="font-bahnschrift text-base text-base-900/40 mt-1 uppercase tracking-wider text-center">{p.filename.slice(0, 10)}</span>
                                 </div>
                             ))}
                         </div>

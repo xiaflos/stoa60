@@ -8,8 +8,8 @@ export const translations: Record<string, Record<Lang, string>> = {
 
   // ─── Hero (Home) ───
   "hero.title":       { el: "STOA60", en: "STOA60" },
-  "hero.subtitle1":   { el: "underground venue in Iraqlion,", en: "underground venue in Iraqlion," },
-  "hero.subtitle2":   { el: "10 years, few hundred gigs and counting.", en: "10 years, few hundred gigs and counting." },
+  "hero.subtitle1":   { el: "υπόγειος συναυλιακός χώρος στο Ηράκλειο,", en: "DIY underground venue in Iraqlion," },
+  "hero.subtitle2":   { el: "10 χρόνια λάϊβ, να τα εκατοστήσουμε.", en: "10 years, few hundred gigs and counting." },
   "hero.nextgig":     { el: "next gig", en: "next gig" },
   "hero.newsletter":  { el: "gig mail alert", en: "gig mail alert" },
   "hero.placeholder": { el: "your@email.com", en: "your@email.com" },
@@ -24,7 +24,24 @@ export const translations: Record<string, Record<Lang, string>> = {
   "cal.april": { el: "Απρίλιος", en: "April" },
   "cal.may":   { el: "Μάιος",    en: "May"   },
 
+  // ─── Locations (Posters page) ───
+  "loc.locations":  { el: "Τοποθεσίες",      en: "Locations"       },
+  "loc.georgiadis": { el: "Πάρκο Γεωργιάδη", en: "Georgiadis Park" },
+  "loc.karabolas":  { el: "Καραβολάς",        en: "Karabolas"       },
+  "loc.voutes":     { el: "Βούτες",           en: "Voutes"          },
+  "loc.xenia":      { el: "Ξένια",            en: "Xenia"           },
+
+  // ─── Festivals (Posters page) ───
+  "loc.festivals": { el: "Φεστιβάλ", en: "Festivals" },
+  // ─── BA2037 ───
+  "ba2037.description": {
+    el: "Περιγραφή της σχέσης BA2037 και Στοά 60 — συμπλήρωσε εδώ.",
+    en: "Description of the relationship between BA2037 and Stoa60 — fill in here.",
+  },
+
   // ─── Works / Posters ───
+  "works.upcoming":   { el: "Προσεχώς",     en: "Upcoming"   },
+  "works.for_print":  { el: "Για τύπωμα",   en: "For Print"  },
   "works.title":      { el: "Posters", en: "Posters" },
   "works.print_link": { el: "ΑΡΧΕΙΑ ΑΦΙΣΩΝ ΠΡΟΣ ΕΚΤΥΠΩΣΗ", en: "Posters in high quality for printing" },
   "works.poster_alt": { el: "Αφίσα από", en: "Poster from" },
