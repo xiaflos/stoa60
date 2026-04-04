@@ -186,16 +186,16 @@ upcomingPosters.sort((a, b) =>
                     <div id={`section-${s.year}`} class="poster-section hidden">
                         <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full">
                             {s.posters.map(p => (
-                                <div class="w-full cursor-pointer poster-thumb flex flex-col items-center justify-end">
-                                    {p.isOutdoor && p.venue && (
-                                        <span class="font-bahnschrift text-base text-base-900/40 mb-1 uppercase tracking-wider text-center">{p.venue}</span>
-                                    )}
+                                <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
                                     <Image
                                         src={p.image}
                                         alt={`Poster ${s.year}`}
                                         class="w-full h-auto object-contain hover:opacity-80 transition-opacity"
                                         loading="lazy"
                                     />
+                                    {p.isOutdoor && p.venue && (
+                                        <span class="font-bahnschrift text-base text-base-900/40 mt-1 uppercase tracking-wider text-center">{p.venue}</span>
+                                    )}
                                 </div>
                             ))}
                         </div>
@@ -207,13 +207,13 @@ upcomingPosters.sort((a, b) =>
                         <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full">
                             {v.posters.map(p => (
                                 <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
-                                    <span class="font-bahnschrift text-base text-base-900/40 mb-1 uppercase tracking-wider text-center">{p.filename.slice(0, 10)}</span>
                                     <Image
                                         src={p.image}
                                         alt={`Poster from ${v.name}`}
                                         class="w-full h-auto object-contain hover:opacity-80 transition-opacity"
                                         loading="lazy"
                                     />
+                                    <span class="font-bahnschrift text-base text-base-900/40 mt-1 uppercase tracking-wider text-center">{p.filename.slice(0, 10)}</span>
                                 </div>
                             ))}
                         </div>
