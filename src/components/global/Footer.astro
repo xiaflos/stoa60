@@ -4,13 +4,14 @@ import Container from "../elements/Container.astro";
 
 interface Props {
     alignRight?: boolean;
+    innerClass?: string;
 }
 
-const { alignRight = false } = Astro.props;
+const { alignRight = false, innerClass = "" } = Astro.props;
 ---
 
 <Container variant={'xl'} class="pt-4 pb-4">
-    <div class:list={["flex flex-wrap items-center justify-center md:justify-start gap-6 md:gap-8 font-grunge text-xl text-base-900", alignRight && "md:pl-[50%]"]}>
+    <div class:list={["flex flex-wrap items-center justify-center md:justify-start gap-6 md:gap-8 font-grunge text-xl text-base-900", alignRight && "md:pl-[50%]", innerClass]}>
         <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer" class="hover:underline">CC BY 4.0</a>
         <span><span data-i18n="footer.contact">Contact:</span> <a href="mailto:stoa60da@riseup.net" class="hover:underline">stoa60da@riseup.net</a></span>
         <a href="https://www.facebook.com/stoa60" target="_blank" rel="noopener noreferrer" class="hover:opacity-70">

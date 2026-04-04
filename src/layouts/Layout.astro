@@ -15,7 +15,7 @@ import { getImage } from "astro:assets";
 const backgroundImage = await getImage({src: bg, format:'jpg'})
 
 // props
-const { title, footerAlignRight = false } = Astro.props;
+const { title, footerAlignRight = false, footerInnerClass = "" } = Astro.props;
 ---
 
 <!doctype html>
@@ -29,7 +29,7 @@ const { title, footerAlignRight = false } = Astro.props;
 			<main class="flex flex-col">
 				<slot />
 			</main>
-			<Footer alignRight={footerAlignRight} />
+			<Footer alignRight={footerAlignRight} innerClass={footerInnerClass} />
 		</Wrapper>
 	</body>
 </html>
