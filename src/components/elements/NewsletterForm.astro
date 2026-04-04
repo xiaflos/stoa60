@@ -1,0 +1,23 @@
+---
+import Text from "./Text.astro";
+---
+
+<div class="w-full">
+    <Text variant={'sm'} class="text-base-900 mb-2 font-grunge text-center" data-i18n="hero.newsletter">gig mail alert</Text>
+    <form class="flex gap-2">
+        <input
+            type="email"
+            placeholder="your@email.com"
+            required
+            data-i18n-placeholder="hero.placeholder"
+            class="min-w-0 flex-1 px-4 py-2 border-2 border-base-900 bg-transparent text-base-900 font-mono placeholder:text-base-700 focus:outline-none focus:ring-2 focus:ring-base-900"
+        />
+        <button
+            type="submit"
+            class="px-4 py-2 bg-base-900 text-base-100 font-grunge text-xl hover:opacity-80 transition-opacity whitespace-nowrap"
+            data-i18n="hero.subscribe"
+        >
+            Subscribe
+        </button>
+    </form>
+</div>

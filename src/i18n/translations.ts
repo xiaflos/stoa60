@@ -18,14 +18,16 @@ export const translations: Record<string, Record<Lang, string>> = {
   // ─── About ───
   "about.title":     { el: "about", en: "about" },
   "about.intro":     { el: "Η Στοα 60 είναι μία ομάδα που διοργανώνει συναυλίες σχεδόν εβδομαδιαία από το 2015, σε ένα υπόγειο στο κέντρο του Ηρακλείου Κρήτης.", en: "Stoa 60 is a DIY underground venue in the center of Heraklion (Crete) that has operated nearly every Saturday since 2015, organizing over 250 gigs during this span." },
-  "about.manifesto": { el: "Η ομάδα λειτουργεί οριζόντια στη λογική του DIY προσπαθώντας να ελαχιστοποιήσει τις εμπορικές συναλλαγές σε όλες τις διαδικασίες της. Τα έσοδα του χώρου προέρχονται από το κουτί ενίσχυσης και την ελεύθερη ενίσχυση στο Bar και διατίθενται αποκλειστικά για την κάλυψη των λειτουργικών εξόδων (ρεύμα, ενοίκιο) τη συντήρηση της υποδομής και των μεταφορικών εξόδων των μπαντών. Φιλοξενούμε σχήματα της ανεξάρτητης μουσικής σκηνής και επιλέγουμε να λειτουργούμε εκτός της λογικής του κέρδους και της σύγχρονης βιομηχανίας του θεάματος. Στόχος είναι να προκύπτει ένα περιβάλλον χωρίς διαχωρισμούς μεταξύ μουσικών-κοινού-διοργανωτών και να δίνεται χώρος σε αισθητικές που δεν χωράνε στους μοντέρνους χώρους ψυχαγωγίας. Βλέπουμε την μουσική σαν ένα μέσο έκφρασης, διάδοσης ιδεών και πάνω απ'όλα σαν μια αφορμή κοινωνικοποίησης, αλληλεπίδρασης και συνδιαμόρφωσης.", en: "We instill a hands-on DIY ethic in an attempt to minimize transactions and maintain high quality concerts while relying on voluntary contributions. Suggested prices at the bar are kept at a minimum and reflect actual costs: equipment, rent, electricity, and most critically band transportation from the mainland. Any surplus goes directly back into improving infrastructure or supporting other initiatives. Our sustainability depends on collective participation between organizers, musicians, and the audience. By decommodifying all aspects of a gig, we've created a genuinely accessible independent space, and we channel live music as means for social mobilization. We host artists that would be considered part of the independent music scene, and we stand critical towards the modern entertainment industry. Stoa60 is the space for all who don't belong, transforming every week to accommodate a large diversity of aesthetics and cultures." },
+  "about.manifesto": { el: "Η ομάδα λειτουργεί οριζόντια στη λογική του DIY προσπαθώντας να ελαχιστοποιήσει τις εμπορικές συναλλαγές σε όλες τις διαδικασίες της. Τα έσοδα του χώρου προέρχονται από το κουτί ενίσχυσης και την ελεύθερη συνεισφορά στο Bar και διατίθενται αποκλειστικά για την κάλυψη των λειτουργικών εξόδων (ρεύμα, ενοίκιο) τη συντήρηση της υποδομής και των μεταφορικών εξόδων των μπαντών. Φιλοξενούμε σχήματα της ανεξάρτητης μουσικής σκηνής, καλύπτοντας ένα μεγάλο εύρος αισθητικής και ήχου και φιλοδοξούμε σε ένα περιβάλλον χωρίς διαχωρισμούς μεταξύ μουσικών-κοινού-διοργανωτών. Βλέπουμε την μουσική σαν ένα μέσο έκφρασης, διάδοσης ιδεών και πάνω απ'όλα σαν μια αφορμή κοινωνικοποίησης, αλληλεπίδρασης και συνδιαμόρφωσης.", en: "We instill a hands-on DIY ethic in an attempt to minimize transactions and maintain high quality concerts while relying on voluntary contributions. Suggested prices at the bar are kept at a minimum and reflect actual costs: equipment, rent, electricity, and most critically band transportation from the mainland. Any surplus goes directly back into improving infrastructure or supporting other initiatives. Our sustainability depends on collective participation between organizers, musicians, and the audience. By decommodifying all aspects of a gig, we've created a genuinely accessible independent space, and we channel live music as means for social mobilization. We host artists that would be considered part of the independent music scene, and we stand critical towards the modern entertainment industry. Stoa60 is the space for all who don't belong, transforming every week to accommodate a large diversity of aesthetics and cultures." },
 
   // ─── Gig Calendar ───
   "cal.april": { el: "Απρίλιος", en: "April" },
   "cal.may":   { el: "Μάιος",    en: "May"   },
 
   // ─── Locations (Posters page) ───
-  "loc.locations":  { el: "Τοποθεσίες",      en: "Locations"       },
+  "loc.seasons":    { el: "Σεζόν",            en: "Season"          },
+  "loc.locations":  { el: "Τοποθεσία",        en: "Location"        },
+  "loc.underground":{ el: "Underground",      en: "Underground"     },
   "loc.georgiadis": { el: "Πάρκο Γεωργιάδη", en: "Georgiadis Park" },
   "loc.karabolas":  { el: "Καραβολάς",        en: "Karabolas"       },
   "loc.voutes":     { el: "Βούτες",           en: "Voutes"          },
@@ -35,16 +37,15 @@ export const translations: Record<string, Record<Lang, string>> = {
   "loc.festivals": { el: "Φεστιβάλ", en: "Festivals" },
   // ─── BA2037 ───
   "ba2037.description": {
-    el: "Περιγραφή της σχέσης BA2037 και Στοά 60 — συμπλήρωσε εδώ.",
-    en: "Description of the relationship between BA2037 and Stoa60 — fill in here.",
+    el: "Η ΒΑ2037 είχε κάποια κοινά μέλη με τη στοά60, επικεντρωνόταν στον ηλεκτρονικό και πειραματικό ήχο και οργάνωσε συναυλίες τόσο εντός όσο και εκτός στοάς.",
+    en: "BA2037 was a separate entity that focused on organising experimental and electronic gigs inside Stoa60 as well as in a variety of public locations.",
   },
 
   // ─── Works / Posters ───
   "works.upcoming":   { el: "Προσεχώς",     en: "Upcoming"   },
   "works.for_print":  { el: "Για τύπωμα",   en: "For Print"  },
-  "works.title":      { el: "Posters", en: "Posters" },
-  "works.print_link": { el: "ΑΡΧΕΙΑ ΑΦΙΣΩΝ ΠΡΟΣ ΕΚΤΥΠΩΣΗ", en: "Posters in high quality for printing" },
-  "works.poster_alt": { el: "Αφίσα από", en: "Poster from" },
+  "works.bar":        { el: "Bar",          en: "Bar"        },
+  "works.title":      { el: "Posters",      en: "Posters"    },
 
   // ─── Footer ───
   "footer.contact": { el: "Contact:", en: "Contact:" },
