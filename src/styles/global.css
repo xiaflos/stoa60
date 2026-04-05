@@ -58,6 +58,11 @@
     --breakpoint-xl: 1440px;
 }
 
+/* Match page background to prevent white flash on mobile overscroll */
+html {
+    background-color: var(--color-base-100);
+}
+
 /* Hide scrollbar while keeping scroll functionality */
 .scrollbar-none {
     scrollbar-width: none;        /* Firefox */
