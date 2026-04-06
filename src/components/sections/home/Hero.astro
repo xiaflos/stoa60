@@ -45,10 +45,10 @@ for (const gig of visibleGigs) {
 }
 ---
 
-<Container variant={"xl"} class="grid md:grid-cols-2 py-2 !gap-0 md:h-[calc(100vh-5rem)] md:max-h-[calc(100vh-5rem)] md:overflow-hidden md:[grid-template-rows:auto_1fr]">
+<Container variant={"xl"} class="grid grid-cols-1 md:grid-cols-2 py-2 !gap-0 overflow-x-hidden md:overflow-y-auto md:h-[calc(100vh-5rem)] md:max-h-[calc(100vh-5rem)] md:[grid-template-rows:auto_1fr]">
 
     <!-- 1. Title + nav + subtitles (mobile: top / desktop: right col top) -->
-    <div class="md:col-start-2 md:row-start-1 flex flex-col md:pt-5 md:pb-8">
+    <div class="md:col-start-2 md:row-start-1 flex flex-col md:pt-5 md:pb-8 min-w-0">
 
         <!-- STOA60 + Nav: stacked on mobile, inline on desktop -->
         <div class="flex flex-col md:flex-row md:flex-wrap md:gap-8 md:items-baseline md:justify-start text-base-900 md:mt-5 lg:mt-7 items-center gap-1">
@@ -62,14 +62,15 @@ for (const gig of visibleGigs) {
 
         <!-- Subtitles -->
         <div class="text-base-900 flex flex-col gap-1 items-center md:items-start text-center md:text-left mt-4">
-            <Text variant={'xl'} class="!text-base md:!text-lg !font-bahnschrift font-bold uppercase" data-i18n="hero.subtitle1">υπόγειος DIY συναυλιακός χώρος στο Ηράκλειο,</Text>
-            <Text variant={'xl'} class="!text-base md:!text-lg !font-bahnschrift font-bold uppercase" data-i18n="hero.subtitle2">10 χρόνια λάϊβ.</Text>
+            <Text variant={'xl'} class="!text-base md:!text-lg !font-bahnschrift font-bold uppercase" data-i18n="hero.subtitle1">υπόγειος συναυλιακός χώρος στο Ηράκλειο,</Text>
+            <Text variant={'xl'} class="!text-base md:!text-lg !font-bahnschrift font-bold uppercase" data-i18n="hero.subtitle2">Στηρίζουμε το κουτί. Σεβόμαστε τη γειτονιά.</Text>
+            <Text variant={'xl'} class="!text-base md:!text-lg !font-bahnschrift font-bold uppercase" data-i18n="hero.subtitle3">10 χρόνια λάϊβ.</Text>
         </div>
 
     </div>
 
     <!-- 2. Poster + newsletter (mobile: middle / desktop: left col spanning both rows) -->
-    <div class="md:col-start-1 md:row-start-1 md:row-span-2 flex items-start justify-center mt-6 md:mt-0 md:pt-14 lg:pt-16">
+    <div class="md:col-start-1 md:row-start-1 md:row-span-2 flex items-start justify-center mt-6 md:mt-0 md:pt-14 lg:pt-16 min-w-0">
         <div class="w-full max-w-[19rem] lg:max-w-[23rem] flex flex-col">
             <!-- "next gig" above poster frame — mobile only -->
             <span class="md:hidden block text-center font-grunge text-base-900 text-xl tracking-widest uppercase mb-2 select-none" data-i18n="hero.nextgig">next gig</span>
@@ -78,21 +79,22 @@ for (const gig of visibleGigs) {
                 <div class="hidden md:flex items-start justify-center shrink-0 self-stretch pt-1">
                     <span class="font-grunge text-base-900 text-xl tracking-widest uppercase [writing-mode:vertical-rl] rotate-180 select-none" data-i18n="hero.nextgig">next gig</span>
                 </div>
-                <!-- Poster -->
-                <button id="hero-poster-btn" class="flex-1 cursor-pointer hover:opacity-80 transition-opacity" aria-label="View poster fullscreen">
-                    <ImageContainer src={stolensimadi} alt="Upcoming gig poster" />
-                </button>
-            </div>
-
-            <!-- Newsletter: below poster on desktop only -->
-            <div class="hidden md:block mt-4">
-                <NewsletterForm />
+                <!-- Poster + desktop newsletter aligned together -->
+                <div class="flex-1 flex flex-col">
+                    <button id="hero-poster-btn" class="cursor-pointer hover:opacity-80 transition-opacity" aria-label="View poster fullscreen">
+                        <ImageContainer src={stolensimadi} alt="Upcoming gig poster" />
+                    </button>
+                    <!-- Newsletter: below poster on desktop only -->
+                    <div class="hidden md:block mt-4">
+                        <NewsletterForm />
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- 3. Calendar (mobile: below poster / desktop: right col bottom) -->
-    <div class="md:col-start-2 md:row-start-2 overflow-y-auto mt-6 md:mt-0 scrollbar-none md:min-h-0 [mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)] md:[mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)] flex flex-col items-center md:items-start" role="region" aria-label="Upcoming gigs">
+    <div class="md:col-start-2 md:row-start-2 overflow-y-auto mt-6 md:mt-0 scrollbar-none md:min-h-0 [mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)] md:[mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)] flex flex-col items-center md:items-start min-w-0" role="region" aria-label="Upcoming gigs">
         {gigsByMonth.map(({ monthKey, gigs }) => (
             <div class="mb-4 w-full max-w-xs md:max-w-none">
                 <!-- Month label -->
@@ -119,9 +121,12 @@ for (const gig of visibleGigs) {
         ))}
     </div>
 
+
     <!-- Newsletter: mobile only, shown at bottom -->
-    <div class="md:hidden mt-6">
-        <NewsletterForm />
+    <div class="md:hidden mt-6 mb-16 min-w-0 flex justify-center">
+        <div class="w-full max-w-[19rem]">
+            <NewsletterForm />
+        </div>
     </div>
 
 </Container>

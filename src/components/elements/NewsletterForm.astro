@@ -2,11 +2,24 @@
 import Text from "./Text.astro";
 ---
 
-<div class="w-full">
+<div class="w-full" id="newsletter-wrapper">
     <Text variant={'sm'} class="text-base-900 mb-2 font-grunge text-center" data-i18n="hero.newsletter">gig mail alert</Text>
-    <form class="flex gap-2">
+    <form
+        name="newsletter"
+        method="POST"
+        data-netlify="true"
+        data-netlify-honeypot="bot-field"
+        id="newsletter-form"
+        class="flex gap-2"
+    >
+        <!-- Netlify requires this hidden field for static site forms -->
+        <input type="hidden" name="form-name" value="newsletter" />
+        <!-- Honeypot field — hidden from real users, catches bots -->
+        <p class="hidden"><input name="bot-field" /></p>
+
         <input
             type="email"
+            name="email"
             placeholder="your@email.com"
             required
             data-i18n-placeholder="hero.placeholder"
@@ -21,3 +34,37 @@ import Text from "./Text.astro";
         </button>
     </form>
 </div>
+
+<script>
+    import { getLang, applyTranslations } from "../../i18n/i18n";
+
+    const form = document.getElementById("newsletter-form") as HTMLFormElement;
+    const wrapper = document.getElementById("newsletter-wrapper") as HTMLElement;
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const btn = form.querySelector("button") as HTMLButtonElement;
+        btn.disabled = true;
+        btn.textContent = "...";
+
+        try {
+            const body = new URLSearchParams(new FormData(form) as any).toString();
+            const res = await fetch("/", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body,
+            });
+
+            if (res.ok) {
+                wrapper.innerHTML = `<p class="text-base-900 font-grunge text-center text-xl" data-i18n="hero.subscribed">You'll be notified in the next few days.</p>`;
+                applyTranslations(getLang());
+            } else {
+                btn.disabled = false;
+                btn.textContent = "Retry";
+            }
+        } catch {
+            btn.disabled = false;
+            btn.textContent = "Retry";
+        }
+    });
+</script>
