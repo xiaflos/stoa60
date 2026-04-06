@@ -8,9 +8,9 @@ export const translations: Record<string, Record<Lang, string>> = {
 
   // ─── Hero (Home) ───
   "hero.title":       { el: "STOA60", en: "STOA60" },
-  "hero.subtitle1":   { el: "υπόγειος συναυλιακός χώρος στο Ηράκλειο,", en: "underground venue in Heraklion," },
+  "hero.subtitle1":   { el: "υπόγειος συναυλιακός χώρος στο Ηράκλειο,", en: "DIY underground venue in Iraqlion," },
   "hero.subtitle2":   { el: "Στηρίζουμε το κουτί. Σεβόμαστε τη γειτονιά.", en: "We support the scene. We respect the neighborhood." },
-  "hero.subtitle3":   { el: "10 χρόνια λάϊβ.", en: "10 years of live music." },
+  "hero.subtitle3":   { el: "10 χρόνια λάϊβ.", en: "10 years, few hundred gigs and counting." },
   "hero.nextgig":     { el: "next gig", en: "next gig" },
   "hero.newsletter":  { el: "gig mail alert", en: "gig mail alert" },
   "hero.placeholder": { el: "your@email.com", en: "your@email.com" },
