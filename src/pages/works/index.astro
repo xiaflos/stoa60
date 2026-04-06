@@ -275,7 +275,7 @@ upcomingPosters.sort((a, b) =>
 
                 {seasons.map(s => (
                     <div id={`section-${s.year}`} class="poster-section hidden">
-                        <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full">
+                        <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end">
                             {s.posters.map(p => (
                                 <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
                                     <Image
@@ -295,7 +295,7 @@ upcomingPosters.sort((a, b) =>
 
                 <!-- Underground section -->
                 <div id="section-venue-underground" class="poster-section hidden">
-                    <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full">
+                    <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end">
                         {undergroundPosters.map(p => (
                             <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
                                 {filenameToDate(p.filename) && (
@@ -313,7 +313,7 @@ upcomingPosters.sort((a, b) =>
                 </div>
 
                 <div id="section-festivals" class="poster-section hidden">
-                    <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full">
+                    <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end">
                         {festivalPosters.map(p => (
                             <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
                                 {filenameToDate(p.filename) && (
@@ -334,7 +334,7 @@ upcomingPosters.sort((a, b) =>
                 <div id="section-ba2037" class="poster-section hidden flex flex-col gap-4">
                     <p class="font-bahnschrift text-sm text-base-900/60 leading-relaxed max-w-prose" data-i18n="ba2037.description">{ba2037Description.el}</p>
                     {ba2037Posters.length > 0 && (
-                        <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full">
+                        <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end">
                             {ba2037Posters.map(p => (
                                 <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
                                     {filenameToDate(p.filename) && (
@@ -354,7 +354,7 @@ upcomingPosters.sort((a, b) =>
 
                 <!-- Bar section -->
                 <div id="section-bar" class="poster-section hidden">
-                    <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full">
+                    <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end">
                         {barPosters.map(p => (
                             <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
                                 {filenameToDate(p.filename) && (
@@ -373,7 +373,7 @@ upcomingPosters.sort((a, b) =>
 
                 {venues.map(v => (
                     <div id={`section-venue-${v.key.toLowerCase()}`} class="poster-section hidden">
-                        <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full">
+                        <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end">
                             {v.posters.map(p => (
                                 <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
                                     <Image
