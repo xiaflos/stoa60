@@ -12,5 +12,5 @@ export default defineConfig({
   },
 
   integrations: [sitemap()],
-  site: "https://grunge.pages.dev"
+  site: "https://stoa60.net"
 });

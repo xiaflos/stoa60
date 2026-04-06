@@ -1,17 +1,25 @@
 ---
-const { pageTitle } = Astro.props;
-const siteUrl = "https://stoa60.net";
+interface Props {
+	pageTitle: string;
+	pageDescription?: string;
+}
+
+const { pageTitle, pageDescription } = Astro.props;
+const siteUrl = Astro.site?.origin ?? "https://stoa60.net";
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
 const thumbnail = `${siteUrl}/og-image.jpg`;
-const description = "STOA60 - Underground gigspace in Iraklion, Crete. 10+ years, hundreds of gigs.";
+const description = pageDescription ?? "STOA60 - Underground gigspace in Iraklion, Crete. 10+ years, hundreds of gigs.";
 ---
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta name="description" content={description}>
+	<meta name="description" content={description} />
 	<meta name="generator" content={Astro.generator} />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 	<meta name="robots" content="index, follow" />
 	<meta name="googlebot" content="index, follow" />
+
+	<!-- Canonical -->
+	<link rel="canonical" href={canonicalUrl} />
 
 	<!-- Open Graph -->
 	<meta property="og:type" content="website" />
@@ -22,7 +30,7 @@ const description = "STOA60 - Underground gigspace in Iraklion, Crete. 10+ years
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="630" />
 	<meta property="og:image:type" content="image/jpeg" />
-	<meta property="og:url" content={siteUrl} />
+	<meta property="og:url" content={canonicalUrl} />
 
 	<!-- Twitter Card -->
 	<meta name="twitter:card" content="summary_large_image" />
