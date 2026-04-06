@@ -3,8 +3,8 @@ export type Lang = "el" | "en";
 export const translations: Record<string, Record<Lang, string>> = {
   // ─── Navigation ───
   "nav.home":     { el: "Home", en: "Home" },
-  "nav.posters":  { el: "Posters", en: "Posters" },
-  "nav.about":    { el: "About", en: "About" },
+  "nav.posters":  { el: "ΑΦΙΣΕΣ", en: "Posters" },
+  "nav.about":    { el: "ΣΧΕΤΙΚΑ", en: "About" },
 
   // ─── Hero (Home) ───
   "hero.title":       { el: "STOA60", en: "STOA60" },
