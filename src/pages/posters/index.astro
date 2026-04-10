@@ -33,10 +33,13 @@ const outdoorDisplayNames: Record<string, { en: string; el: string; key: string 
 // Festival posters — auto-detected by _fest suffix in filename (before extension)
 
 // BA2037 description (posters auto-loaded from BA2037 folder)
-const ba2037Description = {
-    el: `Η ΒΑ2037 είχε κάποια κοινά μέλη με τη στοά60, επικεντρωνόταν στον ηλεκτρονικό και πειραματικό ήχο και οργάνωσε συναυλίες τόσο εντός όσο και εκτός στοάς.
+const ba2037Intro = {
+    el: "Η ΒΑ2037 λειτούργησε από τα τέλη του '18 μέχρι περίπου το 2021, υπήρξε οργανικό κομμάτι της στοάς60 με αρκετά κοινά μέλη και επικεντρωνόταν στον ηλεκτρονικό και πειραματικό ήχο. Ακολουθεί το αυτοπαρουσιαστικό της κείμενο.",
+    en: "BA2037 was active from late 2018 until roughly 2022. An integral part of Stoa60 with several shared members, focused on electronic and experimental sound. This is how they introduced themselves back in the day.",
+};
 
-Η ομάδα αποτελείται από μουσικούς, μουσικόφιλους και Djs με κοινή επιθυμία να βρούμε χώρο και χρόνο στο Ηράκλειο να ακούσουμε /παίξουμε / χορέψουμε / αναπαράγουμε τη μουσική που γουστάρουμε. Κινούμαστε στον ωκεανό της ηλεκτρονικής και πειραματικής μουσικής και θα θελαμε να προσεγγίσουμε τα βάθη της.
+const ba2037Quote = {
+    el: `Η ομάδα αποτελείται από μουσικούς, μουσικόφιλους και Djs με κοινή επιθυμία να βρούμε χώρο και χρόνο στο Ηράκλειο να ακούσουμε /παίξουμε / χορέψουμε / αναπαράγουμε τη μουσική που γουστάρουμε. Κινούμαστε στον ωκεανό της ηλεκτρονικής και πειραματικής μουσικής και θα θελαμε να προσεγγίσουμε τα βάθη της.
 
 Επιδιώκουμε να δώσουμε χώρο σε μουσική η οποία δεν ακούγεται σε μέρη που συχνά διασκεδάζουμε, δεν προωθείται από την κυρίαρχη μουσική βιομηχανία και πολλές φορές ειναι αποτελεσμα αυτοσχεδιασμού και πειραματισμού. Σκοπεύουμε στην ανάδειξη και ανακάλυψη διαφόρων και διαφορετικών αισθήσεων, αισθητικών, τρόπων απόλαυσης και επικοινωνίας, τρόπων δημιουργίας και έκφρασης γύρω από την ηλεκτρονική και πειραματική μουσική.
 
@@ -47,9 +50,7 @@ const ba2037Description = {
 Έχουμε ανάγκη να διαμορφώσουμε εκείνες τις συνθήκες μέσα στις οποίες κάθε άτομο θα μπορέσει να απολαύσει την μουσική, να εκφραστεί όπως νιώθει και κάθε σώμα θα έχει ίση ευκαιρία να διεκδικήσει το χώρο ανάμεσα στα άλλα χωρίς να περιορίζεται και να περιορίζει. Θα θέλαμε οι συναντήσεις που διοργανώνουμε εμείς να αποτελούν ασφαλείς χώρους για όλα τα άτομα και έτσι ομοφοβικές, εξουσιαστικές, τρανσφοβικές, σεξιστικές, ρατσιστικές και άλλες συμπεριφορές έκφρασης μίσους που επιβάλλονται βίαια πάνω σε αυτονόητες ελευθερίες, δεν είναι ανεκτές.
 
 See you on the dancefloor`,
-    en: `BA2037 was a separate entity that focused on organising experimental and electronic gigs inside Stoa60 as well as in a variety of public locations.
-
-The project consists of people that are interested in music, musicians and Djs with common desire to find space and time in order to listen/play/dance/(re) produce the music that we enjoy. We find ourselves somewhere in the ocean of electronic and experimental music and we would like to access the very depths of it.
+    en: `The project consists of people that are interested in music, musicians and Djs with common desire to find space and time in order to listen/play/dance/(re) produce the music that we enjoy. We find ourselves somewhere in the ocean of electronic and experimental music and we would like to access the very depths of it.
 
 We want to create room to music that does not exist to places that we usually get entertained, music that is not being promoted by the main music industry and music that, from time to time, is a result of our improvisation and experimentation. We are targeting to the prominence and discovery of different kinds of consciousness, feelings, ways of joy and communication, ways of creation and expression that are being surrounded by the electronic and experimental music.
 
@@ -185,10 +186,10 @@ upcomingPosters.sort((a, b) =>
 );
 ---
 
-<Layout title="Posters" footerInnerClass="md:pl-44">
+<Layout title="Posters" footerInnerClass="md:pl-44" tileBgOnMobile={true} mobileBgWide={true}>
     <Container variant={'xl'} class="flex flex-col !gap-0 items-start">
 
-        <!-- Title + Nav -->
+        <!-- Title + Nav + Category title -->
         <div class="w-full pt-2 pb-1 md:pl-44">
             <div class="flex flex-col md:flex-row md:flex-wrap md:gap-8 md:items-baseline items-center gap-1">
                 <Heading tagName="h1" tagSize="h2" data-i18n="works.title">Posters</Heading>
@@ -197,6 +198,7 @@ upcomingPosters.sort((a, b) =>
                     <a href="/about" class="text-base-900 font-grunge text-2xl md:text-3xl underline underline-offset-4 decoration-2 hover:text-base-700" data-i18n="nav.about">About</a>
                     <LanguageToggle />
                 </nav>
+                <h2 id="category-title" class="hidden md:block font-bahnschrift font-bold text-base-900/40 text-5xl tracking-wide uppercase select-none ml-auto"></h2>
             </div>
         </div>
 
@@ -356,7 +358,8 @@ upcomingPosters.sort((a, b) =>
 
                 <!-- BA2037 section -->
                 <div id="section-ba2037" class="poster-section hidden flex flex-col gap-4">
-                    <p class="font-bahnschrift text-sm text-base-900/60 leading-relaxed w-full whitespace-pre-line" data-i18n="ba2037.description">{ba2037Description.el}</p>
+                    <p class="font-bahnschrift text-sm text-base-900/60 leading-relaxed w-full" data-i18n="ba2037.intro">{ba2037Intro.el}</p>
+                    <blockquote class="font-bahnschrift text-sm text-base-900/40 leading-relaxed w-full whitespace-pre-line columns-1 md:columns-2 lg:columns-4 gap-6 border-l-2 border-base-900/20 pl-4 italic" data-i18n="ba2037.quote">{ba2037Quote.el}</blockquote>
                     {ba2037Posters.length > 0 && (
                         <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end">
                             {ba2037Posters.map(p => (
@@ -506,12 +509,25 @@ upcomingPosters.sort((a, b) =>
         const tabs     = document.querySelectorAll<HTMLButtonElement>(".category-tab");
         const sections = document.querySelectorAll<HTMLElement>(".poster-section");
 
+        const categoryTitle = document.getElementById("category-title") as HTMLElement;
+
+        function syncCategoryTitle() {
+            const active = document.querySelector<HTMLButtonElement>(".category-tab.tab-active");
+            if (categoryTitle && active) categoryTitle.textContent = active.textContent?.trim() || "";
+        }
+
         function activateTab(btn: HTMLButtonElement) {
             tabs.forEach(b => b.classList.remove("tab-active"));
             sections.forEach(s => s.classList.add("hidden"));
             btn.classList.add("tab-active");
             document.getElementById(btn.dataset.target!)?.classList.remove("hidden");
+            syncCategoryTitle();
         }
+
+        // Re-sync title when language changes (tab text gets updated by i18n)
+        document.querySelectorAll("#lang-toggle").forEach(btn => {
+            btn.addEventListener("click", () => requestAnimationFrame(syncCategoryTitle));
+        });
 
         tabs.forEach(btn => btn.addEventListener("click", () => activateTab(btn)));
 

@@ -11,17 +11,23 @@ import Footer from "../components/global/Footer.astro";
 import '@fontsource/road-rage';
 import '@fontsource-variable/jetbrains-mono';
 import bg from "../assets/images/bg.jpg";
+import bgWide from "../assets/images/bgwide.jpg";
 import { getImage } from "astro:assets";
-const backgroundImage = await getImage({src: bg, format:'jpg'})
 
 // props
-const { title, footerAlignRight = false, footerInnerClass = "" } = Astro.props;
+const { title, footerAlignRight = false, footerInnerClass = "", tileBgOnMobile = false, mobileBgWide = false } = Astro.props;
+
+const backgroundImage = await getImage({src: bg, format:'jpg'});
+const wideBgImage = mobileBgWide ? await getImage({src: bgWide, format:'jpg'}) : null;
 ---
 
 <!doctype html>
 <html lang="en" class="scroll-smooth">
 	<BaseHead pageTitle={title}/>
-	<body style=`background-image: url(${backgroundImage.src})` class="bg-cover bg-center bg-no-repeat bg-fixed max-md:!bg-scroll box-border">
+	{mobileBgWide && wideBgImage && (
+		<style set:html={`@media (max-width: 767px) { body { background-image: url(${wideBgImage.src}) !important; } }`}></style>
+	)}
+	<body style=`background-image: url(${backgroundImage.src})` class:list={["bg-cover bg-center bg-no-repeat bg-fixed max-md:!bg-scroll box-border", tileBgOnMobile && "max-md:!bg-auto max-md:!bg-repeat"]}>
 		<!-- Background noise effect -->
 		<div class="noise-[67,22,25] fixed inset-0 pointer-events-none"></div>
 		<!-- Wrapper component to make sure all content on the website is above the noise filter background -->

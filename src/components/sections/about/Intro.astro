@@ -8,18 +8,20 @@ import LanguageToggle from "../../elements/LanguageToggle.astro";
 import about from "../../../assets/images/about.jpg";
 import stoastage from "../../../assets/images/stoastage.jpg";
 import stoabar from "../../../assets/images/stoabar.jpg";
+import stoabar2 from "../../../assets/images/stoabar2.jpg";
+import stoaxamos from "../../../assets/images/stoaxamos.jpg";
 
 import { Image } from "astro:assets";
 ---
 
-<Container variant={'xl'} class="py-2 !gap-0 grid md:grid-cols-2 md:min-h-[60vh] gap-4 mt-6 md:mt-0">
+<Container variant={'xl'} class="py-2 !gap-0 grid md:grid-cols-2 md:min-h-[60vh] gap-4 mt-6 md:mt-8">
 
     <!-- 1. Title + Nav: stacked on mobile, inline on desktop / desktop col-2 row-1 -->
     <div class="md:col-start-2 md:row-start-1 flex flex-col md:flex-row md:flex-wrap md:gap-8 md:items-baseline md:pt-4 items-center gap-1">
         <h1 class="font-grunge uppercase text-base-900 tracking-tight leading-none text-64 md:!text-[clamp(40pt,9vw,80pt)]" data-i18n="about.title">about</h1>
         <nav class="flex flex-wrap gap-4 md:gap-8 items-center">
             <a href="/" class="text-base-900 font-grunge text-2xl md:text-3xl underline underline-offset-4 decoration-2 hover:text-base-700" data-i18n="nav.home">Home</a>
-            <a href="/works" class="text-base-900 font-grunge text-2xl md:text-3xl underline underline-offset-4 decoration-2 hover:text-base-700" data-i18n="nav.posters">Posters</a>
+            <a href="/posters" class="text-base-900 font-grunge text-2xl md:text-3xl underline underline-offset-4 decoration-2 hover:text-base-700" data-i18n="nav.posters">Posters</a>
             <LanguageToggle />
         </nav>
     </div>
@@ -37,7 +39,7 @@ import { Image } from "astro:assets";
             Η Στοα 60 είναι μία ομάδα που διοργανώνει συναυλίες σχεδόν εβδομαδιαία από το 2015, σε ένα υπόγειο στο κέντρο του Ηρακλείου Κρήτης.
         </p>
         <p class="text-base-900 font-bahnschrift font-bold text-14 lg:text-18 leading-relaxed" data-i18n="about.manifesto">
-            Η ομάδα λειτουργεί οριζόντια στη λογική του DIY προσπαθώντας να ελαχιστοποιήσει τις εμπορικές συναλλαγές σε όλες τις διαδικασίες της. Τα έσοδα του χώρου προέρχονται από το κουτί ενίσχυσης και την ελεύθερη συνεισφορά στο Bar και διατίθενται αποκλειστικά για την κάλυψη των λειτουργικών εξόδων (ρεύμα, ενοίκιο) τη συντήρηση της υποδομής και των μεταφορικών εξόδων των μπαντών. Φιλοξενούμε σχήματα της ανεξάρτητης μουσικής σκηνής, καλύπτοντας ένα μεγάλο εύρος αισθητικής και ήχου και φιλοδοξούμε σε ένα περιβάλλον χωρίς διαχωρισμούς μεταξύ μουσικών-κοινού-διοργανωτών. Βλέπουμε την μουσική σαν ένα μέσο έκφρασης, διάδοσης ιδεών και πάνω απ'όλα σαν μια αφορμή κοινωνικοποίησης, αλληλεπίδρασης και συνδιαμόρφωσης.
+            Η ομάδα λειτουργεί οριζόντια στη λογική του DIY προσπαθώντας να ελαχιστοποιήσει τις εμπορικές συναλλαγές σε όλες τις διαδικασίες της. Τα έσοδα του χώρου προέρχονται από το κουτί ενίσχυσης και την ελεύθερη συνεισφορά στο Bar και διατίθενται αποκλειστικά για την κάλυψη των λειτουργικών εξόδων (ρεύμα, ενοίκιο) τη συντήρηση της υποδομής και των μεταφορικών εξόδων των μπαντών. Φιλοξενούμε σχήματα της ανεξάρτητης μουσικής σκηνής, καλύπτοντας ένα μεγάλο εύρος αισθητικής και ήχου και φιλοδοξούμε σε ένα περιβάλλον χωρίς διαχωρισμούς μεταξύ μουσικών-κοινού-διοργανωτών. Βλέπουμε την μουσική σαν ένα μέσο έκφρασης, διάδοσης ιδεών και πάνω απ'όλα σαν μια αφορμή κοινωνικοποίησης και συνδιαμόρφωσης.
         </p>
     </div>
 
@@ -45,6 +47,8 @@ import { Image } from "astro:assets";
     <div class="md:col-span-2 grid grid-cols-2 gap-4 mt-10 md:mt-8">
         <Image src={stoastage} alt="Stoa 60 stage" class="w-full h-64 md:h-80 object-cover" />
         <Image src={stoabar} alt="Stoa 60 bar" class="w-full h-64 md:h-80 object-cover" />
+        <Image src={stoabar2} alt="Stoa 60 bar" class="w-full h-64 md:h-80 object-cover" />
+        <Image src={stoaxamos} alt="Stoa 60 xamos" class="w-full h-64 md:h-80 object-cover" />
     </div>
 
 </Container>
