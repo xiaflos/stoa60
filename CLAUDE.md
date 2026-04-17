@@ -6,7 +6,7 @@ Underground music venue website — Heraklion, Crete. 10+ years, hundreds of gig
 - **Framework:** Astro 5.x (static output)
 - **Styling:** Tailwind CSS v4 with `@tailwindcss/vite`
 - **Fonts:** Road Rage (headings), JetBrains Mono (body), PF Papernote (serif accents)
-- **Deploy:** Cloudflare Pages → `grunge.pages.dev`
+- **Deploy:** Netlify
 - **Images:** Astro Image with Sharp optimizer
 
 ## Commands

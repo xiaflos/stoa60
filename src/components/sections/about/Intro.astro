@@ -44,11 +44,54 @@ import { Image } from "astro:assets";
     </div>
 
     <!-- 4. Photos: mobile last / desktop full width below -->
-    <div class="md:col-span-2 grid grid-cols-2 gap-4 mt-10 md:mt-8">
+    <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 mt-10 md:mt-8">
         <Image src={stoastage} alt="Stoa 60 stage" class="w-full h-64 md:h-80 object-cover" />
         <Image src={stoabar} alt="Stoa 60 bar" class="w-full h-64 md:h-80 object-cover" />
         <Image src={stoabar2} alt="Stoa 60 bar" class="w-full h-64 md:h-80 object-cover" />
         <Image src={stoaxamos} alt="Stoa 60 xamos" class="w-full h-64 md:h-80 object-cover" />
+    </div>
+
+    <!-- 5. Links section -->
+    <div class="md:col-span-2 mt-16 mb-8">
+        <h2 class="font-grunge uppercase text-base-900 tracking-tight text-center leading-none text-64 md:!text-[clamp(40pt,9vw,80pt)]">LINKS</h2>
+        <p class="font-grunge text-base-900 text-center text-2xl md:text-3xl mt-1 opacity-50">(under construction)</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mt-10 text-center">
+
+            <!-- Column 1: DIY venues & squats -->
+            <div class="flex flex-col gap-1">
+                <h3 class="font-grunge text-base-900 text-2xl mb-3">DIY venues &amp; squats</h3>
+                <a href="https://sound-disharmony.espivblogs.net/" target="_blank" rel="noopener noreferrer" class="font-mono text-sm text-base-900 hover:underline underline-offset-4">sound-disharmony.espivblogs.net</a>
+                <a href="https://killtekno.com/" target="_blank" rel="noopener noreferrer" class="font-mono text-sm text-base-900 hover:underline underline-offset-4">killtekno.com</a>
+                <a href="https://yfanet.espivblogs.net/" target="_blank" rel="noopener noreferrer" class="font-mono text-sm text-base-900 hover:underline underline-offset-4">yfanet.espivblogs.net</a>
+                <a href="https://antiviosi.espivblogs.net/" target="_blank" rel="noopener noreferrer" class="font-mono text-sm text-base-900 hover:underline underline-offset-4">antiviosi.espivblogs.net</a>
+                <a href="https://akoixi.espivblogs.net/aytodiacheirizomenos-koinonikos-choro/" target="_blank" rel="noopener noreferrer" class="font-mono text-sm text-base-900 hover:underline underline-offset-4">akoixi.espivblogs.net</a>
+                <a href="https://actaverbasquat.wordpress.com/" target="_blank" rel="noopener noreferrer" class="font-mono text-sm text-base-900 hover:underline underline-offset-4">actaverbasquat.wordpress.com</a>
+                <a href="https://saxini3.squat.gr/" target="_blank" rel="noopener noreferrer" class="font-mono text-sm text-base-900 hover:underline underline-offset-4">saxini3.squat.gr</a>
+                <a href="https://sykaprosquat.noblogs.org/" target="_blank" rel="noopener noreferrer" class="font-mono text-sm text-base-900 hover:underline underline-offset-4">sykaprosquat.noblogs.org</a>
+                <a href="https://evagelismos.squat.gr/" target="_blank" rel="noopener noreferrer" class="font-mono text-sm text-base-900 hover:underline underline-offset-4">evagelismos.squat.gr</a>
+            </div>
+
+            <!-- Column 2: Radios, Labels, Distro, Soundsystems & Music collectives -->
+            <div class="flex flex-col gap-1">
+                <h3 class="font-grunge text-base-900 text-2xl mb-3">Radios, Labels, Distro, Soundsystems &amp; Music collectives</h3>
+                <a href="https://www.undergroundunion.org/" target="_blank" rel="noopener noreferrer" class="font-mono text-sm text-base-900 hover:underline underline-offset-4">undergroundunion.org</a>
+                <a href="https://www.bodyblows.net/" target="_blank" rel="noopener noreferrer" class="font-mono text-sm text-base-900 hover:underline underline-offset-4">bodyblows.net</a>
+                <a href="https://linktr.ee/grpunkcrusthc" target="_blank" rel="noopener noreferrer" class="font-mono text-sm text-base-900 hover:underline underline-offset-4">linktr.ee/grpunkcrusthc</a>
+                <a href="https://www.1431am.org/" target="_blank" rel="noopener noreferrer" class="font-mono text-sm text-base-900 hover:underline underline-offset-4">1431am.org</a>
+                <a href="https://www.rastapank.gr/" target="_blank" rel="noopener noreferrer" class="font-mono text-sm text-base-900 hover:underline underline-offset-4">rastapank.gr</a>
+            </div>
+
+            <!-- Column 3: Archives, webzines, hackerspaces -->
+            <div class="flex flex-col gap-1">
+                <h3 class="font-grunge text-base-900 text-2xl mb-3">Archives, webzines, hackerspaces</h3>
+                <a href="https://diyconspiracy.net/" target="_blank" rel="noopener noreferrer" class="font-mono text-sm text-base-900 hover:underline underline-offset-4">diyconspiracy.net</a>
+                <a href="https://www.anarxeio.gr/" target="_blank" rel="noopener noreferrer" class="font-mono text-sm text-base-900 hover:underline underline-offset-4">anarxeio.gr</a>
+                <a href="https://syntexnia.net/" target="_blank" rel="noopener noreferrer" class="font-mono text-sm text-base-900 hover:underline underline-offset-4">syntexnia.net</a>
+                <a href="https://tolabaki.gr/" target="_blank" rel="noopener noreferrer" class="font-mono text-sm text-base-900 hover:underline underline-offset-4">tolabaki.gr</a>
+            </div>
+
+        </div>
     </div>
 
 </Container>
