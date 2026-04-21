@@ -32,6 +32,26 @@ const outdoorDisplayNames: Record<string, { en: string; el: string; key: string 
 
 // Festival posters — auto-detected by _fest suffix in filename (before extension)
 
+// Georgiadis Park description
+const georgiadisIntro = {
+    el: "Το πάρκο Γεωργιάδη βρίσκεται στην καρδιά της πόλης και αποτελεί μία ανάσα πρασίνου μέσα στην εμπορική τσιμεντούπολη του κέντρου. Υπήρξε ένας αναγκαίος χώρος πολιτιστικής ζωής φιλοξενώντας ένα τεράστιο εύρος εκδηλώσεων από πολλούς και ετερόκλητους φορείς της πόλης του Ηρακλείου.",
+    en: "Georgiadis Park lies at the heart of the city, a rare patch of green breathing room amid the commercial concrete maze of the city centre. For years it has served as a vital hub of cultural life, opening its grounds to an eclectic mix of events organized by the many and varied groups that make up the fabric of Heraklion.",
+};
+const georgiadisBody = {
+    el: `Το 2017 ο δήμος ανακοινώνει το σχέδιο μίας τελείως πρόχειρης και επικύνδινης ανάπλασης. Ο αγώνας για τον βασικότερο πνεύμονα της πόλης γεννάει τις Φυλές του Πάρκου, μία ανοιχτή συνέλευση που αναλαμβάνει τη προστασία του, τη νομική υπεράσπιση και τη διαχείριση του. Το διάστημα που περνάει η κινητοποίηση είναι έντονη, συμβαίνουν μεγάλες πορείες και αυτό φέρνει μία τρομερή δυναμική στις εκδηλώσεις, αλλά και στην γενικότερη οικειοποίηση, διαμόρφωση και αντίληψη του χώρου αυτού ως κοινό. Η ομάδα της στοάς60 έκανε την παρθενική της εκδήλωση στο πάρκο τον μακρινό Οκτώβρη του 2015, πριν καν στηθεί το υπόγειο στη Καλοκαιρινού και κατά τη διάρκεια της κινητοποίησης του 2018 ήταν πάλι εκεί και έστησε μια σειρά προβολές και αξιομνημόνευτα λάϊβ.
+
+Τον Οκτώβρη του 2019, μετά από το πιο όμορφο καλοκαίρι του Πάρκου, με τη δικαστική διαμάχη να τραβάει, ο δήμος, ο εργολάβος μαζί με τα ΜΑΤ αποφασίζουν να προχωρήσουν με τα έργα της ανάπλασης. Την ημέρα εκείνη η ευρύτερη κοινότητα που ενώθηκε γύρω από αυτό τον αγώνα, θα κοντραριστεί σώμα με σώμα με τους αστυνομικούς, θα κερδίσει τη συγκεκριμένη μάχη, αλλά δεν θα αντέξει στην καθημερινότητα της επιβολής της αστυνομιας και των εκσαφέων τους. Το πάρκο περυτιλίγεται με λαμαρίνες και θα περάσουν 2-3 χρόνια και κάμποση καραντίνα μέχρι να το ξαναδούμε. Όταν αυτό πλέον άνοιξε, με ένα τελείως διαφορετικό καθεστώς. Στο βασικό χώρο που φιλοξενούνταν λάϊβ έχει πλέον τις τεράστιες ομπρέλες του καφέ που εκμεταλλεύεται ιδιώτης, υπάρχει ένας σεκιουριτάς μόνιμα στο χώρο και το καθεστώς άδειας καθορίζεται από την αναπαραγωγική σεζόν διαφόρων πτηνών.`,
+    en: `In 2017, the municipality announced plans for a hasty and ill-conceived renovation. The struggle to defend the city's primary green lung gave birth to the Φυλές του Πάρκου (Tribes of the Park) — an open assembly that took on its protection, its legal defence, and its management. Large marches took place, bringing tremendous momentum to the events held there, as well as to the broader appropriation, shaping, and understanding of this space as a common. Stoa60 held its very first event there back in 2015, even before the underground venue on Kalokerinou Street had been set up, and during the mobilization of 2018 they were there again, staging a series of screenings and memorable live shows.
+
+In October 2019, following the most active summer the park had seen in terms of cultural life, with the legal battle still dragging on, the municipality, the contractor, and the riot police decided to push ahead with the renovation works. On that day, the wider community that had united around this struggle clashed with the police, won that particular battle — but could not hold out against the daily pressure of police enforcement and their excavators. The park was wrapped in corrugated iron sheeting, and it would take two to three years and a good stretch of lockdown before we would see it again. When it finally reopened, it did so under an entirely different regime. The main space that used to host live music now holds the massive umbrellas of a café operated by a private individual; there is a security guard permanently stationed on the premises; and the conditions for obtaining a permit are now dictated by the breeding season of various bird species.`,
+};
+
+// Xenia description
+const xeniaText = {
+    el: `Μερικά χρόνια μετά την ανάπλαση της παραλιακής του Ηρακλείου και το κλείσιμο του ξενοδοχείου από του οποίου πήρε το όνομα η συγκεκριμένη τοποθεσία, μια μικρή απλωσιά εμφανίστηκε μόλις 10 λεπτά από το κέντρο της πόλης. Το παραθαλλάσιο αμφιθεατρικό του "ξενία" έγινε για μια 5ετία τόπος συνάντησης μιας μεγάλης κοινότητας. Τα πάρτυ στις αρχές και τα τέλη του Καλοκαιριού από το 2016 μέχρι το 2018 είχαν γίνει εβδομαδιαία. Αυτοργανωμένες ομάδες της πόλης, φοιτητικοί σύλλογοι ή απλά παρέες που βολόδερναν κάθε βράδυ εκεί, οικειοποιήθηκαν το χώρο και όλο αυτό άρχισε σιγά σιγά να "ξενίζει". Τα τοπικά μίντια δημιούργησαν το κλίμα, διάφοροι κάτοικοι ξεκίνησαν τις καταγγελίες και το 2018 ο κύκλος του Ξενία έκλεισε.`,
+    en: `A few years after the renovation of Heraklion's waterfront and the shut-down of the hotel that gave this particular spot its name, a small open expanse appeared just 10 minutes from the city centre. The seaside amphitheatre known as "Xenia" spent the better part of five years as a meeting point for a large and sprawling community. What began as parties at the bookends of summer gradually turned into a weekly ritual, running from 2016 through to 2018. Self-organized city collectives, student associations, and loose groups of people who simply found themselves there night after night made the space their own — and it was precisely this slow, organic takeover that started to rub certain people the wrong way. Local media worked to build a narrative around it, residents began lodging formal complaints, and by 2018 the Xenia era had run its course.`,
+};
+
 // BA2037 description (posters auto-loaded from BA2037 folder)
 const ba2037Intro = {
     el: "Η ΒΑ2037 λειτούργησε από τα τέλη του '18 μέχρι περίπου το 2021, υπήρξε οργανικό κομμάτι της στοάς60 με αρκετά κοινά μέλη και επικεντρωνόταν στον ηλεκτρονικό και πειραματικό ήχο. Ακολουθεί το αυτοπαρουσιαστικό της κείμενο.",
@@ -400,6 +420,15 @@ upcomingPosters.sort((a, b) =>
 
                 {venues.map(v => (
                     <div id={`section-venue-${v.key.toLowerCase()}`} class="poster-section hidden">
+                        {/* GEORGIADIS text — under review, restore when ready:
+                        {v.key === "GEORGIADIS" && (<>
+                            <p class="font-bahnschrift text-sm text-base-900/60 leading-relaxed w-full" data-i18n="georgiadis.intro">{georgiadisIntro.el}</p>
+                            <p class="font-bahnschrift text-sm text-base-900/40 leading-relaxed w-full whitespace-pre-line columns-1 md:columns-2 lg:columns-4 gap-6 mb-2" data-i18n="georgiadis.body">{georgiadisBody.el}</p>
+                        </>)}
+                        {v.key === "XENIA" && (
+                            <p class="font-bahnschrift text-sm text-base-900/60 leading-relaxed w-full whitespace-pre-line columns-1 md:columns-2 gap-6 mb-2" data-i18n="xenia.text">{xeniaText.el}</p>
+                        )}
+                        */}
                         <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end">
                             {v.posters.map(p => (
                                 <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
@@ -513,7 +542,12 @@ upcomingPosters.sort((a, b) =>
 
         function syncCategoryTitle() {
             const active = document.querySelector<HTMLButtonElement>(".category-tab.tab-active");
-            if (categoryTitle && active) categoryTitle.textContent = active.textContent?.trim() || "";
+            if (categoryTitle && active) {
+                categoryTitle.textContent = active.textContent?.trim() || "";
+                const isLong = active.dataset.target === "section-venue-georgiadis";
+                categoryTitle.classList.toggle("text-5xl", !isLong);
+                categoryTitle.classList.toggle("text-3xl", isLong);
+            }
         }
 
         function activateTab(btn: HTMLButtonElement) {
