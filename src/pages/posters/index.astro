@@ -141,10 +141,9 @@ for (const [path, module] of Object.entries(allImages)) {
 }
 
 for (const key of Object.keys(seasonMap)) {
-    seasonMap[key].sort((a, b) => {
-        if (a.isOutdoor !== b.isOutdoor) return a.isOutdoor ? 1 : -1;
-        return b.filename.localeCompare(a.filename, undefined, { numeric: true, sensitivity: "base" });
-    });
+    seasonMap[key].sort((a, b) =>
+        b.filename.localeCompare(a.filename, undefined, { numeric: true, sensitivity: "base" })
+    );
 }
 
 const seasons = Object.keys(seasonMap)
@@ -310,7 +309,7 @@ upcomingPosters.sort((a, b) =>
                                     <Image
                                         src={p.image}
                                         alt="Upcoming poster"
-                                        class="w-full h-auto object-contain hover:opacity-80 transition-opacity"
+                                        class="w-full h-auto object-contain poster-img"
                                         loading="lazy"
                                     />
                                 </div>
@@ -327,7 +326,7 @@ upcomingPosters.sort((a, b) =>
                                     <Image
                                         src={p.image}
                                         alt={`Poster ${s.year}`}
-                                        class="w-full h-auto object-contain hover:opacity-80 transition-opacity"
+                                        class="w-full h-auto object-contain poster-img"
                                         loading="lazy"
                                     />
                                     {p.isOutdoor && p.venue && (
@@ -350,7 +349,7 @@ upcomingPosters.sort((a, b) =>
                                 <Image
                                     src={p.image}
                                     alt="Underground poster"
-                                    class="w-full h-auto object-contain hover:opacity-80 transition-opacity"
+                                    class="w-full h-auto object-contain poster-img"
                                     loading="lazy"
                                 />
                             </div>
@@ -368,7 +367,7 @@ upcomingPosters.sort((a, b) =>
                                 <Image
                                     src={p.image}
                                     alt="Festival poster"
-                                    class="w-full h-auto object-contain hover:opacity-80 transition-opacity"
+                                    class="w-full h-auto object-contain poster-img"
                                     loading="lazy"
                                 />
                             </div>
@@ -390,7 +389,7 @@ upcomingPosters.sort((a, b) =>
                                     <Image
                                         src={p.image}
                                         alt="BA2037 poster"
-                                        class="w-full h-auto object-contain hover:opacity-80 transition-opacity"
+                                        class="w-full h-auto object-contain poster-img"
                                         loading="lazy"
                                     />
                                 </div>
@@ -410,7 +409,7 @@ upcomingPosters.sort((a, b) =>
                                 <Image
                                     src={p.image}
                                     alt="Bar poster"
-                                    class="w-full h-auto object-contain hover:opacity-80 transition-opacity"
+                                    class="w-full h-auto object-contain poster-img"
                                     loading="lazy"
                                 />
                             </div>
@@ -435,7 +434,7 @@ upcomingPosters.sort((a, b) =>
                                     <Image
                                         src={p.image}
                                         alt={`Poster from ${v.name}`}
-                                        class="w-full h-auto object-contain hover:opacity-80 transition-opacity"
+                                        class="w-full h-auto object-contain poster-img"
                                         loading="lazy"
                                     />
                                     {filenameToDate(p.filename) && (
@@ -461,6 +460,18 @@ upcomingPosters.sort((a, b) =>
     </div>
 
     <style>
+        .poster-img {
+            transition: opacity 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .poster-thumb:hover .poster-img {
+            opacity: 0.9;
+            box-shadow:
+                0 0 0 1px rgba(255, 255, 255, 0.10),
+                0 2px 12px rgba(255, 255, 255, 0.13),
+                0 6px 30px rgba(255, 255, 255, 0.16);
+        }
+
         .category-tab {
             position: relative;
             overflow: hidden;
