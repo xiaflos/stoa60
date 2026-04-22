@@ -11,22 +11,42 @@ import NewsletterForm from "../../elements/NewsletterForm.astro"
 import stolensimadi from "../../../assets/images/posters/Upcoming/2026-04-25_junkheart_pontikia.jpg";
 
 // Gig calendar data (edit here to update)
+interface Band {
+    name: string;
+    url?: string;
+    tba?: boolean;
+}
+
 interface Gig {
     monthKey: string;
     date: string;
-    bands: string[];
+    bands: Band[];
 }
 
 const gigs: Gig[] = [
-    { monthKey: "cal.april", date: "25", bands: ["Junkheart", "Ποντικια"] },
-    { monthKey: "cal.may",   date: "2",  bands: ["SOMA", "Malhotra"] },
-    { monthKey: "cal.may",   date: "16", bands: ["ΚΑΘΑΡΟΣ ΧΑΛΚΟΣ", "ΑΡΚΟΥΔΕΣ ΤΩΝ ΑΓΩΓΩΝ ΤΗΣ ΠΟΛΥΚΑΤΟΙΚΙΑΣ"] },
+    { monthKey: "cal.april", date: "25", bands: [
+        { name: "Junkheart", url: "https://junkheart.bandcamp.com/music" },
+        { name: "Ποντικια",  url: "https://www.1431am.org/artist/pontikia/" },
+    ]},
+    { monthKey: "cal.may",   date: "2",  bands: [
+        { name: "SOMA",     url: "https://somamesoma.bandcamp.com/music" },
+        { name: "Malhotra", url: "https://malhotra.bandcamp.com/album/ruler-sun" },
+    ]},
+    { monthKey: "cal.may",   date: "16", bands: [
+        { name: "ΚΑΘΑΡΟΣ ΧΑΛΚΟΣ",                         url: "https://katharoschalkos.bandcamp.com/album/-" },
+        { name: "ΑΡΚΟΥΔΕΣ ΤΩΝ ΑΓΩΓΩΝ ΤΗΣ ΠΟΛΥΚΑΤΟΙΚΙΑΣ", url: "https://www.youtube.com/watch?v=aArwHqZA-7Y" },
+    ]},
+    { monthKey: "cal.september", date: "19", bands: [
+        { name: "AFK", url: "https://aarghfuckkill.bandcamp.com/" },
+        { name: "TBA", tba: true },
+    ]},
 ];
 
 // Default (Greek) month labels for SSR — overridden by JS i18n on client
 const monthLabels: Record<string, string> = {
-    "cal.april": "Απρίλιος",
-    "cal.may":   "Μάιος",
+    "cal.april":     "Απρίλιος",
+    "cal.may":       "Μάιος",
+    "cal.september": "Σεπτεμβριος",
 };
 
 // Max gigs shown on homepage — add more to the array freely, only this many will render
@@ -42,10 +62,10 @@ for (const gig of visibleGigs) {
 }
 ---
 
-<Container variant={"xl"} class="grid grid-cols-1 min-[850px]:grid-cols-2 py-2 !gap-0 overflow-x-hidden min-[850px]:overflow-y-auto min-[850px]:h-[calc(100vh-5rem)] min-[850px]:max-h-[calc(100vh-5rem)] min-[850px]:[grid-template-rows:auto_1fr]">
+<Container variant={"xl"} class="grid grid-cols-1 min-[850px]:grid-cols-[minmax(0,38rem)_minmax(0,40rem)] min-[850px]:justify-center py-2 !gap-0 min-[850px]:!gap-x-20 min-[850px]:!gap-y-0 overflow-x-hidden min-[850px]:min-h-[calc(100vh-5rem)] min-[850px]:[grid-template-rows:auto_1fr]">
 
     <!-- 1. Title + nav + subtitles (mobile: top / desktop: right col top) -->
-    <div class="min-[850px]:col-start-2 min-[850px]:row-start-1 flex flex-col min-[850px]:pt-5 min-[850px]:pb-8 min-w-0">
+    <div class="min-[850px]:col-start-2 min-[850px]:row-start-1 flex flex-col min-[850px]:pt-5 min-[850px]:pb-3 min-w-0">
 
         <!-- STOA60 + Nav: stacked on mobile, inline on desktop -->
         <div class="flex flex-col min-[850px]:flex-row min-[850px]:flex-wrap min-[850px]:gap-8 min-[850px]:items-baseline min-[850px]:justify-start text-base-900 min-[850px]:mt-7 items-center gap-1">
@@ -67,22 +87,28 @@ for (const gig of visibleGigs) {
     </div>
 
     <!-- 2. Poster + newsletter (mobile: middle / desktop: left col spanning both rows) -->
-    <div class="min-[850px]:col-start-1 min-[850px]:row-start-1 min-[850px]:row-span-2 flex items-start justify-center mt-6 min-[850px]:mt-0 min-[850px]:pt-16 min-w-0">
-        <div class="w-full max-w-[19rem] min-[850px]:max-w-[clamp(23rem,26vw,34rem)] flex flex-col">
+    <div class="min-[850px]:col-start-1 min-[850px]:row-start-1 min-[850px]:row-span-2 flex items-start justify-center min-[850px]:justify-end mt-6 min-[850px]:mt-0 min-[850px]:pt-12 min-w-0 min-[850px]:min-h-0 min-[850px]:h-full min-[850px]:pb-2">
+        <div class="w-full max-w-[19rem] min-[850px]:w-[22rem] min-[850px]:max-w-none min-[850px]:shrink-0 flex flex-col min-[850px]:min-h-0 min-[850px]:h-full">
             <!-- "next gig" above poster frame — mobile only -->
             <span class="min-[850px]:hidden block text-center font-grunge text-base-900 text-xl tracking-widest uppercase mb-2 select-none" data-i18n="hero.nextgig">next gig</span>
-            <div class="flex items-start gap-2">
+            <div class="flex items-start gap-1 min-[850px]:flex-1 min-[850px]:min-h-0 min-[850px]:items-stretch min-[850px]:mt-4">
                 <!-- "next gig" rotated vertically on the left — desktop only -->
-                <div class="hidden min-[850px]:flex items-start justify-center shrink-0 self-stretch pt-1">
+                <div class="hidden min-[850px]:flex items-start justify-center shrink-0 self-stretch">
                     <span class="font-grunge text-base-900 text-xl tracking-widest uppercase [writing-mode:vertical-rl] rotate-180 select-none" data-i18n="hero.nextgig">next gig</span>
                 </div>
-                <!-- Poster + desktop newsletter aligned together -->
-                <div class="flex-1 flex flex-col">
-                    <button id="hero-poster-btn" class="cursor-pointer hover:opacity-80 transition-opacity" aria-label="View poster fullscreen">
+                <!-- Poster + desktop newsletter aligned together.
+                     Button and newsletter are direct siblings so the gap between
+                     them is always a fixed mt-4 — no flex-grow wrapper that would
+                     expand with available space and push them apart. -->
+                <div class="flex-1 flex flex-col min-w-0 min-[850px]:min-h-0 min-[850px]:items-center">
+                    <button
+                        id="hero-poster-btn"
+                        class="cursor-pointer hover:opacity-80 transition-opacity w-full shrink-0"
+                        aria-label="View poster fullscreen">
                         <ImageContainer src={stolensimadi} alt="Upcoming gig poster" />
                     </button>
-                    <!-- Newsletter: below poster on desktop only — grows in step with the poster -->
-                    <div class="hidden min-[850px]:block mt-4 w-full">
+                    <!-- Newsletter: below poster on desktop only — fixed gap -->
+                    <div class="hidden min-[850px]:block w-full shrink-0 min-[850px]:mt-6">
                         <NewsletterForm />
                     </div>
                 </div>
@@ -105,7 +131,13 @@ for (const gig of visibleGigs) {
                         <span class="font-bahnschrift font-bold text-base text-base-900 uppercase leading-snug flex flex-wrap items-baseline gap-x-2">
                             {gig.bands.map((band, i) => (
                                 <>
-                                    <span>{band}</span>
+                                    {band.tba ? (
+                                        <span class="text-sm font-normal text-base-900/40 tracking-widest">{band.name}</span>
+                                    ) : band.url ? (
+                                        <a href={band.url} target="_blank" rel="noopener noreferrer" class="hover:underline underline-offset-2">{band.name}</a>
+                                    ) : (
+                                        <span>{band.name}</span>
+                                    )}
                                     {i < gig.bands.length - 1 && (
                                         <span class="text-base-900/50 font-black text-lg leading-none">×</span>
                                     )}
@@ -133,6 +165,27 @@ for (const gig of visibleGigs) {
     <button id="hero-lightbox-close" class="absolute top-4 right-4 text-white text-4xl font-grunge hover:opacity-70 z-10" aria-label="Close lightbox">&times;</button>
     <img id="hero-lightbox-img" src="" alt="Poster fullscreen" class="max-h-[90vh] max-w-[85vw] object-contain" />
 </div>
+
+<style is:global>
+    /* Soft white glow around the poster — gives it presence on the dark
+       background without bringing back a hard frame. Applied on both
+       mobile and desktop. */
+    #hero-poster-btn img {
+        box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.18),
+            0 2px 18px rgba(255, 255, 255, 0.22),
+            0 10px 60px rgba(255, 255, 255, 0.3),
+            0 0 120px rgba(255, 255, 255, 0.18);
+        transition: box-shadow 0.3s ease;
+    }
+    #hero-poster-btn:hover img {
+        box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.28),
+            0 2px 24px rgba(255, 255, 255, 0.3),
+            0 12px 70px rgba(255, 255, 255, 0.4),
+            0 0 150px rgba(255, 255, 255, 0.28);
+    }
+</style>
 
 <script>
     const btn       = document.getElementById("hero-poster-btn")!;

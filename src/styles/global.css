@@ -53,6 +53,7 @@ html {
     background-color: var(--color-base-100);
 }
 
+
 /* Hide scrollbar while keeping scroll functionality */
 .scrollbar-none {
     scrollbar-width: none;        /* Firefox */

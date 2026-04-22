@@ -16,5 +16,8 @@
     "astro": "^6.1.2",
     "tailwindcss": "^4.2.1",
     "tailwindcss-noise": "^1.0.6"
+  },
+  "devDependencies": {
+    "pdf-to-img": "^6.0.0"
   }
 }

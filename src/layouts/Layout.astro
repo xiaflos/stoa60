@@ -27,7 +27,10 @@ const wideBgImage = mobileBgWide ? await getImage({src: bgWide, format:'jpg'}) :
 	{mobileBgWide && wideBgImage && (
 		<style set:html={`@media (max-width: 767px) { body { background-image: url(${wideBgImage.src}) !important; } }`}></style>
 	)}
-	<body style=`background-image: url(${backgroundImage.src})` class:list={["bg-cover bg-center bg-no-repeat bg-fixed max-md:!bg-scroll box-border", tileBgOnMobile && "max-md:!bg-auto max-md:!bg-repeat", desktopNoScroll && "md:overflow-hidden"]}>
+	{desktopNoScroll && (
+		<style>@media (min-width: 850px) { body { scrollbar-width: none; -ms-overflow-style: none; } body::-webkit-scrollbar { display: none; } }</style>
+	)}
+	<body style=`background-image: url(${backgroundImage.src})` class:list={["bg-cover bg-top bg-no-repeat bg-fixed max-md:!bg-scroll box-border", tileBgOnMobile && "max-md:!bg-auto max-md:!bg-repeat"]}>
 		<!-- Background noise effect -->
 		<div class="noise-[67,22,25] fixed inset-0 pointer-events-none"></div>
 		<!-- Wrapper component to make sure all content on the website is above the noise filter background -->

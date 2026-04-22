@@ -23,8 +23,9 @@ export const translations: Record<string, Record<Lang, string>> = {
   "about.manifesto": { el: "Η ομάδα λειτουργεί οριζόντια στη λογική του DIY προσπαθώντας να ελαχιστοποιήσει τις εμπορικές συναλλαγές σε όλες τις διαδικασίες της. Τα έσοδα του χώρου προέρχονται από το κουτί ενίσχυσης και την ελεύθερη συνεισφορά στο Bar και διατίθενται αποκλειστικά για την κάλυψη των λειτουργικών εξόδων (ρεύμα, ενοίκιο) τη συντήρηση της υποδομής και των μεταφορικών εξόδων των μπαντών. Φιλοξενούμε σχήματα της ανεξάρτητης μουσικής σκηνής, καλύπτοντας ένα μεγάλο εύρος αισθητικής και ήχου και φιλοδοξούμε σε ένα περιβάλλον χωρίς διαχωρισμούς μεταξύ μουσικών-κοινού-διοργανωτών. Βλέπουμε την μουσική σαν ένα μέσο έκφρασης, διάδοσης ιδεών και πάνω απ'όλα σαν μια αφορμή κοινωνικοποίησης και συνδιαμόρφωσης.", en: "We instill a hands-on DIY ethic in an attempt to minimize transactions and maintain high quality concerts while relying on voluntary contributions. Suggested prices at the bar are kept at a minimum and reflect actual costs: equipment, rent, electricity, and most critically band transportation from the mainland. Any surplus goes directly back into improving infrastructure or supporting other initiatives. Our sustainability depends on collective participation between organizers, musicians, and the audience. By decommodifying all aspects of a gig, we've created a genuinely accessible independent space, and we channel live music as means for social mobilization. We host artists that would be considered part of the independent music scene, and we stand critical towards the modern entertainment industry. Stoa60 is the space for all who don't belong, transforming every week to accommodate a large diversity of aesthetics and cultures." },
 
   // ─── Gig Calendar ───
-  "cal.april": { el: "Απρίλιος", en: "April" },
-  "cal.may":   { el: "Μάιος",    en: "May"   },
+  "cal.april":     { el: "Απρίλιος",      en: "April"     },
+  "cal.may":       { el: "Μάιος",         en: "May"       },
+  "cal.september": { el: "Σεπτεμβριος",   en: "September" },
 
   // ─── Locations (Posters page) ───
   "loc.seasons":    { el: "Σεζόν",            en: "Season"          },
