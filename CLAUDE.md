@@ -19,14 +19,14 @@ npm run preview   # preview production build
 ## Project Structure
 ```
 src/
-├── pages/           index, about, works/index, 404
+├── pages/           index, about, posters/index, 404
 ├── layouts/         Layout.astro (single layout wrapping all pages)
 ├── components/
 │   ├── global/      BaseHead, Navigation, Footer, Wrapper
 │   ├── elements/    Container, Heading, Text, Link, ImageContainer, etc.
-│   └── sections/    Page-specific sections (home/Hero, about/Intro, works/Works)
+│   └── sections/    Page-specific sections (home/Hero, about/Intro)
 ├── assets/
-│   ├── images/posters/   189 posters in season folders (e.g. 2024-2025/)
+│   ├── images/posters/   ~300 posters in season/venue folders (e.g. 2024-2025/, GEORGIADIS/, Upcoming/)
 │   ├── fonts/            PF Papernote woff2 files
 │   └── ui/               barcode.svg, symbolWhite.svg
 └── styles/          global.css (theme + tailwind), markdown.css
@@ -38,23 +38,9 @@ src/
 - **Breakpoints:** xsm:320 sm:480 md:768 lg:1200 xl:1440
 - **Mobile-first:** All layouts start mobile, scale up
 - **Component pattern:** Astro components with Props interface, no client-side JS unless needed
-- **Poster naming:** Files inside `src/assets/images/posters/{season}/` — sorted naturally by filename
+- **Poster naming:** Files inside `src/assets/images/posters/{season-or-venue}/` with `YYYY-MM-DD_bandname.jpg` pattern — sorted naturally by filename
 - **Noise effect:** Grunge texture via `tailwindcss-noise` plugin on backgrounds
 
 ## Important Notes
 - Newsletter form UI exists in Hero.astro but has NO backend handler yet
-- Next gig poster is currently hardcoded (update `INVALTA.jpg` reference in Hero.astro)
-- Several unused components exist from the original Grunge template (see deprecated list below)
-
-## Deprecated (from template, safe to delete)
-- `src/components/sections/home/About.astro`
-- `src/components/sections/home/SelectedWorks.astro`
-- `src/components/sections/home/Services.astro`
-- `src/components/sections/home/Faq.astro`
-- `src/components/sections/about/Education.astro`
-- `src/components/sections/about/Experience.astro`
-- `src/components/sections/works/Pagination.astro`
-- `src/components/sections/contact/` (entire directory)
-- `src/pages/contact.astro`
-- `src/content/*.md` (6 placeholder portfolio items)
-- `src/assets/work-card/` (empty directory)
+- Next gig poster is hardcoded in Hero.astro (`stolensimadi` import) — update when a new gig is posted
