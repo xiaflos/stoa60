@@ -134,9 +134,9 @@ for (const gig of visibleGigs) {
                                     {band.tba ? (
                                         <span class="text-sm font-normal text-base-900/40 tracking-widest">{band.name}</span>
                                     ) : band.url ? (
-                                        <a href={band.url} target="_blank" rel="noopener noreferrer" class="hover:underline underline-offset-2">{band.name}</a>
+                                        <a href={band.url} target="_blank" rel="noopener noreferrer" class="transition-all duration-200 hover:underline underline-offset-2 hover:scale-[1.04] hover:[text-shadow:0_0_14px_rgba(255,255,255,0.9),0_0_4px_rgba(255,255,255,0.6)]">{band.name}</a>
                                     ) : (
-                                        <span>{band.name}</span>
+                                        <span class="transition-all duration-200 hover:scale-[1.04] hover:[text-shadow:0_0_14px_rgba(255,255,255,0.9),0_0_4px_rgba(255,255,255,0.6)]">{band.name}</span>
                                     )}
                                     {i < gig.bands.length - 1 && (
                                         <span class="text-base-900/50 font-black text-lg leading-none">×</span>
