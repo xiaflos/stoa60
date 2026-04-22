@@ -63,6 +63,21 @@ html {
     display: none;                /* Chrome/Safari */
 }
 
+@media (min-width: 850px) {
+    html.no-page-scroll {
+        overflow: hidden;
+    }
+}
+
+.band-name {
+    display: inline-block;
+    transition: text-shadow 0.2s ease, transform 0.2s ease;
+}
+.band-name:hover {
+    text-shadow: 0 0 14px rgba(255,255,255,0.9), 0 0 4px rgba(255,255,255,0.6);
+    transform: scale(1.04);
+}
+
 /* Respect reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {

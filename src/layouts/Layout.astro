@@ -22,7 +22,7 @@ const wideBgImage = mobileBgWide ? await getImage({src: bgWide, format:'jpg'}) :
 ---
 
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class:list={["scroll-smooth", desktopNoScroll && "no-page-scroll"]}>
 	<BaseHead pageTitle={title}/>
 	{mobileBgWide && wideBgImage && (
 		<style set:html={`@media (max-width: 767px) { body { background-image: url(${wideBgImage.src}) !important; } }`}></style>
