@@ -48,6 +48,11 @@
     --breakpoint-xl: 1440px;
 }
 
+/* Devil horns custom cursor on all interactive elements */
+a, button, [role="button"], .cursor-pointer, label[for], summary {
+    cursor: url('/horns.svg') 16 16, pointer;
+}
+
 /* Match page background to prevent white flash on mobile overscroll */
 html {
     background-color: var(--color-base-100);
@@ -69,8 +74,9 @@ html {
     }
 }
 
+
 .title-flicker {
-    animation: titleFlicker 9s infinite;
+    animation: titleFlicker 16s infinite;
     will-change: text-shadow, opacity;
 }
 @keyframes titleFlicker {
