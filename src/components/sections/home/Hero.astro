@@ -8,7 +8,7 @@ import LanguageToggle from "../../elements/LanguageToggle.astro"
 import NewsletterForm from "../../elements/NewsletterForm.astro"
 
 // assets
-import stolensimadi from "../../../assets/images/posters/Upcoming/2026-04-25_junkheart_pontikia.jpg";
+import nextGigPoster from "../../../assets/images/posters/Upcoming/2026-05-02_somalhotra.jpg";
 
 // Gig calendar data (edit here to update)
 interface Band {
@@ -25,10 +25,6 @@ interface Gig {
 }
 
 const gigs: Gig[] = [
-    { monthKey: "cal.april", date: "25", bands: [
-        { name: "Junkheart", url: "https://junkheart.bandcamp.com/music", city: "ath" },
-        { name: "Ποντικια",  url: "https://www.1431am.org/artist/pontikia/", city: "chania" },
-    ]},
     { monthKey: "cal.may",   date: "2",  bands: [
         { name: "SOMA",     url: "https://somamesoma.bandcamp.com/music", city: "ath" },
         { name: "Malhotra", url: "https://malhotra.bandcamp.com/album/ruler-sun", city: "reth" },
@@ -106,7 +102,7 @@ for (const gig of visibleGigs) {
                         id="hero-poster-btn"
                         class="cursor-pointer hover:opacity-80 transition-opacity w-full shrink-0"
                         aria-label="View poster fullscreen">
-                        <ImageContainer src={stolensimadi} alt="Upcoming gig poster" />
+                        <ImageContainer src={nextGigPoster} alt="Upcoming gig poster" />
                     </button>
                     <!-- Newsletter: below poster on desktop only — fixed gap -->
                     <div class="hidden min-[850px]:block w-full shrink-0 min-[850px]:mt-6">

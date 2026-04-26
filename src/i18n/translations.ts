@@ -68,9 +68,6 @@ export const translations: Record<string, Record<Lang, string>> = {
   "works.bar":        { el: "Bar",          en: "Bar"        },
   "works.title":      { el: "Posters",      en: "Posters"    },
 
-  // ─── Footer ───
-  "footer.contact": { el: "Contact:", en: "Contact:" },
-
   // ─── 404 ───
   "404.title":   { el: "Page Not Found", en: "Page Not Found" },
   "404.message": { el: "Oops! It seems the page you are trying to access is broken or does not exist!", en: "Oops! It seems the page you are trying to access is broken or does not exist!" },
