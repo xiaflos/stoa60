@@ -16,25 +16,42 @@ interface Band {
     url?: string;
     tba?: boolean;
     city?: string;
+    noUppercase?: boolean;
 }
 
 interface Gig {
+    type?: 'gig';
     monthKey: string;
     date: string;
     bands: Band[];
 }
 
-const gigs: Gig[] = [
+interface Screening {
+    type: 'screening';
+    monthKey: string;
+    date: string;
+    title: string;
+    url?: string;
+}
+
+type CalendarEntry = Gig | Screening;
+
+const entries: CalendarEntry[] = [
     { monthKey: "cal.may",   date: "2",  bands: [
         { name: "SOMA",     url: "https://somamesoma.bandcamp.com/music", city: "ath" },
         { name: "Malhotra", url: "https://malhotra.bandcamp.com/album/ruler-sun", city: "reth" },
+    ]},
+    { monthKey: "cal.may",   date: "9",  bands: [
+        { name: "Thymics",    url: "https://thymics.bandcamp.com/album/nothing",      city: "her" },
+        { name: "Humachines", url: "https://humachines.bandcamp.com/album/ep-panik",  city: "her" },
+        { name: "Dismiss",    url: "https://dismissband.bandcamp.com/music",           city: "ath" },
     ]},
     { monthKey: "cal.may",   date: "16", bands: [
         { name: "ΚΑΘΑΡΟΣ ΧΑΛΚΟΣ",                         url: "https://katharoschalkos.bandcamp.com/album/-", city: "ath" },
         { name: "ΑΡΚΟΥΔΕΣ ΤΩΝ ΑΓΩΓΩΝ ΤΗΣ ΠΟΛΥΚΑΤΟΙΚΙΑΣ", url: "https://www.youtube.com/watch?v=aArwHqZA-7Y", city: "her" },
     ]},
     { monthKey: "cal.september", date: "19", bands: [
-        { name: "AFK", url: "https://aarghfuckkill.bandcamp.com/", city: "hamburg" },
+        { name: "AarghFuckKill", url: "https://aarghfuckkill.bandcamp.com/", city: "hamburg", noUppercase: true },
         { name: "TBA", tba: true },
     ]},
 ];
@@ -46,16 +63,16 @@ const monthLabels: Record<string, string> = {
     "cal.september": "Σεπτεμβριος",
 };
 
-// Max gigs shown on homepage — add more to the array freely, only this many will render
-const MAX_GIGS = 8;
-const visibleGigs = gigs.slice(0, MAX_GIGS);
+// Max entries shown on homepage — add more to the array freely, only this many will render
+const MAX_ENTRIES = 8;
+const visibleEntries = entries.slice(0, MAX_ENTRIES);
 
 // Group by month
-const gigsByMonth: { monthKey: string; gigs: Gig[] }[] = [];
-for (const gig of visibleGigs) {
-    let group = gigsByMonth.find(m => m.monthKey === gig.monthKey);
-    if (!group) { group = { monthKey: gig.monthKey, gigs: [] }; gigsByMonth.push(group); }
-    group.gigs.push(gig);
+const entriesByMonth: { monthKey: string; entries: CalendarEntry[] }[] = [];
+for (const entry of visibleEntries) {
+    let group = entriesByMonth.find(m => m.monthKey === entry.monthKey);
+    if (!group) { group = { monthKey: entry.monthKey, entries: [] }; entriesByMonth.push(group); }
+    group.entries.push(entry);
 }
 ---
 
@@ -115,35 +132,48 @@ for (const gig of visibleGigs) {
 
     <!-- 3. Calendar (mobile: below poster / desktop: right col bottom) -->
     <div class="min-[850px]:col-start-2 min-[850px]:row-start-2 overflow-y-auto overflow-x-hidden mt-6 min-[850px]:mt-0 scrollbar-none min-[850px]:min-h-0 [mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)] min-[850px]:[mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)] flex flex-col items-center min-[850px]:items-start min-w-0" role="region" aria-label="Upcoming gigs">
-        {gigsByMonth.map(({ monthKey, gigs }) => (
+        {entriesByMonth.map(({ monthKey, entries }) => (
             <div class="mb-4 w-full max-w-xs min-[850px]:max-w-none">
                 <!-- Month label -->
                 <div class="border-b border-base-900/30 mb-1 pb-0.5">
                     <span class="font-bahnschrift font-bold text-sm text-base-900/40 uppercase tracking-widest" data-i18n={monthKey}>{monthLabels[monthKey]}</span>
                 </div>
-                <!-- Gig rows -->
-                {gigs.map((gig) => (
+                <!-- Calendar rows -->
+                {entries.map((entry) => (
                     <div class="flex items-baseline gap-3 py-1.5 border-b border-base-900/10">
-                        <span class="font-bahnschrift font-bold text-2xl text-base-900/40 leading-none w-8 shrink-0">{gig.date}</span>
-                        <span class="font-bahnschrift font-bold text-base text-base-900 uppercase leading-snug flex flex-wrap items-baseline gap-x-2">
-                            {gig.bands.map((band, i) => (
-                                <>
-                                    {band.tba ? (
-                                        <span class="text-sm font-normal text-base-900/40 tracking-widest">{band.name}</span>
-                                    ) : band.url ? (
-                                        <a href={band.url} target="_blank" rel="noopener noreferrer" class="band-name hover:underline underline-offset-2">{band.name}</a>
-                                    ) : (
-                                        <span class="band-name">{band.name}</span>
-                                    )}
-                                    {band.city && (
-                                        <span class="text-xs font-normal text-base-900/40 normal-case ml-[-0.25rem]">({band.city})</span>
-                                    )}
-                                    {i < gig.bands.length - 1 && (
-                                        <span class="text-base-900/50 font-black text-lg leading-none">×</span>
-                                    )}
-                                </>
-                            ))}
-                        </span>
+                        <span class="font-bahnschrift font-bold text-2xl text-base-900/40 leading-none w-8 shrink-0">{entry.date}</span>
+                        {entry.type === 'screening' ? (
+                            <!-- Screening row -->
+                            <span class="font-bahnschrift text-sm text-base-900/45 leading-snug flex flex-wrap items-baseline gap-x-2">
+                                <span class="text-xs text-base-900/30 uppercase tracking-widest shrink-0" data-i18n="cal.screening">screening:</span>
+                                {entry.url ? (
+                                    <a href={entry.url} target="_blank" rel="noopener noreferrer" class="screening-name">{entry.title}</a>
+                                ) : (
+                                    <span>{entry.title}</span>
+                                )}
+                            </span>
+                        ) : (
+                            <!-- Gig row -->
+                            <span class="font-bahnschrift font-bold text-base text-base-900 uppercase leading-snug flex flex-wrap items-baseline gap-x-2">
+                                {entry.bands.map((band, i) => (
+                                    <>
+                                        {band.tba ? (
+                                            <span class="text-sm font-normal text-base-900/40 tracking-widest">{band.name}</span>
+                                        ) : band.url ? (
+                                            <a href={band.url} target="_blank" rel="noopener noreferrer" class:list={["band-name hover:underline underline-offset-2", band.noUppercase && "normal-case"]}>{band.name}</a>
+                                        ) : (
+                                            <span class="band-name">{band.name}</span>
+                                        )}
+                                        {band.city && (
+                                            <span class="text-xs font-normal text-base-900/40 normal-case ml-[-0.25rem]">({band.city})</span>
+                                        )}
+                                        {i < entry.bands.length - 1 && (
+                                            <span class="text-base-900/50 font-black text-lg leading-none">×</span>
+                                        )}
+                                    </>
+                                ))}
+                            </span>
+                        )}
                     </div>
                 ))}
             </div>

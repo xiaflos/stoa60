@@ -75,6 +75,15 @@ html {
 }
 
 
+.screening-name {
+    display: inline-block;
+    transition: text-shadow 0.2s ease, transform 0.2s ease;
+}
+.screening-name:hover {
+    text-shadow: 0 0 6px rgba(255,255,255,0.25), 0 0 2px rgba(255,255,255,0.15);
+    transform: scale(1.02);
+}
+
 .title-flicker {
     animation: titleFlicker 16s infinite;
     will-change: text-shadow, opacity;
