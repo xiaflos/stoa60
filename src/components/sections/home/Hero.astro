@@ -8,7 +8,7 @@ import LanguageToggle from "../../elements/LanguageToggle.astro"
 import NewsletterForm from "../../elements/NewsletterForm.astro"
 
 // assets
-import nextGigPoster from "../../../assets/images/posters/Upcoming/2026-05-09_thymics.jpg";
+import nextGigPoster from "../../../assets/images/posters/Upcoming/2026-05-16_kathares-arkoudes.jpg";
 
 // Gig calendar data (edit here to update)
 interface Band {
@@ -37,10 +37,6 @@ interface Screening {
 type CalendarEntry = Gig | Screening;
 
 const entries: CalendarEntry[] = [
-    { monthKey: "cal.may",   date: "2",  bands: [
-        { name: "SOMA",     url: "https://somamesoma.bandcamp.com/music", city: "ath" },
-        { name: "Malhotra", url: "https://malhotra.bandcamp.com/album/ruler-sun", city: "reth" },
-    ]},
     { monthKey: "cal.may",   date: "9",  bands: [
         { name: "Thymics", url: "https://thymics.bandcamp.com/album/nothing",  city: "her" },
         { name: "Dismiss", url: "https://dismissband.bandcamp.com/music",      city: "ath" },
