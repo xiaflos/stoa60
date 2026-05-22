@@ -8,7 +8,7 @@ export const translations: Record<string, Record<Lang, string>> = {
 
   // ─── Hero (Home) ───
   "hero.title":       { el: "STOA60", en: "STOA60" },
-  "hero.subtitle1":   { el: "υπόγειος συναυλιακός χώρος στο Ηράκλειο,", en: "DIY underground venue in Iraqlion," },
+  "hero.subtitle1":   { el: "υπόγειος συναυλιακός χώρος στο Ηράκλειο,", en: "underground venue in Iraqlion," },
   "hero.subtitle2":   { el: "Στηρίζουμε το κουτί. Σεβόμαστε τη γειτονιά.", en: "10 years, few hundred gigs and counting." },
   "hero.subtitle3":   { el: "2015-2026.", en: "support your local diy scene." },
   "hero.nextgig":     { el: "next gig", en: "next gig" },
