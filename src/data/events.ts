@@ -111,9 +111,9 @@ export const events: Event[] = [
     "date": "2026-04-01",
     "bands": [
       "SHORT DAYS",
-      "ΕΝΤΕΡΟΝ ΗΜΙΣΗ"
+      "ΕΝΤΕΡΟΝ ΗΜΙΣΥ"
     ],
-    "rawTitle": "SHORT DAYS, ΕΝΤΕΡΟΝ ΗΜΙΣΗ",
+    "rawTitle": "SHORT DAYS, ΕΝΤΕΡΟΝ ΗΜΙΣΥ",
     "eventType": "gig",
     "location": "underground",
     "organiser": [
@@ -209,9 +209,9 @@ export const events: Event[] = [
     "date": "2026-02-07",
     "bands": [
       "ZERO CHANCE",
-      "OTOΜΠΡΙΤΣΙ"
+      "OTOΜΠΡΙΤΣΙ ΜΟΤΟΡΙ"
     ],
-    "rawTitle": "ZERO CHANCE, OTOΜΠΡΙΤΣΙ",
+    "rawTitle": "ZERO CHANCE, OTOΜΠΡΙΤΣΙ ΜΟΤΟΡΙ",
     "eventType": "gig",
     "location": "underground",
     "organiser": [
@@ -364,9 +364,9 @@ export const events: Event[] = [
     "date": "2025-11-15",
     "bands": [
       "SONS OF ZEVEDEUS",
-      "ΑΡΚΟΥΔΕΣ ΤΩΝ ΑΓΩΓΩΝ ΤΗΣ ΠΛΥΚΑΤΟΙΚΙΑΣ"
+      "ΑΡΚΟΥΔΕΣ ΤΩΝ ΑΓΩΓΩΝ ΤΗΣ ΠΟΛΥΚΑΤΟΙΚΙΑΣ"
     ],
-    "rawTitle": "SONS OF ZEVEDEUS, ΑΡΚΟΥΔΕΣ ΤΩΝ ΑΓΩΓΩΝ ΤΗΣ ΠΛΥΚΑΤΟΙΚΙΑΣ",
+    "rawTitle": "SONS OF ZEVEDEUS, ΑΡΚΟΥΔΕΣ ΤΩΝ ΑΓΩΓΩΝ ΤΗΣ ΠΟΛΥΚΑΤΟΙΚΙΑΣ",
     "eventType": "gig",
     "location": "underground",
     "organiser": [
@@ -600,11 +600,11 @@ export const events: Event[] = [
     "date": "2025-02-15",
     "bands": [
       "TAYLOR SAVAGE",
-      "OLLA VIA",
+      "OLA VIA",
       "SIRAP",
       "OUROBOROS"
     ],
-    "rawTitle": "TAYLOR SAVAGE, OLLA VIA, SIRAP, OUROBOROS",
+    "rawTitle": "TAYLOR SAVAGE, OLA VIA, SIRAP, OUROBOROS",
     "eventType": "gig",
     "location": "underground",
     "organiser": [
@@ -783,11 +783,11 @@ export const events: Event[] = [
   {
     "date": "2024-11-02",
     "bands": [
-      "ΔΡΑΜΑ ΚΩΜΙΚΟΥ AND THE DRUMOULINS",
+      "ΔΡΑΜΑ ΚΩΜΙΚΟΥ & THE DRAMOULINS",
       "BLACK SPIRIT",
       "ΛΟΓΟΥ ΧΑΡΙΝ"
     ],
-    "rawTitle": "ΔΡΑΜΑ ΚΩΜΙΚΟΥ AND THE DRUMOULINS, BLACK SPIRIT, ΛΟΓΟΥ ΧΑΡΙΝ",
+    "rawTitle": "ΔΡΑΜΑ ΚΩΜΙΚΟΥ & THE DRAMOULINS, BLACK SPIRIT, ΛΟΓΟΥ ΧΑΡΙΝ",
     "eventType": "gig",
     "location": "underground",
     "organiser": [
@@ -1434,9 +1434,9 @@ export const events: Event[] = [
       "KOSTADIS",
       "RCRENDER",
       "ECHO CANYON",
-      "TURBOTEETH"
+      "TURBO TEETH"
     ],
-    "rawTitle": "KOSTADIS, RCRENDER, ECHO CANYON, TURBOTEETH",
+    "rawTitle": "KOSTADIS, RCRENDER, ECHO CANYON, TURBO TEETH",
     "eventType": "Nite Visita",
     "location": "underground",
     "organiser": [
@@ -3012,12 +3012,12 @@ export const events: Event[] = [
   {
     "date": "2018-05-25",
     "bands": [
-      "OLLA VIA",
+      "OLA VIA",
       "IMPEDANCE",
       "CHRYSANTHEMUM",
       "OUROBOROS"
     ],
-    "rawTitle": "OLLA VIA, IMPEDANCE, CHRYSANTHEMUM, OUROBOROS",
+    "rawTitle": "OLA VIA, IMPEDANCE, CHRYSANTHEMUM, OUROBOROS",
     "eventType": "gig",
     "location": "underground",
     "organiser": [
@@ -3140,9 +3140,9 @@ export const events: Event[] = [
     "bands": [
       "ALIEN MUSTANGS",
       "MELLOW LIZARD",
-      "MELLON SNACKMAN INGUANA"
+      "MELLON SNACKMAN IGUANA"
     ],
-    "rawTitle": "ALIEN MUSTANGS, MELLOW LIZARD, MELLON SNACKMAN INGUANA",
+    "rawTitle": "ALIEN MUSTANGS, MELLOW LIZARD, MELLON SNACKMAN IGUANA",
     "eventType": "gig",
     "location": "underground",
     "organiser": [
@@ -3227,9 +3227,9 @@ export const events: Event[] = [
       "SARABANTE",
       "BUCHANNONS",
       "THIN BASTARDS",
-      "OTOMPRITSI MOTORI"
+      "OTOΜΠΡΙΤΣΙ ΜΟΤΟΡΙ"
     ],
-    "rawTitle": "SARABANTE, BUCHANNONS, THIN BASTARDS, OTOMPRITSI MOTORI",
+    "rawTitle": "SARABANTE, BUCHANNONS, THIN BASTARDS, OTOΜΠΡΙΤΣΙ ΜΟΤΟΡΙ",
     "eventType": "gig",
     "location": "voutes",
     "organiser": [
@@ -3344,10 +3344,10 @@ export const events: Event[] = [
   {
     "date": "2017-11-25",
     "bands": [
-      "PLAYGROUND",
+      "PLAYGROUNDED",
       "ΣΟΦΙΑ ΣΑΡΡΗ"
     ],
-    "rawTitle": "PLAYGROUND, ΣΟΦΙΑ ΣΑΡΡΗ",
+    "rawTitle": "PLAYGROUNDED, ΣΟΦΙΑ ΣΑΡΡΗ",
     "eventType": "gig",
     "location": "underground",
     "organiser": [
@@ -3780,9 +3780,10 @@ export const events: Event[] = [
   {
     "date": "2016-11-19",
     "bands": [
-      "CRAANG AND MANDA RAY"
+      "CRAANG",
+      "MANDA RAY"
     ],
-    "rawTitle": "CRAANG AND MANDA RAY",
+    "rawTitle": "CRAANG, MANDA RAY",
     "eventType": "gig",
     "location": "underground",
     "organiser": [
@@ -3835,9 +3836,10 @@ export const events: Event[] = [
   {
     "date": "2016-10-15",
     "bands": [
-      "FILM JACKET 35. THE THIN BASTARDS"
+      "FILM JACKET 35",
+      "THE THIN BASTARDS"
     ],
-    "rawTitle": "FILM JACKET 35. THE THIN BASTARDS",
+    "rawTitle": "FILM JACKET 35, THE THIN BASTARDS",
     "eventType": "gig",
     "location": "underground",
     "organiser": [
@@ -3947,9 +3949,9 @@ export const events: Event[] = [
     "bands": [
       "WHAM JAH",
       "KOSTADIS",
-      "DEADGUM"
+      "DEAD GUM"
     ],
-    "rawTitle": "WHAM JAH, KOSTADIS, DEADGUM",
+    "rawTitle": "WHAM JAH, KOSTADIS, DEAD GUM",
     "eventType": "gig",
     "location": "underground",
     "organiser": [
@@ -4059,9 +4061,9 @@ export const events: Event[] = [
     "date": "2016-01-23",
     "bands": [
       "RITA MOSS",
-      "LAST DAYS OF S.E.X"
+      "LAST DAYS OF SEX"
     ],
-    "rawTitle": "RITA MOSS, LAST DAYS OF S.E.X",
+    "rawTitle": "RITA MOSS, LAST DAYS OF SEX",
     "eventType": "gig",
     "location": "underground",
     "organiser": [
