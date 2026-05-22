@@ -10,63 +10,79 @@ import NewsletterForm from "../../elements/NewsletterForm.astro"
 // assets
 import nextGigPoster from "../../../assets/images/posters/Upcoming/OUTFORSUMMER.jpg";
 
-// Gig calendar data (edit here to update)
-interface Band {
-    name: string;
-    url?: string;
-    tba?: boolean;
-    city?: string;
-    noUppercase?: boolean;
+import { events } from "../../../data/events.ts";
+
+const posterImages = import.meta.glob<{ default: ImageMetadata }>(
+    "../../../assets/images/posters/**/*.{jpg,jpeg,png}",
+    { eager: true }
+);
+
+// Build lookup: relative poster path (as in events.ts) → optimised src URL
+const posterSrcMap: Record<string, string> = {};
+for (const [path, mod] of Object.entries(posterImages)) {
+    // path looks like "../../../assets/images/posters/2025-2026/file.jpg"
+    const key = path.replace("../../../assets/images/posters/", "");
+    posterSrcMap[key] = mod.default.src;
 }
 
-interface Gig {
-    type?: 'gig';
-    monthKey: string;
-    date: string;
-    bands: Band[];
+interface CalendarEntry {
+    date: string;       // YYYY-MM-DD
+    bands: string[];
+    bandLinks?: Record<string, string>;
+    location?: string;
+    posterSrc?: string;
+    eventType?: string;
+    isNext?: boolean;   // highlight flag for the next upcoming event
 }
 
-interface Screening {
-    type: 'screening';
-    monthKey: string;
-    date: string;
-    title: string;
-    url?: string;
-}
-
-type CalendarEntry = Gig | Screening;
-
-const entries: CalendarEntry[] = [
-    { monthKey: "cal.may",   date: "9",  bands: [
-        { name: "Thymics", url: "https://thymics.bandcamp.com/album/nothing",  city: "her" },
-        { name: "Dismiss", url: "https://dismissband.bandcamp.com/music",      city: "ath" },
-    ]},
-    { monthKey: "cal.may",   date: "16", bands: [
-        { name: "ΚΑΘΑΡΟΣ ΧΑΛΚΟΣ",                         url: "https://katharoschalkos.bandcamp.com/album/-", city: "ath" },
-        { name: "ΑΡΚΟΥΔΕΣ ΤΩΝ ΑΓΩΓΩΝ ΤΗΣ ΠΟΛΥΚΑΤΟΙΚΙΑΣ", url: "https://www.youtube.com/watch?v=aArwHqZA-7Y", city: "her" },
-    ]},
-    { monthKey: "cal.september", date: "19", bands: [
-        { name: "AarghFuckKill", url: "https://aarghfuckkill.bandcamp.com/", city: "hamburg", noUppercase: true },
-        { name: "TBA", tba: true },
-    ]},
+const manualFutureEntries: CalendarEntry[] = [
+    { date: "2026-09-19", bands: ["AarghFuckKill", "TBA"], bandLinks: { "AarghFuckKill": "https://aarghfuckkill.bandcamp.com/" } },
 ];
 
-// Default (Greek) month labels for SSR — overridden by JS i18n on client
-const monthLabels: Record<string, string> = {
-    "cal.april":     "Απρίλιος",
-    "cal.may":       "Μάιος",
-    "cal.september": "Σεπτεμβριος",
+const today = new Date().toISOString().slice(0, 10);
+
+const dbEntries: CalendarEntry[] = events.map(e => ({
+    date: e.date,
+    bands: e.bands,
+    bandLinks: e.bandLinks,
+    location: e.location !== 'underground' ? e.location : undefined,
+    posterSrc: e.poster ? posterSrcMap[e.poster] : undefined,
+    eventType: e.eventType !== 'gig' ? e.eventType : undefined,
+}));
+
+const allEntries = [...manualFutureEntries, ...dbEntries]
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+// Find the next upcoming event (first one with date >= today)
+const nextIdx = allEntries.findIndex(e => e.date >= today);
+const nextEventDate = nextIdx !== -1 ? allEntries[nextIdx].date : null;
+if (nextIdx !== -1) allEntries[nextIdx].isNext = true;
+
+// Greek month names
+const monthNames: Record<number, string> = {
+    1: "Ιανουάριος", 2: "Φεβρουάριος", 3: "Μάρτιος",
+    4: "Απρίλιος",   5: "Μάιος",       6: "Ιούνιος",
+    7: "Ιούλιος",    8: "Αύγουστος",    9: "Σεπτέμβριος",
+    10: "Οκτώβριος", 11: "Νοέμβριος",   12: "Δεκέμβριος",
 };
 
-// Max entries shown on homepage — add more to the array freely, only this many will render
-const MAX_ENTRIES = 8;
-const visibleEntries = entries.slice(0, MAX_ENTRIES);
+// Group by year-month
+interface MonthGroup {
+    key: string;
+    label: string;
+    year: number;
+    entries: CalendarEntry[];
+}
 
-// Group by month
-const entriesByMonth: { monthKey: string; entries: CalendarEntry[] }[] = [];
-for (const entry of visibleEntries) {
-    let group = entriesByMonth.find(m => m.monthKey === entry.monthKey);
-    if (!group) { group = { monthKey: entry.monthKey, entries: [] }; entriesByMonth.push(group); }
+const entriesByMonth: MonthGroup[] = [];
+for (const entry of allEntries) {
+    const [y, m] = entry.date.split("-").map(Number);
+    const key = `${y}-${String(m).padStart(2, "0")}`;
+    let group = entriesByMonth.find(g => g.key === key);
+    if (!group) {
+        group = { key, label: monthNames[m], year: y, entries: [] };
+        entriesByMonth.push(group);
+    }
     group.entries.push(entry);
 }
 ---
@@ -126,51 +142,53 @@ for (const entry of visibleEntries) {
     </div>
 
     <!-- 3. Calendar (mobile: below poster / desktop: right col bottom) -->
-    <div class="min-[850px]:col-start-2 min-[850px]:row-start-2 overflow-y-auto overflow-x-hidden mt-6 min-[850px]:mt-0 scrollbar-none min-[850px]:min-h-0 [mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)] min-[850px]:[mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)] flex flex-col items-center min-[850px]:items-start min-w-0" role="region" aria-label="Upcoming gigs">
-        {entriesByMonth.map(({ monthKey, entries }) => (
+    <div id="gig-calendar" class="min-[850px]:col-start-2 min-[850px]:row-start-2 overflow-y-auto overflow-x-hidden mt-6 min-[850px]:mt-0 scrollbar-none min-h-0 max-h-[45vh] [mask-image:linear-gradient(to_bottom,transparent,black_30%)] min-[850px]:[mask-image:linear-gradient(to_bottom,transparent,black_30%)] flex flex-col items-center min-[850px]:items-start min-w-0" role="region" aria-label="Upcoming gigs">
+        {entriesByMonth.map(({ key, label, year, entries }) => (
             <div class="mb-4 w-full max-w-xs min-[850px]:max-w-none">
-                <!-- Month label -->
+                <!-- Month + year label -->
                 <div class="border-b border-base-900/30 mb-1 pb-0.5">
-                    <span class="font-bahnschrift font-bold text-sm text-base-900/40 uppercase tracking-widest" data-i18n={monthKey}>{monthLabels[monthKey]}</span>
+                    <span class="font-bahnschrift font-bold text-sm text-base-900/40 uppercase tracking-widest">{label} {year}</span>
                 </div>
                 <!-- Calendar rows -->
-                {entries.map((entry) => (
-                    <div class="flex items-baseline gap-3 py-1.5 border-b border-base-900/10">
-                        <span class="font-bahnschrift font-bold text-2xl text-base-900/40 leading-none w-8 shrink-0">{entry.date}</span>
-                        {entry.type === 'screening' ? (
-                            <!-- Screening row -->
-                            <span class="font-bahnschrift text-sm text-base-900/45 leading-snug flex flex-wrap items-baseline gap-x-2">
-                                <span class="text-xs text-base-900/30 uppercase tracking-widest shrink-0" data-i18n="cal.screening">screening:</span>
-                                {entry.url ? (
-                                    <a href={entry.url} target="_blank" rel="noopener noreferrer" class="screening-name">{entry.title}</a>
+                {entries.map((entry) => {
+                    const day = parseInt(entry.date.split("-")[2], 10);
+                    return (
+                        <div class:list={["flex flex-col py-1.5 border-b border-base-900/10", entry.isNext && "bg-base-900/8 -mx-2 px-2 rounded"]} data-date={entry.date} data-next={entry.isNext ? "true" : undefined}>
+                            {entry.eventType && (
+                                <span class="font-bahnschrift text-xs font-normal text-base-900/35 tracking-widest uppercase pl-11 mb-0.5">{entry.eventType}</span>
+                            )}
+                            <div class="flex items-baseline gap-3">
+                                {entry.posterSrc ? (
+                                    <button class="cal-poster-btn font-bahnschrift font-bold text-2xl text-base-900/40 leading-none w-8 shrink-0 hover:text-base-900 transition-colors cursor-pointer" data-poster={entry.posterSrc} aria-label="View poster">{day}</button>
                                 ) : (
-                                    <span>{entry.title}</span>
+                                    <span class="font-bahnschrift font-bold text-2xl text-base-900/40 leading-none w-8 shrink-0">{day}</span>
                                 )}
-                            </span>
-                        ) : (
-                            <!-- Gig row -->
-                            <span class="font-bahnschrift font-bold text-base text-base-900 uppercase leading-snug flex flex-wrap items-baseline gap-x-2">
-                                {entry.bands.map((band, i) => (
-                                    <>
-                                        {band.tba ? (
-                                            <span class="text-sm font-normal text-base-900/40 tracking-widest">{band.name}</span>
-                                        ) : band.url ? (
-                                            <a href={band.url} target="_blank" rel="noopener noreferrer" class:list={["band-name hover:underline underline-offset-2", band.noUppercase && "normal-case"]}>{band.name}</a>
-                                        ) : (
-                                            <span class="band-name">{band.name}</span>
-                                        )}
-                                        {band.city && (
-                                            <span class="text-xs font-normal text-base-900/40 normal-case ml-[-0.25rem]">({band.city})</span>
-                                        )}
-                                        {i < entry.bands.length - 1 && (
-                                            <span class="text-base-900/50 font-black text-lg leading-none">×</span>
-                                        )}
-                                    </>
-                                ))}
-                            </span>
-                        )}
-                    </div>
-                ))}
+                                <span class="font-bahnschrift font-bold text-base text-base-900 uppercase leading-snug flex flex-wrap items-baseline gap-x-2">
+                                    {entry.bands.map((band, i) => {
+                                        const href = entry.bandLinks?.[band];
+                                        return (
+                                            <>
+                                                {band === "TBA" ? (
+                                                    <span class="text-sm font-normal text-base-900/40 tracking-widest">{band}</span>
+                                                ) : href ? (
+                                                    <a href={href} target="_blank" rel="noopener noreferrer" class="band-name hover:underline underline-offset-2">{band}</a>
+                                                ) : (
+                                                    <span>{band}</span>
+                                                )}
+                                                {i < entry.bands.length - 1 && (
+                                                    <span class="text-base-900/50 font-black text-lg leading-none">×</span>
+                                                )}
+                                            </>
+                                        );
+                                    })}
+                                    {entry.location && (
+                                        <span class="text-xs font-normal text-base-900/40 normal-case">@{entry.location}</span>
+                                    )}
+                                </span>
+                            </div>
+                        </div>
+                    );
+                })}
             </div>
         ))}
     </div>
@@ -210,24 +228,48 @@ for (const entry of visibleEntries) {
 </style>
 
 <script>
-    const btn       = document.getElementById("hero-poster-btn")!;
+    // Scroll calendar so the next event is visible at the top
+    const calendar = document.getElementById("gig-calendar");
+    const nextRow = calendar?.querySelector('[data-next="true"]') as HTMLElement | null;
+    if (calendar && nextRow) {
+        const rowRect = nextRow.getBoundingClientRect();
+        const calRect = calendar.getBoundingClientRect();
+        calendar.scrollTop += rowRect.top - calRect.top;
+    }
+
     const lightbox  = document.getElementById("hero-lightbox") as HTMLElement;
     const img       = document.getElementById("hero-lightbox-img") as HTMLImageElement;
     const closeBtn  = document.getElementById("hero-lightbox-close")!;
 
-    function open() {
-        const src = btn.querySelector("img")?.currentSrc || btn.querySelector("img")?.getAttribute("src") || "";
+    let lastFocused: HTMLElement | null = null;
+
+    function openLightbox(src: string, trigger: HTMLElement) {
+        lastFocused = trigger;
         img.src = src;
         lightbox.style.display = "flex";
         closeBtn.focus();
     }
-    function close() {
+    function closeLightbox() {
         lightbox.style.display = "none";
-        btn.focus();
+        lastFocused?.focus();
     }
 
-    btn.addEventListener("click", open);
-    closeBtn.addEventListener("click", close);
-    lightbox.addEventListener("click", (e) => { if (e.target === lightbox) close(); });
-    window.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+    // Main next-gig poster button
+    const btn = document.getElementById("hero-poster-btn")!;
+    btn.addEventListener("click", () => {
+        const src = btn.querySelector("img")?.currentSrc || btn.querySelector("img")?.getAttribute("src") || "";
+        openLightbox(src, btn as HTMLElement);
+    });
+
+    // Calendar date buttons
+    document.querySelectorAll<HTMLElement>(".cal-poster-btn").forEach(calBtn => {
+        calBtn.addEventListener("click", () => {
+            const src = calBtn.dataset.poster!;
+            openLightbox(src, calBtn);
+        });
+    });
+
+    closeBtn.addEventListener("click", closeLightbox);
+    lightbox.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
+    window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeLightbox(); });
 </script>

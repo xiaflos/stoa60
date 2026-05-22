@@ -27,3 +27,7 @@ _local/
 .idea/
 .worktrees/
 .claude/
+
+# Events DB build artifacts
+/data/*.xlsx
+/tools/event-build/*.log

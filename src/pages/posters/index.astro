@@ -8,29 +8,96 @@ import Container from "../../components/elements/Container.astro";
 import LanguageToggle from "../../components/elements/LanguageToggle.astro";
 import { Image } from "astro:assets";
 
-const allImages = import.meta.glob<{ default: ImageMetadata }>(
+// database
+import { events } from "../../data/events.ts";
+
+// Load all poster images into a path→ImageMetadata lookup
+const posterGlob = import.meta.glob<{ default: ImageMetadata }>(
     "../../assets/images/posters/**/*.{jpg,jpeg,png}",
     { eager: true }
 );
+const posterMap: Record<string, ImageMetadata> = {};
+for (const [path, mod] of Object.entries(posterGlob)) {
+    const key = path.replace("../../assets/images/posters/", "");
+    posterMap[key] = mod.default;
+}
 
 interface PosterEntry {
     image: ImageMetadata;
-    filename: string;
-    isOutdoor: boolean;
-    venue?: string;    // Greek display name (SSR default)
-    venueKey?: string; // i18n key for client-side translation
+    date: string;
+    rawTitle: string;
+    location: string;
+    organiser: string[];
+    eventType: string;
 }
 
-const seasonPattern = /^\d{4}-\d{4}$/;
+function formatDate(dateStr: string): string {
+    const [y, m, d] = dateStr.split("-");
+    return `${d}.${m}.${y}`;
+}
 
-const outdoorDisplayNames: Record<string, { en: string; el: string; key: string }> = {
-    GEORGIADIS: { en: "Georgiadis Park", el: "Πάρκο Γεωργιάδη", key: "loc.georgiadis" },
-    KARABOLAS:  { en: "Karabolas",       el: "Καραβολάς",        key: "loc.karabolas"  },
-    VOUTES:     { en: "Voutes",          el: "Βούτες",           key: "loc.voutes"     },
-    XENIA:      { en: "Xenia",           el: "Ξένια",            key: "loc.xenia"      },
+function dateToSeason(dateStr: string): string {
+    const [y, m] = dateStr.split("-").map(Number);
+    return m >= 9 ? `${y}-${y + 1}` : `${y - 1}-${y}`;
+}
+
+// Build full poster list from database (events already newest-first)
+const allPosters: PosterEntry[] = events
+    .filter(e => e.poster && posterMap[e.poster])
+    .map(e => ({
+        image:     posterMap[e.poster],
+        date:      e.date,
+        rawTitle:  e.rawTitle,
+        location:  e.location,
+        organiser: e.organiser,
+        eventType: e.eventType,
+    }));
+
+// Season grouping
+const seasonMap: Record<string, PosterEntry[]> = {};
+for (const p of allPosters) {
+    const s = dateToSeason(p.date);
+    (seasonMap[s] ??= []).push(p);
+}
+const seasons = Object.keys(seasonMap)
+    .sort((a, b) => b.localeCompare(a))
+    .map(year => ({ year, posters: seasonMap[year] }));
+
+// Location sections
+const undergroundPosters = allPosters.filter(p => p.location === "underground");
+
+const locationDisplayNames: Record<string, { el: string; en: string; key: string }> = {
+    georgiadis:   { el: "Πάρκο Γεωργιάδη", en: "Georgiadis Park", key: "loc.georgiadis"   },
+    karabolas:    { el: "Καραβολάς",        en: "Karabolas",       key: "loc.karabolas"    },
+    voutes:       { el: "Βούτες",           en: "Voutes",          key: "loc.voutes"       },
+    xenia:        { el: "Ξένια",            en: "Xenia",           key: "loc.xenia"        },
+    evangelismos: { el: "Ευαγγελισμός",     en: "Evangelismos",    key: "loc.evangelismos" },
+    walls:        { el: "Τείχη",            en: "Walls",           key: "loc.walls"        },
 };
 
-// Festival posters — auto-detected by _fest suffix in filename (before extension)
+const venueOrder = ["georgiadis", "karabolas", "voutes", "xenia"];
+const venues = venueOrder
+    .map(loc => ({
+        key:     loc,
+        el:      locationDisplayNames[loc].el,
+        en:      locationDisplayNames[loc].en,
+        i18nKey: locationDisplayNames[loc].key,
+        posters: allPosters.filter(p => p.location === loc),
+    }))
+    .filter(v => v.posters.length > 0);
+
+// Special sections
+const ba2037Posters     = allPosters.filter(p => p.organiser.includes("ba2037"));
+const rastapankPosters  = allPosters.filter(p => p.organiser.includes("rastapank"));
+const barPosters        = allPosters.filter(p => p.eventType === "Bar");
+
+const festivalKeywords  = ["down tuned", "makrovoutes", "tsurai", "fertility", "voutopia", "el paso"];
+const festivalPosters   = allPosters.filter(p =>
+    festivalKeywords.some(kw =>
+        p.eventType.toLowerCase().includes(kw) ||
+        p.rawTitle.toLowerCase().includes(kw)
+    )
+);
 
 // Georgiadis Park description
 const georgiadisIntro = {
@@ -52,7 +119,7 @@ const xeniaText = {
     en: `A few years after the renovation of Heraklion's waterfront and the shut-down of the hotel that gave this particular spot its name, a small open expanse appeared just 10 minutes from the city centre. The seaside amphitheatre known as "Xenia" spent the better part of five years as a meeting point for a large and sprawling community. What began as parties at the bookends of summer gradually turned into a weekly ritual, running from 2016 through to 2018. Self-organized city collectives, student associations, and loose groups of people who simply found themselves there night after night made the space their own — and it was precisely this slow, organic takeover that started to rub certain people the wrong way. Local media worked to build a narrative around it, residents began lodging formal complaints, and by 2018 the Xenia era had run its course.`,
 };
 
-// BA2037 description (posters auto-loaded from BA2037 folder)
+// BA2037 description
 const ba2037Intro = {
     el: "Η ΒΑ2037 λειτούργησε από τα τέλη του '18 μέχρι περίπου το 2021, υπήρξε οργανικό κομμάτι της στοάς60 με αρκετά κοινά μέλη και επικεντρωνόταν στον ηλεκτρονικό και πειραματικό ήχο. Ακολουθεί το αυτοπαρουσιαστικό της κείμενο.",
     en: "BA2037 was active from late 2018 until roughly 2022. An integral part of Stoa60 with several shared members, focused on electronic and experimental sound. This is how they introduced themselves back in the day.",
@@ -82,117 +149,6 @@ We feel the need to create these circumstances where each person will be able to
 
 See you on the dancefloor!`,
 };
-
-function filenameToDate(filename: string): string {
-    const m = filename.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
-    if (!m) return "";
-    return `${m[3].padStart(2,"0")}.${m[2].padStart(2,"0")}.${m[1]}`;
-}
-
-function filenameToSeason(filename: string): string {
-    const m = filename.match(/^(\d{4})-(\d{2})/);
-    if (!m) return "";
-    const year  = parseInt(m[1]);
-    const month = parseInt(m[2]);
-    if (month > 12 || month === 0) return `${year}-${year + 1}`;
-    return month >= 9 ? `${year}-${year + 1}` : `${year - 1}-${year}`;
-}
-
-const seasonMap: Record<string, PosterEntry[]> = {};
-const venueMap:  Record<string, PosterEntry[]> = {};
-const undergroundPosters: PosterEntry[] = [];
-
-for (const [path, module] of Object.entries(allImages)) {
-    const parts    = path.split("/");
-    const folder   = parts[parts.length - 2];
-    const filename = parts[parts.length - 1];
-
-    // Skip BA2037 and other non-season, non-venue folders (including Upcoming)
-    if (!seasonPattern.test(folder) && !outdoorDisplayNames[folder]) continue;
-
-    if (seasonPattern.test(folder)) {
-        const entry: PosterEntry = { image: module.default, filename, isOutdoor: false };
-        if (!seasonMap[folder]) seasonMap[folder] = [];
-        seasonMap[folder].push(entry);
-        // Non-outdoor → Underground location
-        undergroundPosters.push(entry);
-    } else if (outdoorDisplayNames[folder]) {
-        const entry: PosterEntry = {
-            image: module.default,
-            filename,
-            isOutdoor: true,
-            venue:    outdoorDisplayNames[folder].el,
-            venueKey: outdoorDisplayNames[folder].key,
-        };
-        const season = filenameToSeason(filename);
-        if (season) {
-            if (!seasonMap[season]) seasonMap[season] = [];
-            seasonMap[season].push(entry);
-        }
-        if (!venueMap[folder]) venueMap[folder] = [];
-        venueMap[folder].push(entry);
-    }
-}
-
-for (const key of Object.keys(seasonMap)) {
-    seasonMap[key].sort((a, b) =>
-        b.filename.localeCompare(a.filename, undefined, { numeric: true, sensitivity: "base" })
-    );
-}
-
-const seasons = Object.keys(seasonMap)
-    .sort((a, b) => b.localeCompare(a))
-    .map(year => ({ year, posters: seasonMap[year] }));
-
-const venueOrder = ["GEORGIADIS", "KARABOLAS", "VOUTES", "XENIA"];
-const venues = venueOrder
-    .filter(v => venueMap[v])
-    .map(v => ({
-        key:     v,
-        i18nKey: outdoorDisplayNames[v].key,
-        name:    outdoorDisplayNames[v].el,
-        posters: venueMap[v].sort((a, b) =>
-            b.filename.localeCompare(a.filename, undefined, { numeric: true, sensitivity: "base" })
-        ),
-    }));
-
-// Festival posters — any poster whose filename (without extension) ends with _fest
-const festivalPosters: PosterEntry[] = [];
-// BA2037 posters — auto-loaded from BA2037 folder
-const ba2037Posters: PosterEntry[] = [];
-// Bar posters — auto-loaded from BAR folder
-const barPosters: PosterEntry[] = [];
-
-for (const [path, module] of Object.entries(allImages)) {
-    const parts    = path.split("/");
-    const folder   = parts[parts.length - 2];
-    const filename = parts[parts.length - 1];
-    const stem     = filename.replace(/\.[^.]+$/, "");
-
-    if (stem.endsWith("_fest")) {
-        festivalPosters.push({ image: module.default, filename, isOutdoor: false });
-    }
-    if (folder === "BA2037") {
-        ba2037Posters.push({ image: module.default, filename, isOutdoor: false });
-    }
-    if (folder === "BAR") {
-        barPosters.push({ image: module.default, filename, isOutdoor: false });
-    }
-}
-
-festivalPosters.sort((a, b) =>
-    b.filename.localeCompare(a.filename, undefined, { numeric: true, sensitivity: "base" })
-);
-ba2037Posters.sort((a, b) =>
-    b.filename.localeCompare(a.filename, undefined, { numeric: true, sensitivity: "base" })
-);
-barPosters.sort((a, b) =>
-    b.filename.localeCompare(a.filename, undefined, { numeric: true, sensitivity: "base" })
-);
-
-undergroundPosters.sort((a, b) =>
-    b.filename.localeCompare(a.filename, undefined, { numeric: true, sensitivity: "base" })
-);
 ---
 
 <Layout title="Posters" footerInnerClass="md:pl-44" tileBgOnMobile={true} mobileBgWide={true}>
@@ -243,29 +199,41 @@ undergroundPosters.sort((a, b) =>
                     {venues.map(v => (
                         <button
                             class="category-tab font-bahnschrift font-bold uppercase text-base md:text-lg text-left px-2 py-1.5 text-base-900/60 border-l-2 border-transparent select-none"
-                            data-target={`section-venue-${v.key.toLowerCase()}`}
+                            data-target={`section-venue-${v.key}`}
                             data-i18n={v.i18nKey}
-                        >{v.name}</button>
+                        >{v.el}</button>
                     ))}
                 </div>
 
-                <!-- Festivals / BA2037 / Bar: one row on mobile, stacked on desktop -->
+                <!-- Festivals / BA2037 / Bar -->
                 <div class="sidebar-divider border-t border-base-900/20 my-2" />
                 <div class="flex flex-row md:flex-col gap-2 md:gap-0.5 justify-center md:justify-start">
-                    <button
-                        class="category-tab font-bahnschrift font-bold uppercase text-base md:text-lg text-left px-2 py-1.5 text-base-900/60 border-l-2 border-transparent select-none"
-                        data-target="section-festivals"
-                        data-i18n="loc.festivals"
-                    >Φεστιβάλ</button>
-                    <button
-                        class="category-tab font-bahnschrift font-bold uppercase text-base md:text-lg text-left px-2 py-1.5 text-base-900/60 border-l-2 border-transparent select-none"
-                        data-target="section-ba2037"
-                    >BA2037</button>
-                    <button
-                        class="category-tab font-bahnschrift font-bold uppercase text-base md:text-lg text-left px-2 py-1.5 text-base-900/60 border-l-2 border-transparent select-none"
-                        data-target="section-bar"
-                        data-i18n="works.bar"
-                    >Bar</button>
+                    {festivalPosters.length > 0 && (
+                        <button
+                            class="category-tab font-bahnschrift font-bold uppercase text-base md:text-lg text-left px-2 py-1.5 text-base-900/60 border-l-2 border-transparent select-none"
+                            data-target="section-festivals"
+                            data-i18n="loc.festivals"
+                        >Φεστιβάλ</button>
+                    )}
+                    {ba2037Posters.length > 0 && (
+                        <button
+                            class="category-tab font-bahnschrift font-bold uppercase text-base md:text-lg text-left px-2 py-1.5 text-base-900/60 border-l-2 border-transparent select-none"
+                            data-target="section-ba2037"
+                        >BA2037</button>
+                    )}
+                    {rastapankPosters.length > 0 && (
+                        <button
+                            class="category-tab font-bahnschrift font-bold uppercase text-base md:text-lg text-left px-2 py-1.5 text-base-900/60 border-l-2 border-transparent select-none"
+                            data-target="section-rastapank"
+                        >Rastapank</button>
+                    )}
+                    {barPosters.length > 0 && (
+                        <button
+                            class="category-tab font-bahnschrift font-bold uppercase text-base md:text-lg text-left px-2 py-1.5 text-base-900/60 border-l-2 border-transparent select-none"
+                            data-target="section-bar"
+                            data-i18n="works.bar"
+                        >Bar</button>
+                    )}
                 </div>
 
                 <!-- For Print: desktop only -->
@@ -283,21 +251,21 @@ undergroundPosters.sort((a, b) =>
             <!-- Main content: poster grid -->
             <div id="main-content" class="flex-1 md:pl-8 min-w-0 flex flex-col gap-2">
 
-                <!-- Poster sections (shown/hidden by tab) -->
+                <!-- Season sections — location label only, no date -->
                 {seasons.map(s => (
                     <div id={`section-${s.year}`} class="poster-section hidden">
                         <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end">
                             {s.posters.map(p => (
                                 <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
+                                    {p.location !== "underground" && locationDisplayNames[p.location] && (
+                                        <span class="font-bahnschrift text-sm text-base-900/40 mb-2 uppercase tracking-wider text-center order-first" data-i18n={locationDisplayNames[p.location].key}>{locationDisplayNames[p.location].el}</span>
+                                    )}
                                     <Image
                                         src={p.image}
-                                        alt={`Poster ${s.year}`}
+                                        alt={p.rawTitle}
                                         class="w-full h-auto object-contain poster-img"
                                         loading="lazy"
                                     />
-                                    {p.isOutdoor && p.venue && (
-                                        <span class="font-bahnschrift text-sm text-base-900/40 mb-2 uppercase tracking-wider text-center order-first" data-i18n={p.venueKey}>{p.venue}</span>
-                                    )}
                                 </div>
                             ))}
                         </div>
@@ -309,12 +277,10 @@ undergroundPosters.sort((a, b) =>
                     <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end">
                         {undergroundPosters.map(p => (
                             <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
-                                {filenameToDate(p.filename) && (
-                                    <span class="font-bahnschrift text-sm text-base-900/40 mb-2 tracking-wider text-center">{filenameToDate(p.filename)}</span>
-                                )}
+                                <span class="font-bahnschrift text-sm text-base-900/40 mb-2 tracking-wider text-center">{formatDate(p.date)}</span>
                                 <Image
                                     src={p.image}
-                                    alt="Underground poster"
+                                    alt={p.rawTitle}
                                     class="w-full h-auto object-contain poster-img"
                                     loading="lazy"
                                 />
@@ -323,94 +289,114 @@ undergroundPosters.sort((a, b) =>
                     </div>
                 </div>
 
-                <div id="section-festivals" class="poster-section hidden">
-                    <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end">
-                        {festivalPosters.map(p => (
-                            <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
-                                {filenameToDate(p.filename) && (
-                                    <span class="font-bahnschrift text-sm text-base-900/40 mb-2 tracking-wider text-center">{filenameToDate(p.filename)}</span>
-                                )}
-                                <Image
-                                    src={p.image}
-                                    alt="Festival poster"
-                                    class="w-full h-auto object-contain poster-img"
-                                    loading="lazy"
-                                />
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
-                <!-- BA2037 section -->
-                <div id="section-ba2037" class="poster-section hidden flex flex-col gap-4">
-                    <p class="font-bahnschrift text-sm text-base-900/60 leading-relaxed w-full" data-i18n="ba2037.intro">{ba2037Intro.el}</p>
-                    <blockquote class="font-bahnschrift text-sm text-base-900/40 leading-relaxed w-full whitespace-pre-line columns-1 md:columns-2 lg:columns-4 gap-6 border-l-2 border-base-900/20 pl-4 italic" data-i18n="ba2037.quote">{ba2037Quote.el}</blockquote>
-                    {ba2037Posters.length > 0 && (
-                        <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end">
-                            {ba2037Posters.map(p => (
-                                <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
-                                    {filenameToDate(p.filename) && (
-                                        <span class="font-bahnschrift text-sm text-base-900/40 mb-2 tracking-wider text-center">{filenameToDate(p.filename)}</span>
-                                    )}
-                                    <Image
-                                        src={p.image}
-                                        alt="BA2037 poster"
-                                        class="w-full h-auto object-contain poster-img"
-                                        loading="lazy"
-                                    />
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
-
-                <!-- Bar section -->
-                <div id="section-bar" class="poster-section hidden">
-                    <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end">
-                        {barPosters.map(p => (
-                            <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
-                                {filenameToDate(p.filename) && (
-                                    <span class="font-bahnschrift text-sm text-base-900/40 mb-2 tracking-wider text-center">{filenameToDate(p.filename)}</span>
-                                )}
-                                <Image
-                                    src={p.image}
-                                    alt="Bar poster"
-                                    class="w-full h-auto object-contain poster-img"
-                                    loading="lazy"
-                                />
-                            </div>
-                        ))}
-                    </div>
-                </div>
-
+                <!-- Outdoor venue sections (database-driven) -->
                 {venues.map(v => (
-                    <div id={`section-venue-${v.key.toLowerCase()}`} class="poster-section hidden">
-                        {/* GEORGIADIS text — under review, restore when ready:
-                        {v.key === "GEORGIADIS" && (<>
-                            <p class="font-bahnschrift text-sm text-base-900/60 leading-relaxed w-full" data-i18n="georgiadis.intro">{georgiadisIntro.el}</p>
-                            <p class="font-bahnschrift text-sm text-base-900/40 leading-relaxed w-full whitespace-pre-line columns-1 md:columns-2 lg:columns-4 gap-6 mb-2" data-i18n="georgiadis.body">{georgiadisBody.el}</p>
-                        </>)}
-                        {v.key === "XENIA" && (
-                            <p class="font-bahnschrift text-sm text-base-900/60 leading-relaxed w-full whitespace-pre-line columns-1 md:columns-2 gap-6 mb-2" data-i18n="xenia.text">{xeniaText.el}</p>
+                    <div id={`section-venue-${v.key}`} class="poster-section hidden">
+                        {/* georgiadis and xenia descriptions hidden for now
+                        {v.key === "georgiadis" && (
+                            <>
+                                <p class="font-bahnschrift text-sm text-base-900/60 leading-relaxed w-full mb-2" data-i18n="georgiadis.intro">{georgiadisIntro.el}</p>
+                                <p class="font-bahnschrift text-sm text-base-900/40 leading-relaxed w-full whitespace-pre-line columns-1 md:columns-2 lg:columns-4 gap-6 mb-4" data-i18n="georgiadis.body">{georgiadisBody.el}</p>
+                            </>
+                        )}
+                        {v.key === "xenia" && (
+                            <p class="font-bahnschrift text-sm text-base-900/60 leading-relaxed w-full whitespace-pre-line columns-1 md:columns-2 gap-6 mb-4" data-i18n="xenia.text">{xeniaText.el}</p>
                         )}
                         */}
                         <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end">
                             {v.posters.map(p => (
                                 <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
+                                    <span class="font-bahnschrift text-sm text-base-900/40 mb-2 tracking-wider text-center order-first">{formatDate(p.date)}</span>
                                     <Image
                                         src={p.image}
-                                        alt={`Poster from ${v.name}`}
+                                        alt={p.rawTitle}
                                         class="w-full h-auto object-contain poster-img"
                                         loading="lazy"
                                     />
-                                    {filenameToDate(p.filename) && (
-                                        <span class="font-bahnschrift text-sm text-base-900/40 mb-1 tracking-wider text-center order-first">{filenameToDate(p.filename)}</span>
-                                    )}
                                 </div>
                             ))}
                         </div>
                     </div>
                 ))}
+
+                <!-- Festivals section -->
+                {festivalPosters.length > 0 && (
+                    <div id="section-festivals" class="poster-section hidden">
+                        <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end">
+                            {festivalPosters.map(p => (
+                                <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
+                                    <span class="font-bahnschrift text-sm text-base-900/40 mb-1 uppercase tracking-wider text-center order-first">{p.eventType}</span>
+                                    <span class="font-bahnschrift text-sm text-base-900/40 mb-2 tracking-wider text-center order-first">{formatDate(p.date)}</span>
+                                    <Image
+                                        src={p.image}
+                                        alt={p.rawTitle}
+                                        class="w-full h-auto object-contain poster-img"
+                                        loading="lazy"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                <!-- BA2037 section -->
+                {ba2037Posters.length > 0 && (
+                    <div id="section-ba2037" class="poster-section hidden flex flex-col gap-4">
+                        <p class="font-bahnschrift text-sm text-base-900/60 leading-relaxed w-full" data-i18n="ba2037.intro">{ba2037Intro.el}</p>
+                        <blockquote class="font-bahnschrift text-sm text-base-900/40 leading-relaxed w-full whitespace-pre-line columns-1 md:columns-2 lg:columns-4 gap-6 border-l-2 border-base-900/20 pl-4 italic" data-i18n="ba2037.quote">{ba2037Quote.el}</blockquote>
+                        <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end">
+                            {ba2037Posters.map(p => (
+                                <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
+                                    <span class="font-bahnschrift text-sm text-base-900/40 mb-2 tracking-wider text-center">{formatDate(p.date)}</span>
+                                    <Image
+                                        src={p.image}
+                                        alt={p.rawTitle}
+                                        class="w-full h-auto object-contain poster-img"
+                                        loading="lazy"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                <!-- Rastapank section -->
+                {rastapankPosters.length > 0 && (
+                    <div id="section-rastapank" class="poster-section hidden">
+                        <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end">
+                            {rastapankPosters.map(p => (
+                                <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
+                                    <span class="font-bahnschrift text-sm text-base-900/40 mb-2 tracking-wider text-center">{formatDate(p.date)}</span>
+                                    <Image
+                                        src={p.image}
+                                        alt={p.rawTitle}
+                                        class="w-full h-auto object-contain poster-img"
+                                        loading="lazy"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                <!-- Bar section -->
+                {barPosters.length > 0 && (
+                    <div id="section-bar" class="poster-section hidden">
+                        <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end">
+                            {barPosters.map(p => (
+                                <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
+                                    <span class="font-bahnschrift text-sm text-base-900/40 mb-2 tracking-wider text-center">{formatDate(p.date)}</span>
+                                    <Image
+                                        src={p.image}
+                                        alt={p.rawTitle}
+                                        class="w-full h-auto object-contain poster-img"
+                                        loading="lazy"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
 
             </div>
         </div>
@@ -444,7 +430,6 @@ undergroundPosters.sort((a, b) =>
             transition: color 0.25s ease, border-color 0.25s ease;
         }
 
-        /* Sweep fill — slides in from left on hover / active */
         .category-tab::before {
             content: '';
             position: absolute;
@@ -460,7 +445,6 @@ undergroundPosters.sort((a, b) =>
             transform: translateX(0);
         }
 
-        /* Thin accent line at bottom that grows on hover */
         .category-tab::after {
             content: '';
             position: absolute;
@@ -535,7 +519,6 @@ undergroundPosters.sort((a, b) =>
             syncCategoryTitle();
         }
 
-        // Re-sync title when language changes (tab text gets updated by i18n)
         document.querySelectorAll("#lang-toggle").forEach(btn => {
             btn.addEventListener("click", () => requestAnimationFrame(syncCategoryTitle));
         });
@@ -579,7 +562,6 @@ undergroundPosters.sort((a, b) =>
             lastFocusedElement?.focus();
         }
 
-        // Attach direct click listener to every poster thumb
         document.querySelectorAll<HTMLElement>(".poster-thumb").forEach(thumb => {
             thumb.addEventListener("click", () => {
                 const srcs = getVisibleSrcs();
