@@ -159,7 +159,7 @@ for (const entry of allEntries) {
                             )}
                             <div class="flex items-baseline gap-3">
                                 {entry.posterSrc ? (
-                                    <button class="cal-poster-btn font-bahnschrift font-bold text-2xl text-base-900/40 leading-none w-8 shrink-0 hover:text-base-900 transition-colors cursor-pointer" data-poster={entry.posterSrc} aria-label="View poster">{day}</button>
+                                    <button class="cal-poster-btn font-bahnschrift font-bold text-2xl text-base-900/40 leading-none w-8 shrink-0 hover:text-base-900 cursor-pointer" data-poster={entry.posterSrc} aria-label="View poster">{day}</button>
                                 ) : (
                                     <span class="font-bahnschrift font-bold text-2xl text-base-900/40 leading-none w-8 shrink-0">{day}</span>
                                 )}
@@ -224,6 +224,13 @@ for (const entry of allEntries) {
             0 2px 24px rgba(255, 255, 255, 0.3),
             0 12px 70px rgba(255, 255, 255, 0.4),
             0 0 150px rgba(255, 255, 255, 0.28);
+    }
+
+    .cal-poster-btn {
+        transition: color 0.2s ease, text-shadow 0.2s ease;
+    }
+    .cal-poster-btn:hover {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 3px rgba(255, 255, 255, 0.5);
     }
 </style>
 
