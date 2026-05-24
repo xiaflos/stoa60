@@ -142,7 +142,8 @@ for (const entry of allEntries) {
     </div>
 
     <!-- 3. Calendar (mobile: below poster / desktop: right col bottom) -->
-    <div id="gig-calendar" class="min-[850px]:col-start-2 min-[850px]:row-start-2 overflow-y-auto overflow-x-hidden mt-6 min-[850px]:mt-0 scrollbar-none min-h-0 max-h-[45vh] [mask-image:linear-gradient(to_bottom,transparent,black_30%)] min-[850px]:[mask-image:linear-gradient(to_bottom,transparent,black_30%)] flex flex-col items-center min-[850px]:items-start min-w-0" role="region" aria-label="Upcoming gigs">
+    <div class="relative min-[850px]:col-start-2 min-[850px]:row-start-2 min-[850px]:self-start mt-6 min-[850px]:mt-0 min-h-0 w-full min-w-0 flex justify-center min-[850px]:justify-start">
+      <div id="gig-calendar" data-fade="none" class="overflow-y-auto overflow-x-hidden min-h-0 max-h-[45vh] w-full flex flex-col items-center min-[850px]:items-start min-w-0" role="region" aria-label="Upcoming gigs">
         {entriesByMonth.map(({ key, label, year, entries }) => (
             <div class="mb-4 w-full max-w-xs min-[850px]:max-w-none">
                 <!-- Month + year label -->
@@ -191,6 +192,9 @@ for (const entry of allEntries) {
                 })}
             </div>
         ))}
+      </div>
+      <span id="cal-arrow-up"   class="cal-arrow pointer-events-none absolute top-0.5 right-0.5 text-base-900 text-[10px] leading-none select-none" aria-hidden="true">&#9650;</span>
+      <span id="cal-arrow-down" class="cal-arrow pointer-events-none absolute bottom-0.5 right-0.5 text-base-900 text-[10px] leading-none select-none" aria-hidden="true">&#9660;</span>
     </div>
 
 
@@ -232,6 +236,48 @@ for (const entry of allEntries) {
     .cal-poster-btn:hover {
         text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 3px rgba(255, 255, 255, 0.5);
     }
+
+    /* Calendar scroll-affordance: fade masks driven by data-fade state */
+    #gig-calendar[data-fade="none"]   { -webkit-mask-image: none; mask-image: none; }
+    #gig-calendar[data-fade="top"]    {
+        -webkit-mask-image: linear-gradient(to bottom, transparent, black 30%);
+                mask-image: linear-gradient(to bottom, transparent, black 30%);
+    }
+    #gig-calendar[data-fade="bottom"] {
+        -webkit-mask-image: linear-gradient(to top, transparent, black 30%);
+                mask-image: linear-gradient(to top, transparent, black 30%);
+    }
+    #gig-calendar[data-fade="both"]   {
+        -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 15%, black 85%, transparent 100%);
+                mask-image: linear-gradient(to bottom, transparent 0, black 15%, black 85%, transparent 100%);
+    }
+
+    /* Calendar arrows: indicators that fade in/out by scroll position */
+    .cal-arrow {
+        opacity: 0;
+        transition: opacity 0.25s ease;
+    }
+    .cal-arrow.is-visible { opacity: 0.95; }
+
+    /* Themed scrollbar: sits between the up/down arrows on the right edge */
+    #gig-calendar {
+        scrollbar-width: auto;
+        scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+        scrollbar-gutter: stable;
+    }
+    #gig-calendar::-webkit-scrollbar { width: 10px; }
+    #gig-calendar::-webkit-scrollbar-track { background: transparent; }
+    #gig-calendar::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 5px;
+        background-clip: padding-box;
+        border: 2px solid transparent;
+    }
+    #gig-calendar::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.75);
+        background-clip: padding-box;
+        border: 2px solid transparent;
+    }
 </style>
 
 <script>
@@ -243,6 +289,34 @@ for (const entry of allEntries) {
         const calRect = calendar.getBoundingClientRect();
         calendar.scrollTop += rowRect.top - calRect.top;
     }
+
+    // Dynamic scroll affordance: toggle fade masks + corner arrows based on
+    // scroll position so the user always knows whether more content lies
+    // above or below the visible portion of the calendar.
+    const calUpArrow   = document.getElementById("cal-arrow-up");
+    const calDownArrow = document.getElementById("cal-arrow-down");
+
+    function updateCalendarIndicators() {
+        if (!calendar) return;
+        const overflowing = calendar.scrollHeight > calendar.clientHeight + 1;
+        const atTop       = calendar.scrollTop <= 4;
+        const atBottom    = calendar.scrollTop + calendar.clientHeight >= calendar.scrollHeight - 4;
+
+        let fade: "none" | "top" | "bottom" | "both" = "none";
+        if (overflowing) {
+            if (atTop && !atBottom)      fade = "bottom";
+            else if (atBottom && !atTop) fade = "top";
+            else                          fade = "both";
+        }
+        calendar.setAttribute("data-fade", fade);
+
+        calUpArrow?.classList.toggle("is-visible",   overflowing && !atTop);
+        calDownArrow?.classList.toggle("is-visible", overflowing && !atBottom);
+    }
+
+    updateCalendarIndicators();
+    calendar?.addEventListener("scroll", updateCalendarIndicators, { passive: true });
+    window.addEventListener("resize", updateCalendarIndicators);
 
     const lightbox  = document.getElementById("hero-lightbox") as HTMLElement;
     const img       = document.getElementById("hero-lightbox-img") as HTMLImageElement;
