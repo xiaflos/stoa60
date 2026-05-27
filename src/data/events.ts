@@ -320,19 +320,6 @@ export const events: Event[] = [
     "poster": "2025-2026/2025-12-06_broken.jpg"
   },
   {
-    "date": "2025-12-04",
-    "bands": [
-      "NIGHT OF THE DEMON VOL. 2"
-    ],
-    "rawTitle": "NIGHT OF THE DEMON VOL. 2",
-    "eventType": "Bar",
-    "location": "underground",
-    "organiser": [
-      "stoa60"
-    ],
-    "poster": "2025-2026/2025-12-04_night-of-the-demon-vol2.jpg"
-  },
-  {
     "date": "2025-11-29",
     "bands": [
       "GNAAL",
@@ -511,6 +498,19 @@ export const events: Event[] = [
       "stoa60"
     ],
     "poster": "2024-2025/2025-04-26_megali-fygi-thymics.jpg"
+  },
+  {
+    "date": "2025-04-12",
+    "bands": [
+      "NIGHT OF THE DEMON VOL. 2"
+    ],
+    "rawTitle": "NIGHT OF THE DEMON VOL. 2",
+    "eventType": "Bar",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "2024-2025/2025-04-12_night-of-the-demon-vol2.jpg"
   },
   {
     "date": "2025-04-05",
