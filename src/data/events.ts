@@ -1043,7 +1043,7 @@ export const events: Event[] = [
     "organiser": [
       "stoa60"
     ],
-    "poster": "2023-2024/2024-03-02_nightopfthedemon.jpg"
+    "poster": "2023-2024/2024-02-03_scarflood-kalyva.jpg"
   },
   {
     "date": "2024-02-24",
@@ -1097,7 +1097,7 @@ export const events: Event[] = [
     "organiser": [
       "stoa60"
     ],
-    "poster": "2023-2024/2024-02-03_scarflood-kalyva.jpg"
+    "poster": "2023-2024/2024-03-02_nightopfthedemon.jpg"
   },
   {
     "date": "2024-01-27",
