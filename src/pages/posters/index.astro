@@ -29,6 +29,7 @@ interface PosterEntry {
     location: string;
     organiser: string[];
     eventType: string;
+    bands: string[];
 }
 
 function formatDate(dateStr: string): string {
@@ -51,7 +52,13 @@ const allPosters: PosterEntry[] = events
         location:  e.location,
         organiser: e.organiser,
         eventType: e.eventType,
+        bands:     e.bands,
     }));
+
+// Unique sorted band list for autocomplete (exclude placeholder "TBA")
+const allBands: string[] = [...new Set(
+    allPosters.flatMap(p => p.bands).filter(b => b && b !== "TBA")
+)].sort((a, b) => a.localeCompare(b, "el"));
 
 // Season grouping
 const seasonMap: Record<string, PosterEntry[]> = {};
@@ -60,6 +67,7 @@ for (const p of allPosters) {
     (seasonMap[s] ??= []).push(p);
 }
 const seasons = Object.keys(seasonMap)
+    .filter(y => y !== "2026-2027")
     .sort((a, b) => b.localeCompare(a))
     .map(year => ({ year, posters: seasonMap[year] }));
 
@@ -163,6 +171,36 @@ See you on the dancefloor!`,
                     <a href="/about" class="text-base-900 font-grunge text-2xl md:text-3xl hover:text-base-700" data-i18n="nav.about">About</a>
                     <LanguageToggle />
                 </nav>
+                <!-- Band search — lives in the navbar row -->
+                <div id="search-container" class="relative w-full md:w-52 flex-shrink-0">
+                    <div class="relative flex items-center">
+                        <input
+                            type="search"
+                            id="band-search"
+                            placeholder="Search bands…"
+                            class="w-full font-bahnschrift text-sm bg-transparent border border-base-900/25 px-3 py-1.5 text-base-900 placeholder:text-base-900/30 focus:outline-none focus:border-base-900/55 pr-7"
+                            autocomplete="off"
+                            spellcheck="false"
+                            aria-label="Search bands"
+                            aria-autocomplete="list"
+                            aria-controls="search-autocomplete"
+                            aria-haspopup="listbox"
+                        />
+                        <button
+                            id="search-clear"
+                            type="button"
+                            class="absolute right-2 top-1/2 -translate-y-1/2 text-base-900/30 hover:text-base-900/70 hidden leading-none select-none"
+                            aria-label="Clear search"
+                            style="font-size:1.25rem;line-height:1"
+                        >×</button>
+                    </div>
+                    <ul
+                        id="search-autocomplete"
+                        role="listbox"
+                        class="absolute top-full left-0 right-0 z-50 hidden border border-base-900/25 border-t-0 max-h-64 overflow-y-auto"
+                        style="background: oklch(16% 0.002 106);"
+                    ></ul>
+                </div>
                 <h2 id="category-title" class="hidden md:block font-bahnschrift font-bold text-base-900/40 text-5xl tracking-wide uppercase select-none ml-auto"></h2>
             </div>
         </div>
@@ -251,12 +289,18 @@ See you on the dancefloor!`,
             <!-- Main content: poster grid -->
             <div id="main-content" class="flex-1 md:pl-8 min-w-0 flex flex-col gap-2">
 
+                <!-- Search results section -->
+                <div id="section-search" class="poster-section hidden">
+                    <div id="search-grid" class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end"></div>
+                    <p id="search-empty" class="hidden font-bahnschrift text-sm text-base-900/40 py-8 text-center">No posters found.</p>
+                </div>
+
                 <!-- Season sections — location label only, no date -->
                 {seasons.map(s => (
                     <div id={`section-${s.year}`} class="poster-section hidden">
                         <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end">
                             {s.posters.map(p => (
-                                <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
+                                <div class="w-full cursor-pointer poster-thumb flex flex-col items-center" data-bands={JSON.stringify(p.bands)} data-date={p.date} data-location={p.location}>
                                     {p.location !== "underground" && locationDisplayNames[p.location] && (
                                         <span class="font-bahnschrift text-sm text-base-900/40 mb-2 uppercase tracking-wider text-center order-first" data-i18n={locationDisplayNames[p.location].key}>{locationDisplayNames[p.location].el}</span>
                                     )}
@@ -276,7 +320,7 @@ See you on the dancefloor!`,
                 <div id="section-venue-underground" class="poster-section hidden">
                     <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end">
                         {undergroundPosters.map(p => (
-                            <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
+                            <div class="w-full cursor-pointer poster-thumb flex flex-col items-center" data-bands={JSON.stringify(p.bands)} data-date={p.date} data-location={p.location}>
                                 <span class="font-bahnschrift text-sm text-base-900/40 mb-2 tracking-wider text-center">{formatDate(p.date)}</span>
                                 <Image
                                     src={p.image}
@@ -305,7 +349,7 @@ See you on the dancefloor!`,
                         */}
                         <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end">
                             {v.posters.map(p => (
-                                <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
+                                <div class="w-full cursor-pointer poster-thumb flex flex-col items-center" data-bands={JSON.stringify(p.bands)} data-date={p.date} data-location={p.location}>
                                     <span class="font-bahnschrift text-sm text-base-900/40 mb-2 tracking-wider text-center order-first">{formatDate(p.date)}</span>
                                     <Image
                                         src={p.image}
@@ -324,7 +368,7 @@ See you on the dancefloor!`,
                     <div id="section-festivals" class="poster-section hidden">
                         <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end">
                             {festivalPosters.map(p => (
-                                <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
+                                <div class="w-full cursor-pointer poster-thumb flex flex-col items-center" data-bands={JSON.stringify(p.bands)} data-date={p.date} data-location={p.location}>
                                     <span class="font-bahnschrift text-sm text-base-900/40 mb-1 uppercase tracking-wider text-center order-first">{p.eventType}</span>
                                     <span class="font-bahnschrift text-sm text-base-900/40 mb-2 tracking-wider text-center order-first">{formatDate(p.date)}</span>
                                     <Image
@@ -346,7 +390,7 @@ See you on the dancefloor!`,
                         <blockquote class="font-bahnschrift text-sm text-base-900/40 leading-relaxed w-full whitespace-pre-line columns-1 md:columns-2 lg:columns-4 gap-6 border-l-2 border-base-900/20 pl-4 italic" data-i18n="ba2037.quote">{ba2037Quote.el}</blockquote>
                         <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end">
                             {ba2037Posters.map(p => (
-                                <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
+                                <div class="w-full cursor-pointer poster-thumb flex flex-col items-center" data-bands={JSON.stringify(p.bands)} data-date={p.date} data-location={p.location}>
                                     <span class="font-bahnschrift text-sm text-base-900/40 mb-2 tracking-wider text-center">{formatDate(p.date)}</span>
                                     <Image
                                         src={p.image}
@@ -365,7 +409,7 @@ See you on the dancefloor!`,
                     <div id="section-rastapank" class="poster-section hidden">
                         <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end">
                             {rastapankPosters.map(p => (
-                                <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
+                                <div class="w-full cursor-pointer poster-thumb flex flex-col items-center" data-bands={JSON.stringify(p.bands)} data-date={p.date} data-location={p.location}>
                                     <span class="font-bahnschrift text-sm text-base-900/40 mb-2 tracking-wider text-center">{formatDate(p.date)}</span>
                                     <Image
                                         src={p.image}
@@ -384,7 +428,7 @@ See you on the dancefloor!`,
                     <div id="section-bar" class="poster-section hidden">
                         <div class="grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-6 w-full items-end">
                             {barPosters.map(p => (
-                                <div class="w-full cursor-pointer poster-thumb flex flex-col items-center">
+                                <div class="w-full cursor-pointer poster-thumb flex flex-col items-center" data-bands={JSON.stringify(p.bands)} data-date={p.date} data-location={p.location}>
                                     <span class="font-bahnschrift text-sm text-base-900/40 mb-2 tracking-wider text-center">{formatDate(p.date)}</span>
                                     <Image
                                         src={p.image}
@@ -410,6 +454,8 @@ See you on the dancefloor!`,
         <button id="next-lightbox" class="absolute right-4 top-1/2 -translate-y-1/2 text-white text-5xl font-grunge hover:opacity-70 z-10 select-none" aria-label="Next poster">&#8250;</button>
         <img id="lightbox-img" src="" alt="Poster preview" class="max-h-[90vh] max-w-[85vw] object-contain" />
     </div>
+
+    <script id="bands-data" type="application/json" set:html={JSON.stringify(allBands)}></script>
 
     <style>
         .poster-img {
@@ -492,6 +538,31 @@ See you on the dancefloor!`,
                 border-left-color: oklch(98% 0.001 106.423);
             }
         }
+
+        #band-search::-webkit-search-cancel-button,
+        #band-search::-webkit-search-decoration {
+            display: none;
+        }
+
+        /* :global() required — buttons are created dynamically in JS, no Astro scope attr */
+        :global(.search-suggestion) {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 0.375rem 0.75rem;
+            font-size: 0.8125rem;
+            color: oklch(98% 0.001 106.423 / 70%);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: color 0.15s ease, background-color 0.15s ease;
+        }
+
+        :global(.search-suggestion:hover),
+        :global(.search-suggestion.suggestion-active) {
+            color: oklch(98% 0.001 106.423);
+            background-color: oklch(98% 0.001 106.423 / 8%);
+        }
     </style>
 
     <script>
@@ -562,15 +633,16 @@ See you on the dancefloor!`,
             lastFocusedElement?.focus();
         }
 
-        document.querySelectorAll<HTMLElement>(".poster-thumb").forEach(thumb => {
-            thumb.addEventListener("click", () => {
-                const srcs = getVisibleSrcs();
-                const img  = thumb.querySelector("img");
-                if (!img) return;
-                const src = img.currentSrc || img.getAttribute("src") || "";
-                const idx = srcs.indexOf(src);
-                showLightbox(srcs, idx !== -1 ? idx : 0);
-            });
+        // Event delegation — works for both original thumbs and search-result clones
+        document.getElementById("main-content")!.addEventListener("click", (e) => {
+            const thumb = (e.target as HTMLElement).closest<HTMLElement>(".poster-thumb");
+            if (!thumb) return;
+            const srcs = getVisibleSrcs();
+            const img  = thumb.querySelector("img");
+            if (!img) return;
+            const src = img.currentSrc || img.getAttribute("src") || "";
+            const idx = srcs.indexOf(src);
+            showLightbox(srcs, idx !== -1 ? idx : 0);
         });
 
         prevBtn.addEventListener("click", (e) => {
@@ -592,5 +664,208 @@ See you on the dancefloor!`,
             if (e.key === "ArrowLeft"  && currentIdx > 0)                          showLightbox(currentSrcs, currentIdx - 1);
             if (e.key === "ArrowRight" && currentIdx < currentSrcs.length - 1)     showLightbox(currentSrcs, currentIdx + 1);
         });
+
+        // --- Band search & autocomplete ---
+        const allBands: string[] = JSON.parse(
+            document.getElementById("bands-data")?.textContent ?? "[]"
+        );
+
+        const bandSearch      = document.getElementById("band-search")      as HTMLInputElement;
+        const autocomplete    = document.getElementById("search-autocomplete") as HTMLUListElement;
+        const searchClear     = document.getElementById("search-clear")     as HTMLButtonElement;
+        const searchSection   = document.getElementById("section-search")   as HTMLElement;
+        const searchGrid      = document.getElementById("search-grid")      as HTMLElement;
+        const searchEmpty     = document.getElementById("search-empty")     as HTMLElement;
+
+        let acSelectedIdx = -1;
+
+        function setAcSelected(items: HTMLButtonElement[], idx: number) {
+            items.forEach((btn, i) => {
+                btn.classList.toggle("suggestion-active", i === idx);
+                btn.setAttribute("aria-selected", String(i === idx));
+            });
+        }
+
+        function hideAutocomplete() {
+            autocomplete.classList.add("hidden");
+            autocomplete.innerHTML = "";
+            acSelectedIdx = -1;
+        }
+
+        function renderSuggestions(matches: string[]) {
+            autocomplete.innerHTML = "";
+            matches.forEach(band => {
+                const li  = document.createElement("li");
+                li.setAttribute("role", "option");
+                li.setAttribute("aria-selected", "false");
+                const btn = document.createElement("button");
+                btn.type      = "button";
+                btn.className = "search-suggestion font-bahnschrift";
+                btn.textContent = band;
+                btn.dataset.band = band;
+                btn.addEventListener("click", () => activateSearch(band));
+                li.appendChild(btn);
+                autocomplete.appendChild(li);
+            });
+            autocomplete.classList.remove("hidden");
+            acSelectedIdx = -1;
+        }
+
+        function activateSearch(bandName: string) {
+            // Deactivate all category tabs
+            tabs.forEach(b => b.classList.remove("tab-active"));
+            sections.forEach(s => s.classList.add("hidden"));
+
+            // Populate search grid — deduplicate by image src, prefer thumbs with date label
+            searchGrid.innerHTML = "";
+            const candidates = new Map<string, { thumb: HTMLElement; hasDate: boolean }>();
+
+            document.querySelectorAll<HTMLElement>(".poster-thumb[data-bands]").forEach(thumb => {
+                const img = thumb.querySelector("img");
+                if (!img) return;
+                const src = img.getAttribute("src") || "";
+                if (!src) return;
+
+                let bands: string[] = [];
+                try { bands = JSON.parse(thumb.dataset.bands ?? "[]"); } catch {}
+                if (!bands.some(b => b.toLowerCase() === bandName.toLowerCase())) return;
+
+                // Prefer the clone that already carries a visible date/label span
+                const hasDate = !!thumb.querySelector("span");
+                const existing = candidates.get(src);
+                if (!existing || (!existing.hasDate && hasDate)) {
+                    candidates.set(src, { thumb, hasDate });
+                }
+            });
+
+            const locationDisplay: Record<string, string> = {
+                underground:  "Underground",
+                georgiadis:   "Georgiadis Park",
+                karabolas:    "Karabolas",
+                voutes:       "Voutes",
+                xenia:        "Xenia",
+                evangelismos: "Evangelismos",
+                walls:        "Walls",
+            };
+
+            let count = 0;
+            candidates.forEach(({ thumb }) => {
+                const clone    = thumb.cloneNode(true) as HTMLElement;
+                const date     = clone.dataset.date     ?? "";
+                const location = clone.dataset.location ?? "";
+
+                // Strip any existing label spans — we'll add consistent fresh ones
+                clone.querySelectorAll("span").forEach(s => s.remove());
+
+                // Location label (appended first → visually on top via order-first)
+                const locText = locationDisplay[location] ?? location;
+                if (locText) {
+                    const locSpan = document.createElement("span");
+                    locSpan.className = "font-bahnschrift text-sm text-base-900/40 mb-1 uppercase tracking-wider text-center order-first";
+                    locSpan.textContent = locText;
+                    clone.appendChild(locSpan);
+                }
+
+                // Date label (appended second → visually below location)
+                if (date) {
+                    const [y, m, d] = date.split("-");
+                    const dateSpan = document.createElement("span");
+                    dateSpan.className = "font-bahnschrift text-sm text-base-900/40 mb-2 tracking-wider text-center order-first";
+                    dateSpan.textContent = `${d}.${m}.${y}`;
+                    clone.appendChild(dateSpan);
+                }
+
+                searchGrid.appendChild(clone);
+                count++;
+            });
+
+            searchEmpty.classList.toggle("hidden", count > 0);
+            searchGrid.classList.toggle("hidden", count === 0);
+            searchSection.classList.remove("hidden");
+
+            // Update category title watermark
+            if (categoryTitle) {
+                categoryTitle.textContent = bandName;
+                categoryTitle.classList.remove("text-3xl");
+                categoryTitle.classList.add("text-5xl");
+            }
+
+            bandSearch.value = bandName;
+            searchClear.classList.remove("hidden");
+            hideAutocomplete();
+        }
+
+        function clearSearch() {
+            bandSearch.value = "";
+            searchClear.classList.add("hidden");
+            hideAutocomplete();
+            searchSection.classList.add("hidden");
+            searchGrid.innerHTML = "";
+            // Re-activate first tab
+            const firstTab = document.querySelector<HTMLButtonElement>(".category-tab");
+            if (firstTab) activateTab(firstTab);
+        }
+
+        bandSearch.addEventListener("input", () => {
+            const q = bandSearch.value.trim();
+            searchClear.classList.toggle("hidden", q === "");
+            if (!q) { hideAutocomplete(); return; }
+            const ql = q.toLowerCase();
+            const prefix = allBands.filter(b => b.toLowerCase().startsWith(ql));
+            const middle = allBands.filter(b => !b.toLowerCase().startsWith(ql) && b.toLowerCase().includes(ql));
+            const matches = [...prefix, ...middle];
+            if (matches.length === 0) { hideAutocomplete(); return; }
+            renderSuggestions(matches.slice(0, 10));
+        });
+
+        bandSearch.addEventListener("keydown", (e) => {
+            const items = Array.from(autocomplete.querySelectorAll<HTMLButtonElement>(".search-suggestion"));
+            const open  = !autocomplete.classList.contains("hidden");
+
+            if (e.key === "ArrowDown") {
+                e.preventDefault();
+                if (!open && bandSearch.value.trim()) {
+                    const matches = allBands.filter(b => b.toLowerCase().startsWith(bandSearch.value.trim().toLowerCase()));
+                    if (matches.length) renderSuggestions(matches.slice(0, 10));
+                    return;
+                }
+                acSelectedIdx = Math.min(acSelectedIdx + 1, items.length - 1);
+                setAcSelected(items, acSelectedIdx);
+            } else if (e.key === "ArrowUp") {
+                e.preventDefault();
+                acSelectedIdx = Math.max(acSelectedIdx - 1, -1);
+                setAcSelected(items, acSelectedIdx);
+            } else if (e.key === "Enter") {
+                e.preventDefault();
+                if (open && acSelectedIdx >= 0 && items[acSelectedIdx]) {
+                    activateSearch(items[acSelectedIdx].dataset.band!);
+                } else {
+                    const q = bandSearch.value.trim();
+                    if (q) {
+                        const exact = allBands.find(b => b.toLowerCase() === q.toLowerCase());
+                        activateSearch(exact ?? q);
+                    }
+                }
+            } else if (e.key === "Escape") {
+                if (open) { hideAutocomplete(); }
+                else { clearSearch(); }
+            }
+        });
+
+        searchClear.addEventListener("click", clearSearch);
+
+        // Close autocomplete when clicking outside
+        document.addEventListener("click", (e) => {
+            if (!(e.target as HTMLElement).closest("#search-container")) {
+                hideAutocomplete();
+            }
+        });
+
+        // Clicking a category tab also resets the search input
+        tabs.forEach(btn => btn.addEventListener("click", () => {
+            bandSearch.value = "";
+            searchClear.classList.add("hidden");
+            hideAutocomplete();
+        }));
     </script>
 </Layout>
