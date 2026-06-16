@@ -164,7 +164,7 @@ See you on the dancefloor!`,
 
         <!-- Title + Nav + Category title -->
         <div class="w-full pt-2 pb-1 md:pl-44">
-            <div class="flex flex-col md:flex-row md:flex-wrap md:gap-8 md:items-baseline items-center gap-1 border-b border-base-900/30 pb-0.5">
+            <div class="flex flex-col md:flex-row md:gap-8 md:items-baseline items-center gap-1 md:border-b border-base-900/30 md:pb-0.5">
                 <Heading tagName="h1" tagSize="h2" class="title-flicker" data-i18n="works.title">Posters</Heading>
                 <nav class="flex flex-wrap gap-4 md:gap-8 items-center">
                     <a href="/" class="text-base-900 font-grunge text-2xl md:text-3xl hover:text-base-700" data-i18n="nav.home">Home</a>
@@ -172,7 +172,7 @@ See you on the dancefloor!`,
                     <LanguageToggle />
                 </nav>
                 <!-- Band search — lives in the navbar row -->
-                <div id="search-container" class="relative w-full md:w-52 flex-shrink-0">
+                <div id="search-container" class="relative w-2/3 md:w-40 flex-shrink-0">
                     <div class="relative flex items-center">
                         <input
                             type="search"
@@ -201,7 +201,7 @@ See you on the dancefloor!`,
                         style="background: oklch(16% 0.002 106);"
                     ></ul>
                 </div>
-                <h2 id="category-title" class="hidden md:block font-bahnschrift font-bold text-base-900/40 text-5xl tracking-wide uppercase select-none ml-auto"></h2>
+                <h2 id="category-title" class="hidden md:block font-bahnschrift font-bold text-base-900/40 text-3xl tracking-wide uppercase select-none ml-auto"></h2>
             </div>
         </div>
 
@@ -209,10 +209,10 @@ See you on the dancefloor!`,
         <div id="main-layout" class="w-full flex flex-col md:flex-row gap-0 pt-2">
 
             <!-- Sidebar: horizontal on mobile, vertical on desktop -->
-            <div id="cat-sidebar" class="flex flex-col md:flex-col md:shrink-0 md:w-36 md:border-r md:border-base-900/20 md:pr-4 gap-0.5 border-b border-base-900/20 pb-6 mb-6 md:border-b-0 md:pb-0 md:mb-0">
+            <div id="cat-sidebar" class="flex flex-col md:flex-col md:shrink-0 md:w-36 md:border-r md:border-base-900/20 md:pr-4 gap-0.5 border-base-900/20 pb-6 mb-6 md:border-b-0 md:pb-0 md:mb-0">
 
                 <!-- Σεζόν group -->
-                <span class="font-bahnschrift font-bold uppercase text-xs tracking-widest text-base-900/30 px-2 pb-1 border-b border-base-900/15 select-none block text-center md:text-left" data-i18n="loc.seasons">Σεζόν</span>
+                <span class="font-bahnschrift font-bold uppercase text-xs tracking-widest text-base-900/30 px-2 pb-1 md:border-b border-base-900/15 select-none block text-center md:text-left" data-i18n="loc.seasons">Σεζόν</span>
 
                 <div class="flex flex-row flex-wrap md:flex-col gap-2 md:gap-0.5 justify-center md:justify-start">
                     {seasons.map(s => (
@@ -225,7 +225,7 @@ See you on the dancefloor!`,
 
                 <!-- Τοποθεσία group -->
                 <div class="sidebar-divider border-t border-base-900/20 my-2" />
-                <span class="font-bahnschrift font-bold uppercase text-xs tracking-widest text-base-900/30 px-2 pb-1 border-b border-base-900/15 select-none block text-center md:text-left" data-i18n="loc.locations">Τοποθεσία</span>
+                <span class="font-bahnschrift font-bold uppercase text-xs tracking-widest text-base-900/30 px-2 pb-1 md:border-b border-base-900/15 select-none block text-center md:text-left" data-i18n="loc.locations">Τοποθεσία</span>
 
                 <div class="flex flex-row flex-wrap md:flex-col gap-2 md:gap-0.5 justify-center md:justify-start">
                     <button
@@ -524,8 +524,8 @@ See you on the dancefloor!`,
 
         @media (max-width: 767px) {
             #cat-sidebar .sidebar-divider {
-                width: 100%;
-                margin: 0.25rem 0;
+                width: 50%;
+                margin: 0.25rem auto;
             }
 
             #cat-sidebar .category-tab {
@@ -577,8 +577,8 @@ See you on the dancefloor!`,
             if (categoryTitle && active) {
                 categoryTitle.textContent = active.textContent?.trim() || "";
                 const isLong = active.dataset.target === "section-venue-georgiadis";
-                categoryTitle.classList.toggle("text-5xl", !isLong);
-                categoryTitle.classList.toggle("text-3xl", isLong);
+                categoryTitle.classList.toggle("text-3xl", !isLong);
+                categoryTitle.classList.toggle("text-xl", isLong);
             }
         }
 
@@ -786,8 +786,8 @@ See you on the dancefloor!`,
             // Update category title watermark
             if (categoryTitle) {
                 categoryTitle.textContent = bandName;
-                categoryTitle.classList.remove("text-3xl");
-                categoryTitle.classList.add("text-5xl");
+                categoryTitle.classList.remove("text-xl");
+                categoryTitle.classList.add("text-3xl");
             }
 
             bandSearch.value = bandName;
