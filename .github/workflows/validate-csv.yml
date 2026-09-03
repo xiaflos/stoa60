@@ -1,0 +1,17 @@
+name: Validate events.csv
+
+on:
+  push:
+    paths: ['tools/event-build/events.csv', 'src/assets/images/posters/**', 'scripts/**.mjs']
+  pull_request:
+    paths: ['tools/event-build/events.csv', 'src/assets/images/posters/**']
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: node --test scripts/*.test.mjs
+      - run: node scripts/validate-csv.mjs

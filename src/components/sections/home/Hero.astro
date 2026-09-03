@@ -7,9 +7,6 @@ import ImageContainer from "../../elements/ImageContainer.astro"
 import LanguageToggle from "../../elements/LanguageToggle.astro"
 import NewsletterForm from "../../elements/NewsletterForm.astro"
 
-// assets
-import nextGigPoster from "../../../assets/images/posters/Upcoming/OUTFORSUMMER.jpg";
-
 import { events } from "../../../data/events.ts";
 
 const posterImages = import.meta.glob<{ default: ImageMetadata }>(
@@ -19,10 +16,13 @@ const posterImages = import.meta.glob<{ default: ImageMetadata }>(
 
 // Build lookup: relative poster path (as in events.ts) → optimised src URL
 const posterSrcMap: Record<string, string> = {};
+// Build lookup: relative poster path → ImageMetadata (for the next-gig poster)
+const postersByPath: Record<string, ImageMetadata> = {};
 for (const [path, mod] of Object.entries(posterImages)) {
     // path looks like "../../../assets/images/posters/2025-2026/file.jpg"
     const key = path.replace("../../../assets/images/posters/", "");
     posterSrcMap[key] = mod.default.src;
+    postersByPath[key] = mod.default;
 }
 
 interface CalendarEntry {
@@ -35,11 +35,19 @@ interface CalendarEntry {
     isNext?: boolean;   // highlight flag for the next upcoming event
 }
 
-const manualFutureEntries: CalendarEntry[] = [
-    { date: "2026-09-19", bands: ["AarghFuckKill", "TBA"], bandLinks: { "AarghFuckKill": "https://aarghfuckkill.bandcamp.com/" } },
-];
+// Future gigs now live in the CSV (tools/event-build/events.csv) → events.ts.
+// Kept for ad-hoc entries not yet in the CSV; normally empty.
+const manualFutureEntries: CalendarEntry[] = [];
 
 const today = new Date().toISOString().slice(0, 10);
+
+// Next-gig poster: prefer the is_next-flagged event, else soonest upcoming with a
+// poster, else the most recent with a poster.
+const flagged  = events.find(e => e.isNext);
+const upcoming = events.filter(e => e.date >= today && e.poster).sort((a, b) => a.date.localeCompare(b.date))[0];
+const newest   = events.filter(e => e.poster).sort((a, b) => b.date.localeCompare(a.date))[0];
+const featured = flagged ?? upcoming ?? newest;
+const nextGigPoster = featured ? postersByPath[featured.poster] : undefined;
 
 const dbEntries: CalendarEntry[] = events.map(e => ({
     date: e.date,
@@ -126,12 +134,14 @@ for (const entry of allEntries) {
                      them is always a fixed mt-4 — no flex-grow wrapper that would
                      expand with available space and push them apart. -->
                 <div class="flex-1 flex flex-col min-w-0 min-[850px]:min-h-0 min-[850px]:items-center">
+                    {nextGigPoster && (
                     <button
                         id="hero-poster-btn"
                         class="cursor-pointer hover:opacity-80 transition-opacity w-full shrink-0"
                         aria-label="View poster fullscreen">
                         <ImageContainer src={nextGigPoster} alt="Upcoming gig poster" />
                     </button>
+                    )}
                     <!-- Newsletter: below poster on desktop only — fixed gap -->
                     <div class="hidden min-[850px]:block w-full shrink-0 min-[850px]:mt-6">
                         <NewsletterForm />

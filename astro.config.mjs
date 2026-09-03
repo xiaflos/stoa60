@@ -11,6 +11,10 @@ export default defineConfig({
     plugins: [tailwindcss()]
   },
 
-  integrations: [sitemap()],
+  integrations: [
+    // /admin-helper is an internal CSV-row generator — it carries a `noindex`
+    // meta tag, so keep it out of the sitemap rather than advertising it.
+    sitemap({ filter: (page) => !page.includes('/admin-helper') })
+  ],
   site: "https://stoa60.net"
 });

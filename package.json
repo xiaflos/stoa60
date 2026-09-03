@@ -2,9 +2,15 @@
   "name": "stoa60",
   "type": "module",
   "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "node scripts/csv-to-ts.mjs --ts-only && astro build",
+    "gen": "node scripts/csv-to-ts.mjs",
+    "validate": "node scripts/validate-csv.mjs",
+    "mail": "node scripts/build-mail.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "build:events": "node scripts/build-events.mjs"
@@ -14,14 +20,13 @@
     "@astrojs/sitemap": "^3.7.2",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@fontsource/road-rage": "^5.2.8",
-    "@tailwindcss/vite": "^4.2.1",
-    "astro": "^6.1.2",
-    "tailwindcss": "^4.2.1",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.2.10",
+    "tailwindcss": "^4.3.3",
     "tailwindcss-noise": "^1.0.6",
     "typescript": "^5.9.3"
   },
   "devDependencies": {
-    "exceljs": "^4.4.0",
-    "pdf-to-img": "^6.0.0"
+    "exceljs": "^4.4.0"
   }
 }

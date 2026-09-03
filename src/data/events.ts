@@ -20,11 +20,32 @@ export interface Event {
   location: Location;
   organiser: Organiser[];
   poster: string;
+  isNext?: boolean;
   bandLinks?: Record<string, string>;
+  mailIntro?: string;
+  bandDescriptions?: Record<string, string>;
   recordings?: Recording[];
 }
 
 export const events: Event[] = [
+  {
+    "date": "2026-09-19",
+    "bands": [
+      "AarghFuckKill",
+      "TBA"
+    ],
+    "rawTitle": "AarghFuckKill, TBA",
+    "eventType": "gig",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "Upcoming/OUTFORSUMMER.jpg",
+    "bandLinks": {
+      "AarghFuckKill": "https://aarghfuckkill.bandcamp.com/"
+    },
+    "isNext": true
+  },
   {
     "date": "2026-05-16",
     "bands": [
@@ -41,6 +62,11 @@ export const events: Event[] = [
     "bandLinks": {
       "ΚΑΘΑΡΟΣ ΧΑΛΚΟΣ": "https://katharoschalkos.bandcamp.com/album/-",
       "ΑΡΚΟΥΔΕΣ ΤΩΝ ΑΓΩΓΩΝ ΤΗΣ ΠΟΛΥΚΑΤΟΙΚΙΑΣ": "https://www.youtube.com/watch?v=aArwHqZA-7Y"
+    },
+    "mailIntro": "Μυσταγωγίες, drones & beat poetry.",
+    "bandDescriptions": {
+      "ΚΑΘΑΡΟΣ ΧΑΛΚΟΣ": "Φρέσκο σχήμα από την Αθήνα, με λαούτο να σέρνει την ατμόσφαιρα, σαξόφονα, φωνές και πειραματικές διαθέσεις.",
+      "ΑΡΚΟΥΔΕΣ ΤΩΝ ΑΓΩΓΩΝ ΤΗΣ ΠΟΛΥΚΑΤΟΙΚΙΑΣ": "Οι καλύτερες αρκούδες της Κρήτης με διαφορά.<br>Μόλις έχουν ξυπνήσει από τη χειμερία νάρκη και είναι πεινασμένες για λαιβ."
     }
   },
   {

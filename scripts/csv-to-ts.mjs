@@ -13,6 +13,14 @@ const CSV_PATH   = path.join(ROOT, 'tools', 'event-build', 'events.csv');
 const TS_PATH    = path.join(ROOT, 'src', 'data', 'events.ts');
 const GITHUB_RAW = 'https://raw.githubusercontent.com/xiaflos/stoa60/main/src/assets/images/posters';
 
+const TS_ONLY = process.argv.includes('--ts-only');
+
+function urlToPosterPath(url) {
+  if (!url) return '';
+  const prefix = GITHUB_RAW + '/';
+  return url.startsWith(prefix) ? url.slice(prefix.length) : '';
+}
+
 // ── CSV parser (handles quoted fields containing commas) ───────────────────
 function parseCSVLine(line) {
   const fields = [];
@@ -59,18 +67,23 @@ function parseBands(row) {
     .filter(Boolean);
 }
 
-function parseBandLinks(raw) {
-  if (!raw || !raw.trim()) return {};
-  const result = {};
+export function parsePairs(raw) {
+  const out = {};
+  if (!raw || !raw.trim()) return out;
   for (const part of raw.split('|')) {
-    const idx = part.indexOf('=');
-    if (idx > 0) {
-      const name = part.slice(0, idx).trim();
-      const url  = part.slice(idx + 1).trim();
-      if (name && url) result[name] = url;
+    const i = part.indexOf('=');
+    if (i > 0) {
+      const k = part.slice(0, i).trim();
+      const v = part.slice(i + 1).trim();
+      if (k && v) out[k] = v;
     }
   }
-  return result;
+  return out;
+}
+
+export function parseIsNext(raw) {
+  const s = String(raw ?? '').trim().toLowerCase();
+  return s === 'true' || s === '1' || s === 'yes';
 }
 
 // ── Load existing events.ts to extract poster paths ───────────────────────
@@ -110,7 +123,7 @@ function serializeCsv(rows, events) {
   // Determine the base columns from the original CSV header,
   // replacing any existing poster_url column or appending a new one.
   const BAND_COLS = ['band_1','band_2','band_3','band_4','band_5','band_6'];
-  const BASE_COLS = ['date','location','organiser','Title',...BAND_COLS,'poster_url','links'];
+  const BASE_COLS = ['date','location','organiser','Title',...BAND_COLS,'poster_url','links','is_next','mailIntro','descriptions'];
 
   const header = BASE_COLS.join(',');
 
@@ -127,6 +140,9 @@ function serializeCsv(rows, events) {
       ...BAND_COLS.map(k => row[k] ?? ''),
       url,
       row.links          ?? '',
+      row.is_next        ?? '',
+      row.mailIntro      ?? '',
+      row.descriptions   ?? '',
     ];
     return fields.map(csvField).join(',');
   });
@@ -158,7 +174,10 @@ export interface Event {
   location: Location;
   organiser: Organiser[];
   poster: string;
+  isNext?: boolean;
   bandLinks?: Record<string, string>;
+  mailIntro?: string;
+  bandDescriptions?: Record<string, string>;
   recordings?: Recording[];
 }
 
@@ -189,36 +208,46 @@ async function main() {
     const bands     = parseBands(row);
     const rawTitle  = bands.join(', ');
 
-    // Poster look-up: try "date|location" first, then "date|underground" as fallback
-    let poster = '';
+    // Poster: prefer the CSV's poster_url (authoritative for new events),
+    // fall back to the existing events.ts lookup for legacy rows.
+    let poster = urlToPosterPath((row.poster_url ?? '').trim());
     let recordings;
-    const key1 = `${date}|${location}`;
-    const key2 = `${date}|underground`;
 
-    for (const key of [key1, key2]) {
-      const arr = posterMap.get(key);
-      if (arr) {
-        const idx = used.get(key) ?? 0;
-        if (idx < arr.length) {
-          poster     = arr[idx].poster ?? '';
-          recordings = arr[idx].recordings;
-          used.set(key, idx + 1);
-          matched++;
-          break;
+    if (!poster) {
+      const key1 = `${date}|${location}`;
+      const key2 = `${date}|underground`;
+      for (const key of [key1, key2]) {
+        const arr = posterMap.get(key);
+        if (arr) {
+          const idx = used.get(key) ?? 0;
+          if (idx < arr.length) {
+            poster     = arr[idx].poster ?? '';
+            recordings = arr[idx].recordings;
+            used.set(key, idx + 1);
+            break;
+          }
         }
       }
     }
-    if (!poster) unmatched++;
+    if (poster) matched++; else unmatched++;
 
-    const bandLinks = parseBandLinks(row.links ?? '');
+    const bandLinks        = parsePairs(row.links ?? '');
+    const bandDescriptions = parsePairs(row.descriptions ?? '');
+    const mailIntro        = (row.mailIntro ?? '').trim();
+
     const ev = { date, bands, rawTitle, eventType, location, organiser, poster };
-    if (Object.keys(bandLinks).length > 0) ev.bandLinks = bandLinks;
-    if (recordings) ev.recordings = recordings;
+    if (Object.keys(bandLinks).length)        ev.bandLinks = bandLinks;
+    if (recordings)                           ev.recordings = recordings;
+    if (parseIsNext(row.is_next))             ev.isNext = true;
+    if (mailIntro)                            ev.mailIntro = mailIntro;
+    if (Object.keys(bandDescriptions).length) ev.bandDescriptions = bandDescriptions;
     return ev;
   });
 
   await fs.writeFile(TS_PATH, serializeTs(events), 'utf8');
-  await fs.writeFile(CSV_PATH, serializeCsv(rows, events), 'utf8');
+  if (!TS_ONLY) {
+    await fs.writeFile(CSV_PATH, serializeCsv(rows, events), 'utf8');
+  }
 
   console.log(`[csv-to-ts] ${events.length} events written to events.ts + events.csv`);
   console.log(`  posters matched: ${matched}  |  no poster: ${unmatched}`);
@@ -232,4 +261,8 @@ async function main() {
   console.log('  event types:', types.join(', '));
 }
 
-main().catch(err => { console.error(err); process.exit(1); });
+function isMain() { return path.resolve(process.argv[1] || '') === fileURLToPath(import.meta.url); }
+
+if (isMain()) {
+  main().catch(err => { console.error(err); process.exit(1); });
+}
