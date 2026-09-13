@@ -32,15 +32,15 @@ export const events: Event[] = [
     "date": "2026-09-19",
     "bands": [
       "AarghFuckKill",
-      "TBA"
+      "Bombed Remains"
     ],
-    "rawTitle": "AarghFuckKill, TBA",
+    "rawTitle": "AarghFuckKill, Bombed Remains",
     "eventType": "gig",
     "location": "underground",
     "organiser": [
       "stoa60"
     ],
-    "poster": "Upcoming/OUTFORSUMMER.jpg",
+    "poster": "2026-2027/2026-09-19_afk-bombedremains.jpg",
     "bandLinks": {
       "AarghFuckKill": "https://aarghfuckkill.bandcamp.com/"
     },

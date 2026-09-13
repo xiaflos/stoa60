@@ -67,7 +67,6 @@ for (const p of allPosters) {
     (seasonMap[s] ??= []).push(p);
 }
 const seasons = Object.keys(seasonMap)
-    .filter(y => y !== "2026-2027")
     .sort((a, b) => b.localeCompare(a))
     .map(year => ({ year, posters: seasonMap[year] }));
 
