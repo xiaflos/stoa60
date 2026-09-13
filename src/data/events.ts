@@ -42,9 +42,15 @@ export const events: Event[] = [
     ],
     "poster": "2026-2027/2026-09-19_afk-bombedremains.jpg",
     "bandLinks": {
-      "AarghFuckKill": "https://aarghfuckkill.bandcamp.com/"
+      "AarghFuckKill": "https://aarghfuckkill.bandcamp.com/",
+      "Bombed Remains": "https://bombedremains.bandcamp.com/album/condemned-symbol-of-decay"
     },
-    "isNext": true
+    "isNext": true,
+    "mailIntro": "Όσο περιμένετε για το πρόγραμμα του Φθινοπώρου, είπαμε να κατέβουμε να ξεσκονίσουμε αυτό το Σάββατο 19/9 με σκληρό Hardcore και Crust.",
+    "bandDescriptions": {
+      "AarghFuckKill": "Από το σιχαμένο Αμβούργο οι AarghFuckKill κατεβαίνουν για ένα τουρ με 5 λάϊβ σε όλη την Ελλάδα και έχουμε την τιμή να τους φιλοξενούμε το Σάββατο στο υπόγειο παλατάκι της λεωφόρου(;) Καλοκαιρινού.",
+      "Bombed Remains": "Η πολλά υποσχόμενη Crust μπάντα που έλειπε από την πόλη μας, θα παρουσιάσει τ’αποκαϊδια της. Τους ευχόμαστε μία καταστροφική καριέρα."
+    }
   },
   {
     "date": "2026-05-16",
