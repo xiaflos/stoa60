@@ -37,6 +37,10 @@ test('missing poster file reported', () => {
   assert.ok(validateRows([row()], () => false).some(x => /poster/i.test(x)));
 });
 
-test('empty poster_url reported', () => {
-  assert.ok(validateRows([row({ poster_url: '' })], ok).some(x => /poster/i.test(x)));
+test('empty poster_url allowed (gig announced before its poster exists)', () => {
+  assert.deepEqual(validateRows([row({ poster_url: '' })], ok), []);
+});
+
+test('non-github poster_url reported', () => {
+  assert.ok(validateRows([row({ poster_url: 'https://example.com/x.jpg' })], ok).some(x => /poster/i.test(x)));
 });

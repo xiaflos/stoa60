@@ -29,6 +29,172 @@ export interface Event {
 
 export const events: Event[] = [
   {
+    "date": "2027-01-30",
+    "bands": [
+      "Leatherhead"
+    ],
+    "rawTitle": "Leatherhead",
+    "eventType": "gig",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandLinks": {
+      "Leatherhead": "https://leatherheadgr.bandcamp.com/music"
+    }
+  },
+  {
+    "date": "2027-01-16",
+    "bands": [
+      "Tiffany",
+      "TBA"
+    ],
+    "rawTitle": "Tiffany, TBA",
+    "eventType": "gig",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandLinks": {
+      "Tiffany": "https://tiffanyexists.bandcamp.com/"
+    }
+  },
+  {
+    "date": "2026-11-28",
+    "bands": [
+      "Sister",
+      "Microdosing"
+    ],
+    "rawTitle": "Sister, Microdosing",
+    "eventType": "gig",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandLinks": {
+      "Sister": "https://sister-gr.bandcamp.com/album/blood"
+    }
+  },
+  {
+    "date": "2026-11-21",
+    "bands": [
+      "Imperium Infernalis",
+      "TBA"
+    ],
+    "rawTitle": "Imperium Infernalis, TBA",
+    "eventType": "gig",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandLinks": {
+      "Imperium Infernalis": "https://imperiuminfernalis.bandcamp.com/"
+    }
+  },
+  {
+    "date": "2026-11-14",
+    "bands": [
+      "HEX",
+      "Baby Cult"
+    ],
+    "rawTitle": "HEX, Baby Cult",
+    "eventType": "gig",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandLinks": {
+      "HEX": "https://hexathens.bandcamp.com/album/-",
+      "Baby Cult": "https://babycult.bandcamp.com/album/baby-cult"
+    }
+  },
+  {
+    "date": "2026-11-07",
+    "bands": [
+      "LustTone",
+      "Meadow Meal",
+      "Zemra"
+    ],
+    "rawTitle": "LustTone, Meadow Meal, Zemra",
+    "eventType": "gig",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandLinks": {
+      "LustTone": "https://lusttone.bandcamp.com/album/living-in-a-dead-world",
+      "Zemra": "https://zemra.bandcamp.com/"
+    }
+  },
+  {
+    "date": "2026-10-31",
+    "bands": [
+      "TBA"
+    ],
+    "rawTitle": "TBA",
+    "eventType": "gig",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": ""
+  },
+  {
+    "date": "2026-10-24",
+    "bands": [
+      "STOA SUBATOMIC vol.2"
+    ],
+    "rawTitle": "STOA SUBATOMIC vol.2",
+    "eventType": "Soundsystem",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": ""
+  },
+  {
+    "date": "2026-10-17",
+    "bands": [
+      "Bastard Swords",
+      "Druid"
+    ],
+    "rawTitle": "Bastard Swords, Druid",
+    "eventType": "gig",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandLinks": {
+      "Bastard Swords": "https://bastardswordgr.bandcamp.com/album/bastard-sword-i",
+      "Druid": "https://thedruidofficial.bandcamp.com/"
+    }
+  },
+  {
+    "date": "2026-10-09",
+    "bands": [
+      "The Depressants",
+      "Sachmis Cult"
+    ],
+    "rawTitle": "The Depressants, Sachmis Cult",
+    "eventType": "gig",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandLinks": {
+      "The Depressants": "https://www.youtube.com/@thedepressants",
+      "Sachmis Cult": "https://www.instagram.com/sachmiscult/"
+    }
+  },
+  {
     "date": "2026-09-19",
     "bands": [
       "AarghFuckKill",

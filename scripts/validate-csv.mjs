@@ -56,9 +56,12 @@ export function validateRows(rows, posterExists) {
     const flag = String(row.is_next ?? '').trim().toLowerCase();
     if (flag === 'true' || flag === '1' || flag === 'yes') nextCount++;
 
-    const rel = urlToPosterPath((row.poster_url || '').trim());
-    if (!rel) errors.push(`${where}: poster_url empty or not a github raw posters URL`);
-    else if (!posterExists(rel)) errors.push(`${where}: poster file not found: ${rel}`);
+    const posterUrl = (row.poster_url || '').trim();
+    if (posterUrl) {
+      const rel = urlToPosterPath(posterUrl);
+      if (!rel) errors.push(`${where}: poster_url is not a github raw posters URL`);
+      else if (!posterExists(rel)) errors.push(`${where}: poster file not found: ${rel}`);
+    }
 
     const bands = new Set(BAND_COLS.map(c => (row[c] || '').trim()).filter(Boolean));
     for (const k of pairKeys(row.links))        if (!bands.has(k)) errors.push(`${where}: link key "${k}" matches no band`);
