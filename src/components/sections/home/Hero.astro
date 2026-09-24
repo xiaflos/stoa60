@@ -8,6 +8,7 @@ import LanguageToggle from "../../elements/LanguageToggle.astro"
 import NewsletterForm from "../../elements/NewsletterForm.astro"
 
 import { events } from "../../../data/events.ts";
+import pendingPoster from "../../../assets/images/posters/Upcoming/pending-poster.jpg";
 
 const posterImages = import.meta.glob<{ default: ImageMetadata }>(
     "../../../assets/images/posters/**/*.{jpg,jpeg,png}",
@@ -41,13 +42,14 @@ const manualFutureEntries: CalendarEntry[] = [];
 
 const today = new Date().toISOString().slice(0, 10);
 
-// Next-gig poster: prefer the is_next-flagged event, else soonest upcoming with a
-// poster, else the most recent with a poster.
+// Next-gig poster: prefer the is_next-flagged event, else the soonest upcoming event,
+// else the most recent one with a poster. An event without a poster shows the
+// "pending poster" placeholder.
 const flagged  = events.find(e => e.isNext);
-const upcoming = events.filter(e => e.date >= today && e.poster).sort((a, b) => a.date.localeCompare(b.date))[0];
+const upcoming = events.filter(e => e.date >= today).sort((a, b) => a.date.localeCompare(b.date))[0];
 const newest   = events.filter(e => e.poster).sort((a, b) => b.date.localeCompare(a.date))[0];
 const featured = flagged ?? upcoming ?? newest;
-const nextGigPoster = featured ? postersByPath[featured.poster] : undefined;
+const nextGigPoster = (featured?.poster && postersByPath[featured.poster]) || pendingPoster;
 
 const dbEntries: CalendarEntry[] = events.map(e => ({
     date: e.date,

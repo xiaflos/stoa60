@@ -192,7 +192,8 @@ export const events: Event[] = [
     "bandLinks": {
       "The Depressants": "https://www.youtube.com/@thedepressants",
       "Sachmis Cult": "https://www.instagram.com/sachmiscult/"
-    }
+    },
+    "isNext": true
   },
   {
     "date": "2026-09-19",
@@ -211,7 +212,6 @@ export const events: Event[] = [
       "AarghFuckKill": "https://aarghfuckkill.bandcamp.com/",
       "Bombed Remains": "https://bombedremains.bandcamp.com/album/condemned-symbol-of-decay"
     },
-    "isNext": true,
     "mailIntro": "Όσο περιμένετε για το πρόγραμμα του Φθινοπώρου, είπαμε να κατέβουμε να ξεσκονίσουμε αυτό το Σάββατο 19/9 με σκληρό Hardcore και Crust.",
     "bandDescriptions": {
       "AarghFuckKill": "Από το σιχαμένο Αμβούργο οι AarghFuckKill κατεβαίνουν για ένα τουρ με 5 λάϊβ σε όλη την Ελλάδα και έχουμε την τιμή να τους φιλοξενούμε το Σάββατο στο υπόγειο παλατάκι της λεωφόρου(;) Καλοκαιρινού.",
