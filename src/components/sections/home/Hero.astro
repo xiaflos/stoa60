@@ -291,13 +291,38 @@ for (const entry of allEntries) {
 </style>
 
 <script>
-    // Scroll calendar so the next event is visible at the top
+    // On load, roll the calendar quickly from the top and ease out with the
+    // next event resting in the vertical middle.
     const calendar = document.getElementById("gig-calendar");
     const nextRow = calendar?.querySelector('[data-next="true"]') as HTMLElement | null;
     if (calendar && nextRow) {
         const rowRect = nextRow.getBoundingClientRect();
         const calRect = calendar.getBoundingClientRect();
-        calendar.scrollTop += rowRect.top - calRect.top;
+        const rowCenter = rowRect.top - calRect.top + rowRect.height / 2;
+        const maxScroll = calendar.scrollHeight - calendar.clientHeight;
+        const target = Math.max(0, Math.min(maxScroll, calendar.scrollTop + rowCenter - calendar.clientHeight / 2));
+
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (reduceMotion || target < 8) {
+            calendar.scrollTop = target;
+        } else {
+            const duration = 1300;
+            const start = performance.now();
+            const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4);
+            let cancelled = false;
+            const cancel = () => { cancelled = true; };
+            for (const evt of ["wheel", "touchstart", "mousedown", "keydown"]) {
+                calendar.addEventListener(evt, cancel, { once: true, passive: true });
+            }
+            calendar.scrollTop = 0;
+            const step = (now: number) => {
+                if (cancelled) return;
+                const t = Math.min(1, (now - start) / duration);
+                calendar.scrollTop = target * easeOutQuart(t);
+                if (t < 1) requestAnimationFrame(step);
+            };
+            requestAnimationFrame(step);
+        }
     }
 
     // Dynamic scroll affordance: toggle fade masks + corner arrows based on
