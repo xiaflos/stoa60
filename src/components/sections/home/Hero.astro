@@ -196,6 +196,9 @@ for (const entry of allEntries) {
                                         <span class="text-xs font-normal text-base-900/40 normal-case">@{entry.location}</span>
                                     )}
                                 </span>
+                                {entry.isNext && (
+                                    <span class="ml-auto mr-3 shrink-0 self-center border border-base-900/40 px-1.5 py-1 font-grunge text-sm uppercase leading-none tracking-widest text-base-900/70 select-none" data-i18n="hero.nextgig">next gig</span>
+                                )}
                             </div>
                         </div>
                     );
