@@ -133,19 +133,6 @@ export const events: Event[] = [
     }
   },
   {
-    "date": "2026-10-31",
-    "bands": [
-      "TBA"
-    ],
-    "rawTitle": "TBA",
-    "eventType": "gig",
-    "location": "underground",
-    "organiser": [
-      "stoa60"
-    ],
-    "poster": ""
-  },
-  {
     "date": "2026-10-24",
     "bands": [
       "STOA SUBATOMIC vol.2"
