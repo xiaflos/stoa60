@@ -298,36 +298,66 @@ for (const entry of allEntries) {
 <script>
     // On load, roll the calendar quickly from the top and ease out with the
     // next event resting in the vertical middle.
+    //
+    // The target is measured from live layout, never cached: the calendar's
+    // fonts (Bahnschrift, Road Rage) use font-display: swap, so on a cold cache
+    // this script runs while rows are still set in the wider fallback font.
+    // A target measured then overshoots once the real font shrinks the list,
+    // and the scroll clamps to the bottom — pushing the next gig out of view.
     const calendar = document.getElementById("gig-calendar");
     const nextRow = calendar?.querySelector('[data-next="true"]') as HTMLElement | null;
     if (calendar && nextRow) {
-        const rowRect = nextRow.getBoundingClientRect();
-        const calRect = calendar.getBoundingClientRect();
-        const rowCenter = rowRect.top - calRect.top + rowRect.height / 2;
-        const maxScroll = calendar.scrollHeight - calendar.clientHeight;
-        const target = Math.max(0, Math.min(maxScroll, calendar.scrollTop + rowCenter - calendar.clientHeight / 2));
+        // Absolute scrollTop that centres the next row, from the current layout.
+        const centreTarget = () => {
+            const rowTop = nextRow.getBoundingClientRect().top - calendar.getBoundingClientRect().top + calendar.scrollTop;
+            const maxScroll = calendar.scrollHeight - calendar.clientHeight;
+            return Math.max(0, Math.min(maxScroll, rowTop + nextRow.offsetHeight / 2 - calendar.clientHeight / 2));
+        };
 
-        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        if (reduceMotion || target < 8) {
-            calendar.scrollTop = target;
-        } else {
+        let cancelled = false;
+        let settled = false;
+        const cancel = () => { cancelled = true; };
+        for (const evt of ["wheel", "touchstart", "mousedown", "keydown"]) {
+            calendar.addEventListener(evt, cancel, { once: true, passive: true });
+        }
+
+        const roll = () => {
+            if (cancelled) return;
+            const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            if (reduceMotion || centreTarget() < 8) {
+                calendar.scrollTop = centreTarget();
+                settled = true;
+                return;
+            }
             const duration = 1300;
             const start = performance.now();
             const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4);
-            let cancelled = false;
-            const cancel = () => { cancelled = true; };
-            for (const evt of ["wheel", "touchstart", "mousedown", "keydown"]) {
-                calendar.addEventListener(evt, cancel, { once: true, passive: true });
-            }
             calendar.scrollTop = 0;
             const step = (now: number) => {
                 if (cancelled) return;
                 const t = Math.min(1, (now - start) / duration);
-                calendar.scrollTop = target * easeOutQuart(t);
+                calendar.scrollTop = centreTarget() * easeOutQuart(t);
                 if (t < 1) requestAnimationFrame(step);
+                else settled = true;
             };
             requestAnimationFrame(step);
-        }
+        };
+
+        // centreTarget() above forces a layout, so the calendar's fonts are
+        // requested before fonts.ready is read. Cap the wait so a stalled font
+        // request cannot block the roll; the per-frame re-measure covers a late swap.
+        centreTarget();
+        Promise.race([
+            document.fonts.ready,
+            new Promise((resolve) => setTimeout(resolve, 1500)),
+        ]).then(roll);
+
+        // A swap after the roll has finished would leave the row off-centre;
+        // re-centre, unless the visitor has already scrolled. (Mid-roll swaps
+        // are absorbed by the per-frame re-measure.)
+        document.fonts.addEventListener("loadingdone", () => {
+            if (settled && !cancelled) calendar.scrollTop = centreTarget();
+        });
     }
 
     // Dynamic scroll affordance: toggle fade masks + corner arrows based on
