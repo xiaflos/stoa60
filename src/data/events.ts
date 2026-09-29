@@ -175,7 +175,7 @@ export const events: Event[] = [
     "organiser": [
       "stoa60"
     ],
-    "poster": "",
+    "poster": "2026-2027/2026-10-09_depressants-sachmiscult.jpg",
     "bandLinks": {
       "The Depressants": "https://www.youtube.com/@thedepressants",
       "Sachmis Cult": "https://www.instagram.com/sachmiscult/"
