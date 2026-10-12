@@ -79,23 +79,6 @@ export const events: Event[] = [
     }
   },
   {
-    "date": "2026-11-21",
-    "bands": [
-      "Imperium Infernalis",
-      "TBA"
-    ],
-    "rawTitle": "Imperium Infernalis, TBA",
-    "eventType": "gig",
-    "location": "underground",
-    "organiser": [
-      "stoa60"
-    ],
-    "poster": "",
-    "bandLinks": {
-      "Imperium Infernalis": "https://imperiuminfernalis.bandcamp.com/"
-    }
-  },
-  {
     "date": "2026-11-14",
     "bands": [
       "HEX",
@@ -146,24 +129,6 @@ export const events: Event[] = [
     "poster": ""
   },
   {
-    "date": "2026-10-17",
-    "bands": [
-      "Bastard Swords",
-      "Druid"
-    ],
-    "rawTitle": "Bastard Swords, Druid",
-    "eventType": "gig",
-    "location": "underground",
-    "organiser": [
-      "stoa60"
-    ],
-    "poster": "",
-    "bandLinks": {
-      "Bastard Swords": "https://bastardswordgr.bandcamp.com/album/bastard-sword-i",
-      "Druid": "https://thedruidofficial.bandcamp.com/"
-    }
-  },
-  {
     "date": "2026-10-09",
     "bands": [
       "The Depressants",
@@ -177,10 +142,15 @@ export const events: Event[] = [
     ],
     "poster": "2026-2027/2026-10-09_depressants-sachmiscult.jpg",
     "bandLinks": {
-      "The Depressants": "https://www.youtube.com/@thedepressants",
+      "The Depressants": "https://thedepressantsreth.bandcamp.com/",
       "Sachmis Cult": "https://www.instagram.com/sachmiscult/"
     },
-    "isNext": true
+    "isNext": true,
+    "mailIntro": "Παρασκεύη 9 Οκτώβρη θα αποκαταστήσουμε την κανονικότητα στην πόλη. Η στοά60 ξεκινάει να ρολάρει. Εχοντας ανακοινώσει στην ιστοσελίδα stoa60.net το πρόγραμμα για Οκτώβρη και Νοέμβρη, μπορείτε πλέον να κανονίσετε τα κουμάντα σας. Ξεκινάμε με-τοπικά σχήματα.",
+    "bandDescriptions": {
+      "The Depressants": "Τους ξέρουμε από τόσο δα. Η πρώτη τους κυκλοφορία ήταν η ηχογράφηση από το λάϊβ στη στοά60, όταν ήταν μία αγαθή grunge ρεθυμνόμπαντα. Πλέον με καινούργιο δίσκο και τουπα τουπα επιρροές, εμφανίζονται πιο ώριμοι από ποτέ.",
+      "Sachmis Cult": "Τους ανακαλύψαμε πέρυσι και το ραντεβού έπρεπε να ανανεωθεί. Οι τέως Mad Soia φέρουν πλέον την προστασία της Sachmis (ή σεκμέτ) που υπόσχεται τον όλεθρο στο όνομα του Ρα."
+    }
   },
   {
     "date": "2026-09-19",
