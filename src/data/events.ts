@@ -118,15 +118,24 @@ export const events: Event[] = [
   {
     "date": "2026-10-24",
     "bands": [
-      "STOA SUBATOMIC vol.2"
+      "STOA SUBATOMIC vol.2",
+      "Foundation Mountain (UK)"
     ],
-    "rawTitle": "STOA SUBATOMIC vol.2",
+    "rawTitle": "STOA SUBATOMIC vol.2, Foundation Mountain (UK)",
     "eventType": "Soundsystem",
     "location": "underground",
     "organiser": [
       "stoa60"
     ],
-    "poster": ""
+    "poster": "2026-2027/2026-10-24_foundationmountain.jpg",
+    "bandLinks": {
+      "Foundation Mountain (UK)": "https://foundationmountain.bandcamp.com/music"
+    },
+    "isNext": true,
+    "mailIntro": "Σάββατο 24 Οκτώβρη, 21:00. Reggae dub για τη Yfanet.",
+    "bandDescriptions": {
+      "Foundation Mountain (UK)": "Αυτό το Σάββατο ξαναστήνουμε το ψιλοτίμιο wannabe soundystem από τo <s>Lidl</s>-Thomann, για να φιλοξενήσουμε από το μακρινό Λονδίνο τον Foundation Mountain. Μέρος των εσόδων θα διατεθούν προς υποστήριξη των υποδομών της κατάληψης της Φάμπρικας Υφανέτ στη Θεσσαλονίκη. Από νωρίς θα παίζει καλά. Να το ξέρετε."
+    }
   },
   {
     "date": "2026-10-09",
@@ -145,7 +154,6 @@ export const events: Event[] = [
       "The Depressants": "https://thedepressantsreth.bandcamp.com/",
       "Sachmis Cult": "https://www.instagram.com/sachmiscult/"
     },
-    "isNext": true,
     "mailIntro": "Παρασκεύη 9 Οκτώβρη θα αποκαταστήσουμε την κανονικότητα στην πόλη. Η στοά60 ξεκινάει να ρολάρει. Εχοντας ανακοινώσει στην ιστοσελίδα stoa60.net το πρόγραμμα για Οκτώβρη και Νοέμβρη, μπορείτε πλέον να κανονίσετε τα κουμάντα σας. Ξεκινάμε με-τοπικά σχήματα.",
     "bandDescriptions": {
       "The Depressants": "Τους ξέρουμε από τόσο δα. Η πρώτη τους κυκλοφορία ήταν η ηχογράφηση από το λάϊβ στη στοά60, όταν ήταν μία αγαθή grunge ρεθυμνόμπαντα. Πλέον με καινούργιο δίσκο και τουπα τουπα επιρροές, εμφανίζονται πιο ώριμοι από ποτέ.",
