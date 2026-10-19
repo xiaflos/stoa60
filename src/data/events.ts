@@ -132,7 +132,7 @@ export const events: Event[] = [
       "Foundation Mountain (UK)": "https://foundationmountain.bandcamp.com/music"
     },
     "isNext": true,
-    "mailIntro": "Σάββατο 24 Οκτώβρη, 21:00. Reggae dub για τη Yfanet.",
+    "mailIntro": "Σάββατο 24 Οκτώβρη, 21:00. Foundation Mountain meets the underground Subatomic Stoa exinda system, for a night of reggae, dub, dubreggae, reggaedub and many more",
     "bandDescriptions": {
       "Foundation Mountain (UK)": "Αυτό το Σάββατο ξαναστήνουμε το ψιλοτίμιο wannabe soundystem από τo <s>Lidl</s>-Thomann, για να φιλοξενήσουμε από το μακρινό Λονδίνο τον Foundation Mountain. Μέρος των εσόδων θα διατεθούν προς υποστήριξη των υποδομών της κατάληψης της Φάμπρικας Υφανέτ στη Θεσσαλονίκη. Από νωρίς θα παίζει καλά. Να το ξέρετε."
     }
