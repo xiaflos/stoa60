@@ -116,6 +116,29 @@ export const events: Event[] = [
     }
   },
   {
+    "date": "2026-10-31",
+    "bands": [
+      "Tzitzifrikia",
+      "eπιστατες.gov"
+    ],
+    "rawTitle": "Tzitzifrikia, eπιστατες.gov",
+    "eventType": "gig",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "2026-2027/2026-10-31_tzitzifrikia-epistates.jpg",
+    "bandLinks": {
+      "Tzitzifrikia": "https://tzitzifrikia.bandcamp.com/album/guts"
+    },
+    "isNext": true,
+    "mailIntro": "Μια μέρα μετά το drag show οικονομικής στήριξης από το Κομμένο μπετάνι et al., η στοά φιλοξενεί τα Tzitzifrikia.",
+    "bandDescriptions": {
+      "Tzitzifrikia": "Cottage core. Ότι και αν σημαίνει. Μην περιμένετε να ακούσετε κάτι αναμενόμενο.",
+      "eπιστατες.gov": "Χαλασμένες κασέτες, πικάπ, cd player, η σχέση με τη φθορά, την άνοια και η νοσταλγία για μια εποχή που ο κόσμος έμοιαζε πιο ρεύστος . Με αφετηρία το έργο του Caretaker, οι επιστάτες θα παίξουν μουσική άλλων, μέσα από μηχανήματα άλλων που θα ακούγονται διαφορετικά και βρείτε τώρα εσείς τί γίνεται με τα copyright."
+    }
+  },
+  {
     "date": "2026-10-24",
     "bands": [
       "STOA SUBATOMIC vol.2",
@@ -131,7 +154,6 @@ export const events: Event[] = [
     "bandLinks": {
       "Foundation Mountain (UK)": "https://foundationmountain.bandcamp.com/music"
     },
-    "isNext": true,
     "mailIntro": "Σάββατο 24 Οκτώβρη, 21:00. Foundation Mountain meets the underground Subatomic Stoa exinda system, for a night of reggae, dub, dubreggae, reggaedub and many more",
     "bandDescriptions": {
       "Foundation Mountain (UK)": "Αυτό το Σάββατο ξαναστήνουμε το ψιλοτίμιο wannabe soundystem από τo <s>Lidl</s>-Thomann, για να φιλοξενήσουμε από το μακρινό Λονδίνο τον Foundation Mountain. Μέρος των εσόδων θα διατεθούν προς υποστήριξη των υποδομών της κατάληψης της Φάμπρικας Υφανέτ στη Θεσσαλονίκη. Από νωρίς θα παίζει καλά. Να το ξέρετε."
