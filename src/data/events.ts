@@ -45,6 +45,26 @@ export const events: Event[] = [
     }
   },
   {
+    "date": "2027-01-23",
+    "bands": [
+      "Death Drive",
+      "Hellholtz",
+      "Groom in Vineyards"
+    ],
+    "rawTitle": "Death Drive, Hellholtz, Groom in Vineyards",
+    "eventType": "gig",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandLinks": {
+      "Death Drive": "https://itsdeathdrive.bandcamp.com/",
+      "Hellholtz": "https://hellholtz.bandcamp.com/",
+      "Groom in Vineyards": "https://groominvineyards.bandcamp.com/"
+    }
+  },
+  {
     "date": "2027-01-16",
     "bands": [
       "Tiffany",
@@ -62,7 +82,23 @@ export const events: Event[] = [
     }
   },
   {
-    "date": "2026-11-28",
+    "date": "2026-12-05",
+    "bands": [
+      "Terror Detonator"
+    ],
+    "rawTitle": "Terror Detonator",
+    "eventType": "gig",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandLinks": {
+      "Terror Detonator": "https://terrordetonatorthrash.bandcamp.com/"
+    }
+  },
+  {
+    "date": "2026-11-27",
     "bands": [
       "Sister",
       "Microdosing"
