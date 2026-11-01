@@ -31,9 +31,10 @@ export const events: Event[] = [
   {
     "date": "2027-01-30",
     "bands": [
-      "Leatherhead"
+      "Leatherhead",
+      "TBA"
     ],
-    "rawTitle": "Leatherhead",
+    "rawTitle": "Leatherhead, TBA",
     "eventType": "gig",
     "location": "underground",
     "organiser": [
@@ -82,11 +83,29 @@ export const events: Event[] = [
     }
   },
   {
+    "date": "2027-01-09",
+    "bands": [
+      "Fatface",
+      "TBA"
+    ],
+    "rawTitle": "Fatface, TBA",
+    "eventType": "gig",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandLinks": {
+      "Fatface": "https://fatfacehc.bandcamp.com/album/heavy-puncher"
+    }
+  },
+  {
     "date": "2026-12-05",
     "bands": [
-      "Terror Detonator"
+      "Terror Detonator",
+      "TBA"
     ],
-    "rawTitle": "Terror Detonator",
+    "rawTitle": "Terror Detonator, TBA",
     "eventType": "gig",
     "location": "underground",
     "organiser": [
