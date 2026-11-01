@@ -145,11 +145,12 @@ export const events: Event[] = [
     "organiser": [
       "stoa60"
     ],
-    "poster": "",
+    "poster": "2026-2027/2026-11-07_lusttone-zemra-meadowmeal.jpg",
     "bandLinks": {
       "LustTone": "https://lusttone.bandcamp.com/album/living-in-a-dead-world",
       "Zemra": "https://zemra.bandcamp.com/"
-    }
+    },
+    "isNext": true
   },
   {
     "date": "2026-10-31",
@@ -167,7 +168,6 @@ export const events: Event[] = [
     "bandLinks": {
       "Tzitzifrikia": "https://tzitzifrikia.bandcamp.com/album/guts"
     },
-    "isNext": true,
     "mailIntro": "Μια μέρα μετά το drag show οικονομικής στήριξης από το Κομμένο μπετάνι et al., η στοά φιλοξενεί τα Tzitzifrikia.",
     "bandDescriptions": {
       "Tzitzifrikia": "Cottage core. Ότι και αν σημαίνει. Μην περιμένετε να ακούσετε κάτι αναμενόμενο.",
