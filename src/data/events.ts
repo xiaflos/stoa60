@@ -134,6 +134,38 @@ export const events: Event[] = [
     }
   },
   {
+    "date": "2026-11-25",
+    "bands": [
+      "Pornostar"
+    ],
+    "rawTitle": "Pornostar",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Pornostar": "Toshiaki Toyoda · Crime Drama · 20:00"
+    }
+  },
+  {
+    "date": "2026-11-18",
+    "bands": [
+      "Timecrimes"
+    ],
+    "rawTitle": "Timecrimes",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Timecrimes": "Nacho Vigalondo · Sci Fi/Thriller · 20:00"
+    }
+  },
+  {
     "date": "2026-11-14",
     "bands": [
       "HEX",
@@ -152,13 +184,29 @@ export const events: Event[] = [
     }
   },
   {
+    "date": "2026-11-11",
+    "bands": [
+      "Rosencrantz & Guildenstern Are Dead"
+    ],
+    "rawTitle": "Rosencrantz & Guildenstern Are Dead",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Rosencrantz & Guildenstern Are Dead": "Tom Stoppard · Dark Comedy · 20:00"
+    }
+  },
+  {
     "date": "2026-11-07",
     "bands": [
-      "LustTone",
       "Meadow Meal",
-      "Zemra"
+      "Zemra",
+      "LustTone"
     ],
-    "rawTitle": "LustTone, Meadow Meal, Zemra",
+    "rawTitle": "Meadow Meal, Zemra, LustTone",
     "eventType": "gig",
     "location": "underground",
     "organiser": [
@@ -169,7 +217,29 @@ export const events: Event[] = [
       "LustTone": "https://lusttone.bandcamp.com/album/living-in-a-dead-world",
       "Zemra": "https://zemra.bandcamp.com/"
     },
-    "isNext": true
+    "isNext": true,
+    "mailIntro": "Τρία σχήματα σε μία βραδιά που προβλέπεται μακριά και θα ξεκινήσει από νωρίς. Μην σκάτε στις 12.30 και στραβώνεται που χάσατε το λάϊβ.",
+    "bandDescriptions": {
+      "Meadow Meal": "Πρωτοεμφανιζόμενο σχήμα από το Ρέθυμνο.",
+      "Zemra": "Synthwave/punk από την Αθήνα.",
+      "LustTone": "Από το μακρινό Ρέθυμνο το ντούετο που μας συστήθηκε πέρυσι και καθιερώθηκε στις καρδιές μας."
+    }
+  },
+  {
+    "date": "2026-11-04",
+    "bands": [
+      "The Conversation"
+    ],
+    "rawTitle": "The Conversation",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "The Conversation": "Francis Ford Coppola · Mystery/Drama · 20:00"
+    }
   },
   {
     "date": "2026-10-31",

@@ -34,6 +34,7 @@ interface CalendarEntry {
     posterSrc?: string;
     eventType?: string;
     isNext?: boolean;   // highlight flag for the next upcoming event
+    details?: string;   // screenings: director · genre · time
 }
 
 // Future gigs now live in the CSV (tools/event-build/events.csv) → events.ts.
@@ -45,9 +46,11 @@ const today = new Date().toISOString().slice(0, 10);
 // Next-gig poster: prefer the is_next-flagged event, else the soonest upcoming event,
 // else the most recent one with a poster. An event without a poster shows the
 // "pending poster" placeholder.
+// Film screenings share the calendar but are never the "next gig".
+const isScreening = (type?: string) => type === 'Screening';
 const flagged  = events.find(e => e.isNext);
-const upcoming = events.filter(e => e.date >= today).sort((a, b) => a.date.localeCompare(b.date))[0];
-const newest   = events.filter(e => e.poster).sort((a, b) => b.date.localeCompare(a.date))[0];
+const upcoming = events.filter(e => !isScreening(e.eventType) && e.date >= today).sort((a, b) => a.date.localeCompare(b.date))[0];
+const newest   = events.filter(e => e.poster && !isScreening(e.eventType)).sort((a, b) => b.date.localeCompare(a.date))[0];
 const featured = flagged ?? upcoming ?? newest;
 const nextGigPoster = (featured?.poster && postersByPath[featured.poster]) || pendingPoster;
 
@@ -58,13 +61,14 @@ const dbEntries: CalendarEntry[] = events.map(e => ({
     location: e.location !== 'underground' ? e.location : undefined,
     posterSrc: e.poster ? posterSrcMap[e.poster] : undefined,
     eventType: e.eventType !== 'gig' ? e.eventType : undefined,
+    details: isScreening(e.eventType) ? e.bandDescriptions?.[e.bands[0]] : undefined,
 }));
 
 const allEntries = [...manualFutureEntries, ...dbEntries]
     .sort((a, b) => a.date.localeCompare(b.date));
 
 // Find the next upcoming event (first one with date >= today)
-const nextIdx = allEntries.findIndex(e => e.date >= today);
+const nextIdx = allEntries.findIndex(e => e.date >= today && !isScreening(e.eventType));
 const nextEventDate = nextIdx !== -1 ? allEntries[nextIdx].date : null;
 if (nextIdx !== -1) allEntries[nextIdx].isNext = true;
 
@@ -168,7 +172,15 @@ for (const entry of allEntries) {
                     return (
                         <div class:list={["flex flex-col py-1.5 border-b border-base-900/10", entry.isNext && "bg-base-900/8 -mx-2 px-2 rounded"]} data-date={entry.date} data-next={entry.isNext ? "true" : undefined}>
                             {entry.eventType && (
-                                <span class="font-bahnschrift text-xs font-normal text-base-900/35 tracking-widest uppercase pl-11 mb-0.5">{entry.eventType}</span>
+                                <span class="font-bahnschrift text-xs font-normal text-base-900/35 tracking-widest uppercase pl-11 mb-0.5 flex items-center gap-1.5">
+                                    {isScreening(entry.eventType) && (
+                                        <svg class="film-icon w-3.5 h-3.5 shrink-0" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+                                            <rect x="1.5" y="2.5" width="13" height="11" rx="1"/>
+                                            <path d="M4.5 2.5v11M11.5 2.5v11M1.5 6h3M1.5 10h3M11.5 6h3M11.5 10h3"/>
+                                        </svg>
+                                    )}
+                                    {entry.eventType}
+                                </span>
                             )}
                             <div class="flex items-baseline gap-3">
                                 {entry.posterSrc ? (
@@ -202,6 +214,9 @@ for (const entry of allEntries) {
                                     <span class="ml-auto mr-3 shrink-0 self-center border border-base-900/40 px-1.5 py-1 font-grunge text-sm uppercase leading-none tracking-widest text-base-900/70 select-none" data-i18n="hero.nextgig">next gig</span>
                                 )}
                             </div>
+                            {entry.details && (
+                                <span class="font-bahnschrift text-xs font-normal text-base-900/50 pl-11 mt-0.5">{entry.details}</span>
+                            )}
                         </div>
                     );
                 })}
