@@ -169,16 +169,27 @@ for (const entry of allEntries) {
                 <!-- Calendar rows -->
                 {entries.map((entry) => {
                     const day = parseInt(entry.date.split("-")[2], 10);
+                    if (isScreening(entry.eventType)) {
+                        return (
+                            <div class="flex items-center gap-3 py-0.5 border-b border-base-900/10 min-w-0" data-date={entry.date} title={`${entry.bands[0]} — ${entry.details ?? ""}`}>
+                                <span class="font-bahnschrift font-bold text-sm text-base-900/30 leading-none w-8 shrink-0">{day}</span>
+                                <svg class="film-icon w-3.5 h-3.5 shrink-0 text-base-900/40" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+                                    <circle cx="4.8" cy="4" r="2.2"/>
+                                    <circle cx="9.6" cy="4" r="2.2"/>
+                                    <rect x="1.5" y="6.5" width="9.5" height="6.5" rx="1"/>
+                                    <path d="M11 8.5l3.5-1.8v5.6L11 10.5z"/>
+                                </svg>
+                                <span class="font-bahnschrift text-xs uppercase text-base-900/60 whitespace-nowrap shrink-0 max-w-[60%] truncate">{entry.bands[0]}</span>
+                                {entry.details && (
+                                    <span class="font-bahnschrift text-[11px] font-normal text-base-900/35 whitespace-nowrap truncate min-w-0">{entry.details}</span>
+                                )}
+                            </div>
+                        );
+                    }
                     return (
                         <div class:list={["flex flex-col py-1.5 border-b border-base-900/10", entry.isNext && "bg-base-900/8 -mx-2 px-2 rounded"]} data-date={entry.date} data-next={entry.isNext ? "true" : undefined}>
                             {entry.eventType && (
                                 <span class="font-bahnschrift text-xs font-normal text-base-900/35 tracking-widest uppercase pl-11 mb-0.5 flex items-center gap-1.5">
-                                    {isScreening(entry.eventType) && (
-                                        <svg class="film-icon w-3.5 h-3.5 shrink-0" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
-                                            <rect x="1.5" y="2.5" width="13" height="11" rx="1"/>
-                                            <path d="M4.5 2.5v11M11.5 2.5v11M1.5 6h3M1.5 10h3M11.5 6h3M11.5 10h3"/>
-                                        </svg>
-                                    )}
                                     {entry.eventType}
                                 </span>
                             )}
@@ -214,9 +225,6 @@ for (const entry of allEntries) {
                                     <span class="ml-auto mr-3 shrink-0 self-center border border-base-900/40 px-1.5 py-1 font-grunge text-sm uppercase leading-none tracking-widest text-base-900/70 select-none" data-i18n="hero.nextgig">next gig</span>
                                 )}
                             </div>
-                            {entry.details && (
-                                <span class="font-bahnschrift text-xs font-normal text-base-900/50 pl-11 mt-0.5">{entry.details}</span>
-                            )}
                         </div>
                     );
                 })}
