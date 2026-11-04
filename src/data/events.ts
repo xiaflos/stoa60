@@ -390,6 +390,22 @@ export const events: Event[] = [
     }
   },
   {
+    "date": "2026-04-29",
+    "bands": [
+      "Dark City"
+    ],
+    "rawTitle": "Dark City",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Dark City": "Alex Proyas · 20:00"
+    }
+  },
+  {
     "date": "2026-04-25",
     "bands": [
       "JUNKHEART",
@@ -404,6 +420,22 @@ export const events: Event[] = [
     "poster": "2025-2026/2026-04-25_junkheart_pontikia.jpg"
   },
   {
+    "date": "2026-04-22",
+    "bands": [
+      "Pusher"
+    ],
+    "rawTitle": "Pusher",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Pusher": "Nicolas Winding Refn · 20:00"
+    }
+  },
+  {
     "date": "2026-04-18",
     "bands": [
       "ΑΧΕΟΝ",
@@ -416,6 +448,38 @@ export const events: Event[] = [
       "stoa60"
     ],
     "poster": "2025-2026/2026-04-18_axeon_veil2.jpg"
+  },
+  {
+    "date": "2026-04-15",
+    "bands": [
+      "The Holy Mountain"
+    ],
+    "rawTitle": "The Holy Mountain",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "The Holy Mountain": "Alejandro Jodorowsky · 20:00"
+    }
+  },
+  {
+    "date": "2026-04-08",
+    "bands": [
+      "The Wicker Man"
+    ],
+    "rawTitle": "The Wicker Man",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "The Wicker Man": "Robin Hardy · 20:00"
+    }
   },
   {
     "date": "2026-04-01",
@@ -445,6 +509,22 @@ export const events: Event[] = [
     "poster": "2025-2026/2026-03-27_subatomic.jpg"
   },
   {
+    "date": "2026-03-25",
+    "bands": [
+      "The Wicker Man"
+    ],
+    "rawTitle": "The Wicker Man",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "The Wicker Man": "Robin Hardy · 20:00"
+    }
+  },
+  {
     "date": "2026-03-21",
     "bands": [
       "AETHERIAN",
@@ -457,6 +537,22 @@ export const events: Event[] = [
       "stoa60"
     ],
     "poster": "2025-2026/2026-03-21_aetherian.jpg"
+  },
+  {
+    "date": "2026-03-18",
+    "bands": [
+      "The Dreamers"
+    ],
+    "rawTitle": "The Dreamers",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "The Dreamers": "Bernardo Bertolucci · 20:00"
+    }
   },
   {
     "date": "2026-03-14",
@@ -473,6 +569,22 @@ export const events: Event[] = [
     "poster": "2025-2026/2026-03-14_youth.jpg"
   },
   {
+    "date": "2026-03-11",
+    "bands": [
+      "Cure"
+    ],
+    "rawTitle": "Cure",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Cure": "Kiyoshi Kurosawa · 20:00"
+    }
+  },
+  {
     "date": "2026-03-07",
     "bands": [
       "INVALTA",
@@ -487,6 +599,22 @@ export const events: Event[] = [
     "poster": "2025-2026/2026-03-07_invalta.jpg"
   },
   {
+    "date": "2026-03-04",
+    "bands": [
+      "The Wild Boys"
+    ],
+    "rawTitle": "The Wild Boys",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "The Wild Boys": "Bertrand Mandico · 20:00"
+    }
+  },
+  {
     "date": "2026-02-28",
     "bands": [
       "KRATS",
@@ -499,6 +627,38 @@ export const events: Event[] = [
       "stoa60"
     ],
     "poster": "2025-2026/2026-02-28_kratsHand.jpg"
+  },
+  {
+    "date": "2026-02-25",
+    "bands": [
+      "Blue Spring"
+    ],
+    "rawTitle": "Blue Spring",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Blue Spring": "Toshiaki Toyoda · 20:00"
+    }
+  },
+  {
+    "date": "2026-02-18",
+    "bands": [
+      "Down by Law"
+    ],
+    "rawTitle": "Down by Law",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Down by Law": "Jim Jarmusch · 20:00"
+    }
   },
   {
     "date": "2026-02-14",
@@ -516,6 +676,22 @@ export const events: Event[] = [
     "poster": "2025-2026/2026-02-14_omega.jpg"
   },
   {
+    "date": "2026-02-11",
+    "bands": [
+      "Naked"
+    ],
+    "rawTitle": "Naked",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Naked": "Mike Leigh · 20:00"
+    }
+  },
+  {
     "date": "2026-02-07",
     "bands": [
       "ZERO CHANCE",
@@ -528,6 +704,22 @@ export const events: Event[] = [
       "stoa60"
     ],
     "poster": "2025-2026/2026-02-07_otompritsi.jpg"
+  },
+  {
+    "date": "2026-02-04",
+    "bands": [
+      "In the Soup"
+    ],
+    "rawTitle": "In the Soup",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "In the Soup": "Alexandre Rockwell · 20:00"
+    }
   },
   {
     "date": "2026-01-31",
@@ -548,6 +740,22 @@ export const events: Event[] = [
     "poster": "2025-2026/2026-01-31_stolen.jpg"
   },
   {
+    "date": "2026-01-28",
+    "bands": [
+      "Phantom of the Paradise"
+    ],
+    "rawTitle": "Phantom of the Paradise",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Phantom of the Paradise": "Brian De Palma · 20:00"
+    }
+  },
+  {
     "date": "2026-01-24",
     "bands": [
       "KVADRAT",
@@ -562,6 +770,22 @@ export const events: Event[] = [
     "poster": "2025-2026/2026-01-24_kvadrat.jpg"
   },
   {
+    "date": "2026-01-21",
+    "bands": [
+      "Johnny Stecchino"
+    ],
+    "rawTitle": "Johnny Stecchino",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Johnny Stecchino": "Roberto Benigni · 20:00"
+    }
+  },
+  {
     "date": "2026-01-17",
     "bands": [
       "THE KLAMMERS",
@@ -574,6 +798,22 @@ export const events: Event[] = [
       "stoa60"
     ],
     "poster": "2025-2026/2026-01-17_klammers.jpg"
+  },
+  {
+    "date": "2026-01-14",
+    "bands": [
+      "Satyricon"
+    ],
+    "rawTitle": "Satyricon",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Satyricon": "Federico Fellini · 20:00"
+    }
   },
   {
     "date": "2026-01-10",
@@ -603,6 +843,22 @@ export const events: Event[] = [
     "poster": "2025-2026/2025-12-20_darkness.jpg"
   },
   {
+    "date": "2025-12-17",
+    "bands": [
+      "The Man Without a Past"
+    ],
+    "rawTitle": "The Man Without a Past",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "The Man Without a Past": "Aki Kaurismäki · 20:00"
+    }
+  },
+  {
     "date": "2025-12-13",
     "bands": [
       "DURY DAVA",
@@ -617,6 +873,22 @@ export const events: Event[] = [
     "poster": "2025-2026/2025-12-13_dury.jpg"
   },
   {
+    "date": "2025-12-10",
+    "bands": [
+      "Metropolis"
+    ],
+    "rawTitle": "Metropolis",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Metropolis": "Fritz Lang · 20:00"
+    }
+  },
+  {
     "date": "2025-12-06",
     "bands": [
       "BROKEN ELECTRONIX NIGHT PT.II"
@@ -628,6 +900,22 @@ export const events: Event[] = [
       "stoa60"
     ],
     "poster": "2025-2026/2025-12-06_broken.jpg"
+  },
+  {
+    "date": "2025-12-03",
+    "bands": [
+      "Slacker"
+    ],
+    "rawTitle": "Slacker",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Slacker": "Richard Linklater · 20:00"
+    }
   },
   {
     "date": "2025-11-29",
@@ -644,6 +932,22 @@ export const events: Event[] = [
     "poster": "2025-2026/2025-11-29_gnaal.jpg"
   },
   {
+    "date": "2025-11-26",
+    "bands": [
+      "Singapore Sling"
+    ],
+    "rawTitle": "Singapore Sling",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Singapore Sling": "Nikos Nikolaidis · 20:00"
+    }
+  },
+  {
     "date": "2025-11-22",
     "bands": [
       "GYNOID",
@@ -656,6 +960,22 @@ export const events: Event[] = [
       "stoa60"
     ],
     "poster": "2025-2026/2025-11-22_gynoid.jpg"
+  },
+  {
+    "date": "2025-11-19",
+    "bands": [
+      "Hundreds of Beavers"
+    ],
+    "rawTitle": "Hundreds of Beavers",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Hundreds of Beavers": "Mike Cheslik · 20:00"
+    }
   },
   {
     "date": "2025-11-15",
@@ -672,6 +992,22 @@ export const events: Event[] = [
     "poster": "2025-2026/2025-11-15_zevedeus.jpg"
   },
   {
+    "date": "2025-11-12",
+    "bands": [
+      "Lonely Are the Brave"
+    ],
+    "rawTitle": "Lonely Are the Brave",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Lonely Are the Brave": "David Miller · 20:00"
+    }
+  },
+  {
     "date": "2025-11-09",
     "bands": [
       "MEMORY",
@@ -684,6 +1020,22 @@ export const events: Event[] = [
       "stoa60"
     ],
     "poster": "2025-2026/2025-11-09_memory.jpg"
+  },
+  {
+    "date": "2025-11-05",
+    "bands": [
+      "Magnetic Fields"
+    ],
+    "rawTitle": "Magnetic Fields",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Magnetic Fields": "Yorgos Goussis · 20:00"
+    }
   },
   {
     "date": "2025-10-11",
@@ -851,6 +1203,22 @@ export const events: Event[] = [
     "poster": "2024-2025/2025-03-29_typhus-axeon.jpg"
   },
   {
+    "date": "2025-03-28",
+    "bands": [
+      "The Lobster"
+    ],
+    "rawTitle": "The Lobster",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "The Lobster": "Γιώργος Λάνθιμος · 20:00"
+    }
+  },
+  {
     "date": "2025-03-22",
     "bands": [
       "ΑΝΗΦΟΡΑ",
@@ -863,6 +1231,38 @@ export const events: Event[] = [
       "stoa60"
     ],
     "poster": "2024-2025/2025-03-22_anifora-nterti-dancing.jpg"
+  },
+  {
+    "date": "2025-03-21",
+    "bands": [
+      "Faster, Pussycat! Kill! Kill!"
+    ],
+    "rawTitle": "Faster, Pussycat! Kill! Kill!",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Faster, Pussycat! Kill! Kill!": "Russ Meyer · 20:00"
+    }
+  },
+  {
+    "date": "2025-03-14",
+    "bands": [
+      "Tetro"
+    ],
+    "rawTitle": "Tetro",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Tetro": "Francis Ford Coppola · 20:00"
+    }
   },
   {
     "date": "2025-03-08",
@@ -879,6 +1279,22 @@ export const events: Event[] = [
     "poster": "2024-2025/2025-03-08_falooda-the-depressants.jpg"
   },
   {
+    "date": "2025-03-07",
+    "bands": [
+      "Rabbit Proof Fence"
+    ],
+    "rawTitle": "Rabbit Proof Fence",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Rabbit Proof Fence": "Phillip Noyce · 20:00"
+    }
+  },
+  {
     "date": "2025-03-01",
     "bands": [
       "ΑΔΑΕΙΣ",
@@ -893,6 +1309,22 @@ export const events: Event[] = [
     "poster": "2024-2025/2025-03-01_adaeis_afiloxeno_soma.jpg"
   },
   {
+    "date": "2025-02-26",
+    "bands": [
+      "Rock n' Roll High School"
+    ],
+    "rawTitle": "Rock n' Roll High School",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Rock n' Roll High School": "20:00"
+    }
+  },
+  {
     "date": "2025-02-22",
     "bands": [
       "YOVEL",
@@ -905,6 +1337,22 @@ export const events: Event[] = [
       "stoa60"
     ],
     "poster": "2024-2025/2025-02-22_yovel-gnaal_fb.jpg"
+  },
+  {
+    "date": "2025-02-19",
+    "bands": [
+      "Waking Life"
+    ],
+    "rawTitle": "Waking Life",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Waking Life": "20:00"
+    }
   },
   {
     "date": "2025-02-15",
@@ -923,6 +1371,22 @@ export const events: Event[] = [
     "poster": "2024-2025/2025-02-15_taylor-savage-ollavia-sirap-ouroboros.jpg"
   },
   {
+    "date": "2025-02-12",
+    "bands": [
+      "Locke"
+    ],
+    "rawTitle": "Locke",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Locke": "20:00"
+    }
+  },
+  {
     "date": "2025-02-08",
     "bands": [
       "ΣΑΙΚΑ"
@@ -934,6 +1398,38 @@ export const events: Event[] = [
       "stoa60"
     ],
     "poster": "2024-2025/2025-02-08_saika.jpg"
+  },
+  {
+    "date": "2025-02-05",
+    "bands": [
+      "Wings of Desire"
+    ],
+    "rawTitle": "Wings of Desire",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Wings of Desire": "20:00"
+    }
+  },
+  {
+    "date": "2025-01-29",
+    "bands": [
+      "Nightcrawler"
+    ],
+    "rawTitle": "Nightcrawler",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Nightcrawler": "Dan Gilroy · 20:00"
+    }
   },
   {
     "date": "2025-01-24",
@@ -948,6 +1444,22 @@ export const events: Event[] = [
       "stoa60"
     ],
     "poster": "2024-2025/2025-01-24_cucumba-mellow-lizard.jpg"
+  },
+  {
+    "date": "2025-01-22",
+    "bands": [
+      "Brazil"
+    ],
+    "rawTitle": "Brazil",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Brazil": "Terry Gilliam · 20:00"
+    }
   },
   {
     "date": "2025-01-18",
@@ -965,6 +1477,22 @@ export const events: Event[] = [
     "poster": "2024-2025/2025-01-18_kalte-nacht-incirrina-humachines.jpg"
   },
   {
+    "date": "2025-01-15",
+    "bands": [
+      "Johnny Got His Gun"
+    ],
+    "rawTitle": "Johnny Got His Gun",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Johnny Got His Gun": "Dalton Trumbo · 20:00"
+    }
+  },
+  {
     "date": "2025-01-11",
     "bands": [
       "ΤΖΟΝΙ ΜΠΙ",
@@ -978,6 +1506,38 @@ export const events: Event[] = [
       "stoa60"
     ],
     "poster": "2024-2025/2025-01-11_tzoni-mpi-black-spirit-x-ace-gee-three.jpg"
+  },
+  {
+    "date": "2025-01-08",
+    "bands": [
+      "Bananas"
+    ],
+    "rawTitle": "Bananas",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Bananas": "Woody Allen · 20:00"
+    }
+  },
+  {
+    "date": "2024-12-18",
+    "bands": [
+      "Belki Sibe"
+    ],
+    "rawTitle": "Belki Sibe",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Belki Sibe": "Alexis Daloumis · 20:00"
+    }
   },
   {
     "date": "2024-12-14",
@@ -1034,6 +1594,22 @@ export const events: Event[] = [
     "poster": "2024-2025/2024-12-07_bus-the-unknown-secretary-cosmic-plunge.jpg"
   },
   {
+    "date": "2024-12-04",
+    "bands": [
+      "Dead Man"
+    ],
+    "rawTitle": "Dead Man",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Dead Man": "Jim Jarmusch · 20:00"
+    }
+  },
+  {
     "date": "2024-11-30",
     "bands": [
       "THE VULCAN ITCH",
@@ -1046,6 +1622,22 @@ export const events: Event[] = [
       "stoa60"
     ],
     "poster": "2024-2025/2024-11-30_the-vulcan-itch-kalyva.jpg"
+  },
+  {
+    "date": "2024-11-27",
+    "bands": [
+      "Buffalo '66"
+    ],
+    "rawTitle": "Buffalo '66",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "Buffalo '66": "Vincent Gallo · 20:00"
+    }
   },
   {
     "date": "2024-11-23",
@@ -1062,6 +1654,22 @@ export const events: Event[] = [
     "poster": "2024-2025/2024-11-23_the-sexy-christians-baby-cult.jpg"
   },
   {
+    "date": "2024-11-20",
+    "bands": [
+      "The Fool"
+    ],
+    "rawTitle": "The Fool",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "The Fool": "Yuriy Bykov · 20:00"
+    }
+  },
+  {
     "date": "2024-11-16",
     "bands": [
       "THE MAN AND HIS FAILURES",
@@ -1075,6 +1683,22 @@ export const events: Event[] = [
       "stoa60"
     ],
     "poster": "2024-2025/2024-11-16_the-man-and-his-failures-pre-emptive-strike-01-asylum-promises.jpg"
+  },
+  {
+    "date": "2024-11-13",
+    "bands": [
+      "12 Angry Men"
+    ],
+    "rawTitle": "12 Angry Men",
+    "eventType": "Screening",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "",
+    "bandDescriptions": {
+      "12 Angry Men": "Sidney Lumet · 20:00"
+    }
   },
   {
     "date": "2024-11-09",
