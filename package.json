@@ -24,7 +24,7 @@
     "astro": "^7.2.10",
     "tailwindcss": "^4.3.3",
     "tailwindcss-noise": "^1.0.6",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   },
   "devDependencies": {
     "exceljs": "^4.4.0"
