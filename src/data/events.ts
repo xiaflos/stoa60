@@ -146,7 +146,7 @@ export const events: Event[] = [
     ],
     "poster": "",
     "bandDescriptions": {
-      "Pornostar": "Toshiaki Toyoda · Crime Drama · 20:00"
+      "Pornostar": "Toshiaki Toyoda · 20:00"
     }
   },
   {
@@ -162,7 +162,7 @@ export const events: Event[] = [
     ],
     "poster": "",
     "bandDescriptions": {
-      "Timecrimes": "Nacho Vigalondo · Sci Fi/Thriller · 20:00"
+      "Timecrimes": "Nacho Vigalondo · 20:00"
     }
   },
   {
@@ -196,7 +196,7 @@ export const events: Event[] = [
     ],
     "poster": "",
     "bandDescriptions": {
-      "Rosencrantz & Guildenstern Are Dead": "Tom Stoppard · Dark Comedy · 20:00"
+      "Rosencrantz & Guildenstern Are Dead": "Tom Stoppard · 20:00"
     }
   },
   {
@@ -238,7 +238,7 @@ export const events: Event[] = [
     ],
     "poster": "",
     "bandDescriptions": {
-      "The Conversation": "Francis Ford Coppola · Mystery/Drama · 20:00"
+      "The Conversation": "Francis Ford Coppola · 20:00"
     }
   },
   {
