@@ -81,9 +81,11 @@ Excel workbook ──build:events──> events.csv ──csv-to-ts──> src/d
 - `/admin-helper` is an internal CSV-row generator. It is `noindex` and is
   filtered out of the sitemap in `astro.config.mjs`, but it still ships in the
   static build and is reachable by URL.
-- `npx astro check` currently reports errors, all confined to the inline script
-  in `admin-helper.astro` (implicit `any`, unchecked `getElementById`). The build
-  does not run `check`, so these do not block a deploy.
+- `npx astro check` is clean (0 errors; the inline script in `admin-helper.astro`
+  is typed via a `byId<T>()` helper). Note: a generic *arrow* function
+  (`<T>(…) =>`) inside an Astro `<script>` breaks the compiler ("Unterminated
+  regular expression") — use a `function` declaration. The build does not run
+  `check`, so re-run it manually after touching that script.
 - `tailwindcss` and `@tailwindcss/vite` track `^4.3.3`. The old exact-4.2.1 pin
   is gone: it existed only because Astro 6 ran Vite 7 while `@tailwindcss/vite`
   ≥ 4.2.4 accepts `vite ^8`, which made npm install a second Vite alongside
