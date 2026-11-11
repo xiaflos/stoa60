@@ -177,10 +177,16 @@ export const events: Event[] = [
     "organiser": [
       "stoa60"
     ],
-    "poster": "",
+    "poster": "2026-2027/2026-11-14_hex-babycult.jpg",
     "bandLinks": {
       "HEX": "https://hexathens.bandcamp.com/album/-",
       "Baby Cult": "https://babycult.bandcamp.com/album/baby-cult"
+    },
+    "isNext": true,
+    "mailIntro": "Σάββατο 14 Νοεμβρίου Hex και Baby cult θα μας προσφέρουν μία γκαραντζοpowerροκενρόλ φιέστα.",
+    "bandDescriptions": {
+      "HEX": "Θα έπρεπε να υπάρχουν περισσότερες τέτοιες μπάντες. sloppy rock n roll since 2014.",
+      "Baby Cult": "Οι φήμες λένε ότι κυνηγάνε να πιάσουν τους θύμιξ και τους mellow lizzard για τα περισσότερα λάϊβς στη στοά60. Σταθερή λατρεία."
     }
   },
   {
@@ -217,7 +223,6 @@ export const events: Event[] = [
       "LustTone": "https://lusttone.bandcamp.com/album/living-in-a-dead-world",
       "Zemra": "https://zemra.bandcamp.com/"
     },
-    "isNext": true,
     "mailIntro": "Τρία σχήματα σε μία βραδιά που προβλέπεται μακριά και θα ξεκινήσει από νωρίς. Μην σκάτε στις 12.30 και στραβώνεται που χάσατε το λάϊβ.",
     "bandDescriptions": {
       "Meadow Meal": "Πρωτοεμφανιζόμενο σχήμα από το Ρέθυμνο.",
