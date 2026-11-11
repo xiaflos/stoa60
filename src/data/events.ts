@@ -150,6 +150,23 @@ export const events: Event[] = [
     }
   },
   {
+    "date": "2026-11-21",
+    "bands": [
+      "AXEON",
+      "Phoenix Flight"
+    ],
+    "rawTitle": "AXEON, Phoenix Flight",
+    "eventType": "gig",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "2026-2027/2026-11-21_axeon-phoenixflight.jpg",
+    "bandLinks": {
+      "AXEON": "https://axeonmetal.bandcamp.com/"
+    }
+  },
+  {
     "date": "2026-11-18",
     "bands": [
       "Timecrimes"
