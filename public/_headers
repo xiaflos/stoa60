@@ -1,0 +1,15 @@
+# Netlify security headers (copied verbatim into dist/ by Astro).
+# The CSP is deliberately limited to directives that cannot break the site:
+# it blocks framing, plugins, <base> hijacking and off-site form posts, but
+# does not restrict scripts/styles/images (inline scripts are in use).
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()
+  Content-Security-Policy: frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'
+  Strict-Transport-Security: max-age=31536000
+
+/admin-helper/*
+  X-Robots-Tag: noindex, nofollow

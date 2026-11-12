@@ -29,6 +29,15 @@ test('link key not a band reported', () => {
   assert.ok(validateRows([row({ links: 'GHOST=https://x.com' })], ok).some(x => /GHOST/.test(x)));
 });
 
+test('non-http link reported', () => {
+  assert.ok(validateRows([row({ links: 'AAA=javascript:alert(1)' })], ok).some(x => /http/.test(x)));
+  assert.ok(validateRows([row({ links: 'AAA=https://x.com/"onmouseover' })], ok).some(x => /http/.test(x)));
+});
+
+test('http and https links allowed', () => {
+  assert.deepEqual(validateRows([row({ links: 'AAA=http://aaa.com|BBB=https://bbb.bandcamp.com/album/x' })], ok), []);
+});
+
 test('description key not a band reported', () => {
   assert.ok(validateRows([row({ descriptions: 'GHOST=hello' })], ok).some(x => /GHOST/.test(x)));
 });

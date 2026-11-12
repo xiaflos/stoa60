@@ -230,7 +230,8 @@ for (const entry of allEntries) {
                                 )}
                                 <span class="font-bahnschrift font-bold text-base text-base-900 uppercase leading-snug flex flex-wrap items-baseline gap-x-2">
                                     {entry.bands.map((band, i) => {
-                                        const href = entry.bandLinks?.[band];
+                                        const rawHref = entry.bandLinks?.[band];
+                                        const href = rawHref && /^https?:\/\//i.test(rawHref) ? rawHref : undefined;
                                         return (
                                             <>
                                                 {band === "TBA" ? (

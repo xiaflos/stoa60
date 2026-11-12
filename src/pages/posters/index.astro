@@ -454,7 +454,7 @@ See you on the dancefloor!`,
         <img id="lightbox-img" src="" alt="Poster preview" class="max-h-[90vh] max-w-[85vw] object-contain" />
     </div>
 
-    <script id="bands-data" type="application/json" set:html={JSON.stringify(allBands)}></script>
+    <script id="bands-data" type="application/json" set:html={JSON.stringify(allBands).replace(/</g, "\\u003c")}></script>
 
     <style>
         .poster-img {

@@ -36,6 +36,16 @@ function urlToPosterPath(url) {
   return url && url.startsWith(prefix) ? url.slice(prefix.length) : '';
 }
 
+// Band links end up as <a href> on the site and in the newsletter, so only
+// plain web URLs are allowed (no javascript:, data:, or stray quotes).
+const SAFE_URL = /^https?:\/\/[^\s"'<>]+$/i;
+
+function pairValues(raw) {
+  return (raw || '').split('|')
+    .filter(p => p.includes('='))
+    .map(p => [p.slice(0, p.indexOf('=')).trim(), p.slice(p.indexOf('=') + 1).trim()]);
+}
+
 function pairKeys(raw) {
   return (raw || '').split('|')
     .map(p => p.includes('=') ? p.slice(0, p.indexOf('=')).trim() : '')
@@ -65,6 +75,7 @@ export function validateRows(rows, posterExists) {
 
     const bands = new Set(BAND_COLS.map(c => (row[c] || '').trim()).filter(Boolean));
     for (const k of pairKeys(row.links))        if (!bands.has(k)) errors.push(`${where}: link key "${k}" matches no band`);
+    for (const [k, url] of pairValues(row.links)) if (!SAFE_URL.test(url)) errors.push(`${where}: link for "${k}" must be an http(s) URL, got "${url}"`);
     for (const k of pairKeys(row.descriptions)) if (!bands.has(k)) errors.push(`${where}: description key "${k}" matches no band`);
   });
 

@@ -38,7 +38,8 @@ const F = "font-family:'Courier New',Courier,monospace;";
 
 function bandBlock(ev) {
   return ev.bands.map(name => {
-    const link = ev.bandLinks?.[name];
+    const rawLink = ev.bandLinks?.[name];
+    const link = rawLink && /^https?:\/\/[^\s"'<>]+$/i.test(rawLink) ? rawLink : undefined;
     const desc = ev.bandDescriptions?.[name] ?? '';
     const linkHtml = link
       ? `<p style="margin:0 0 12px;"><a href="${link}" style="${F}font-size:11px;letter-spacing:0.1em;color:rgba(250,249,247,0.45);text-decoration:none;border-bottom:1px solid rgba(250,249,247,0.2);">${linkLabel(link)}</a></p>`
