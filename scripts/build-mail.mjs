@@ -34,7 +34,25 @@ function loadEvents() {
   return JSON.parse(raw.slice(s + 2, e + 1));
 }
 
-const F = "font-family:'Courier New',Courier,monospace;";
+// Font stack: never name Courier / Courier New. Android maps those to Cutive
+// Mono, which has no Greek glyphs, so Greek got borrowed from another font
+// (different size/weight) in the Gmail app. Every font listed here covers
+// Greek; Android has none of the named ones and lands on its own Greek-capable
+// `monospace`. 'STOA Mono' is JetBrains Mono (the site's body font), loaded via
+// @font-face from stoa60.net/fonts/ in clients that allow web fonts (Gmail
+// ignores web fonts and uses the fallbacks).
+const FONT_BASE = 'https://stoa60.net/fonts';
+const FONT_STACK = "'STOA Mono','JetBrains Mono','DejaVu Sans Mono',Menlo,Consolas,'Liberation Mono',monospace";
+const F = `font-family:${FONT_STACK};`;
+
+const FONT_FACES = [
+  ['greek',     'U+0370-0377,U+037A-037F,U+0384-038A,U+038C,U+038E-03A1,U+03A3-03FF'],
+  ['latin-ext', 'U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF'],
+  ['latin',     'U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD'],
+].map(([subset, range]) =>
+  `@font-face{font-family:'STOA Mono';font-style:normal;font-weight:100 800;font-display:swap;` +
+  `src:url(${FONT_BASE}/jetbrains-mono-${subset}-wght-normal.woff2) format('woff2');unicode-range:${range};}`
+).join('');
 
 function bandBlock(ev) {
   return ev.bands.map(name => {
@@ -56,7 +74,7 @@ function bandBlock(ev) {
 export function renderEmail(ev) {
   const posterUrl = `${GITHUB_RAW}/${ev.poster}`;
   return `<!DOCTYPE html>
-<html lang="el"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>STOA60</title></head>
+<html lang="el"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>STOA60</title><style>${FONT_FACES}</style></head>
 <body style="margin:0;padding:0;background-color:#1a1714;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#1a1714;"><tr><td align="center" style="padding:40px 16px;">
     <table role="presentation" width="100%" style="max-width:520px;" cellpadding="0" cellspacing="0">
