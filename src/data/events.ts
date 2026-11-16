@@ -165,6 +165,11 @@ export const events: Event[] = [
     "poster": "2026-2027/2026-11-21_axeon-phoenixflight.jpg",
     "bandLinks": {
       "AXEON": "https://axeonmetal.bandcamp.com/"
+    },
+    "mailIntro": "Σάββατο 21/11<br><br>Όπως ωραία τέθηκε σε προηγούμενο λάϊβ.<br>Το Heavy metal είναι γεμάτο ήρωες, μάχες, αίμα και δόξα.<br>Στην πραγματικότητα δεν υπάρχει τίποτα ηρωικό στο πόλεμο.",
+    "bandDescriptions": {
+      "AXEON": "Οι πλέον καθιερωμένοι axeon αποδεικνύουν σε κάθε λάϊβ ότι το Heavy metal ζει και έχει νόημα.",
+      "Phoenix Flight": "Παραδοσιακό heavy metal από το Ρέθυμνο. Οι phoenix flight τιμάνε τις ρίζες τους."
     }
   },
   {
@@ -200,7 +205,6 @@ export const events: Event[] = [
       "HEX": "https://hexathens.bandcamp.com/album/-",
       "Baby Cult": "https://babycult.bandcamp.com/album/baby-cult"
     },
-    "isNext": true,
     "mailIntro": "Σάββατο 14 Νοεμβρίου Hex και Baby cult θα μας προσφέρουν μία γκαραντζοpowerροκενρόλ φιέστα.",
     "bandDescriptions": {
       "HEX": "Θα έπρεπε να υπάρχουν περισσότερες τέτοιες μπάντες. sloppy rock n roll since 2014.",
