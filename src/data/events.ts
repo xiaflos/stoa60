@@ -120,9 +120,9 @@ export const events: Event[] = [
     "date": "2026-11-27",
     "bands": [
       "Sister",
-      "Microdosing"
+      "Humachines"
     ],
-    "rawTitle": "Sister, Microdosing",
+    "rawTitle": "Sister, Humachines",
     "eventType": "gig",
     "location": "underground",
     "organiser": [
@@ -130,7 +130,8 @@ export const events: Event[] = [
     ],
     "poster": "",
     "bandLinks": {
-      "Sister": "https://sister-gr.bandcamp.com/album/blood"
+      "Sister": "https://sister-gr.bandcamp.com/album/blood",
+      "Humachines": "https://humachines.bandcamp.com/album/ep-panik"
     }
   },
   {
