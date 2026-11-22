@@ -80,7 +80,7 @@ html {
     transition: text-shadow 0.2s ease, transform 0.2s ease;
 }
 .screening-name:hover {
-    text-shadow: 0 0 6px rgba(255,255,255,0.25), 0 0 2px rgba(255,255,255,0.15);
+    text-shadow: 0 0 6px rgba(255,255,255,0.213), 0 0 2px rgba(255,255,255,0.128);
     transform: scale(1.02);
 }
 
@@ -91,9 +91,9 @@ html {
 @keyframes titleFlicker {
     0%, 11%, 13%, 15%, 29%, 31%, 48%, 49.5%, 50.5%, 51.5%, 77%, 79%, 86%, 87%, 100% {
         text-shadow:
-            0 0 3px rgba(255, 255, 255, 0.4),
-            0 0 10px rgba(255, 255, 255, 0.55),
-            0 0 22px rgba(255, 255, 255, 0.25);
+            0 0 3px rgba(255, 255, 255, 0.34),
+            0 0 10px rgba(255, 255, 255, 0.468),
+            0 0 22px rgba(255, 255, 255, 0.213);
         opacity: 1;
     }
     12%, 12.3% { text-shadow: none; opacity: 0.85; }
@@ -114,7 +114,7 @@ html {
     transition: text-shadow 0.2s ease, transform 0.2s ease;
 }
 .band-name:hover {
-    text-shadow: 0 0 14px rgba(255,255,255,0.9), 0 0 4px rgba(255,255,255,0.6);
+    text-shadow: 0 0 14px rgba(255,255,255,0.765), 0 0 4px rgba(255,255,255,0.51);
     transform: scale(1.04);
 }
 

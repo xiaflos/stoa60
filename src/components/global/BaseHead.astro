@@ -1,13 +1,24 @@
 ---
+export interface ShareImage {
+	src: string;      // site-relative or absolute URL of a JPEG
+	width: number;
+	height: number;
+	alt?: string;
+}
+
 interface Props {
 	pageTitle: string;
 	pageDescription?: string;
+	shareImage?: ShareImage;   // per-page link-preview image (defaults to og-image.jpg)
+	ogType?: "website" | "article";
 }
 
-const { pageTitle, pageDescription } = Astro.props;
+const { pageTitle, pageDescription, shareImage, ogType = "website" } = Astro.props;
 const siteUrl = Astro.site?.origin ?? "https://stoa60.net";
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
-const thumbnail = `${siteUrl}/og-image.jpg`;
+const thumbnail = shareImage ? new URL(shareImage.src, siteUrl).href : `${siteUrl}/og-image.jpg`;
+const thumbWidth = shareImage?.width ?? 1200;
+const thumbHeight = shareImage?.height ?? 630;
 const description = pageDescription ?? "support your local diy scene";
 ---
 <head>
@@ -22,14 +33,15 @@ const description = pageDescription ?? "support your local diy scene";
 	<link rel="canonical" href={canonicalUrl} />
 
 	<!-- Open Graph -->
-	<meta property="og:type" content="website" />
+	<meta property="og:type" content={ogType} />
 	<meta property="og:site_name" content="STOA60" />
 	<meta property="og:title" content={`Stoa60 - ${pageTitle}`} />
 	<meta property="og:description" content={description} />
 	<meta property="og:image" content={thumbnail} />
-	<meta property="og:image:width" content="1200" />
-	<meta property="og:image:height" content="630" />
+	<meta property="og:image:width" content={String(thumbWidth)} />
+	<meta property="og:image:height" content={String(thumbHeight)} />
 	<meta property="og:image:type" content="image/jpeg" />
+	{shareImage?.alt && <meta property="og:image:alt" content={shareImage.alt} />}
 	<meta property="og:url" content={canonicalUrl} />
 
 	<!-- Twitter Card -->

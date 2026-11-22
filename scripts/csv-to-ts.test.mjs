@@ -1,6 +1,13 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { parseIsNext, parsePairs } from './csv-to-ts.mjs';
+import { parseIsNext, parsePairs, parseBands, parseStruck } from './csv-to-ts.mjs';
+
+test('~~Name~~ band cells: plain name in bands, listed in struck', () => {
+  const row = { band_1: '~~Sister~~', band_2: 'Humachines', band_3: '', band_4: '', band_5: '', band_6: '' };
+  assert.deepEqual(parseBands(row), ['Sister', 'Humachines']);
+  assert.deepEqual(parseStruck(row), ['Sister']);
+  assert.deepEqual(parseStruck({ band_1: 'A~~B', band_2: '~~' }), []);
+});
 
 test('parseIsNext true/false variants', () => {
   for (const v of ['true','TRUE',' true ','1','yes']) assert.equal(parseIsNext(v), true);

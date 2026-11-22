@@ -35,6 +35,7 @@ interface CalendarEntry {
     eventType?: string;
     isNext?: boolean;   // highlight flag for the next upcoming event
     details?: string;   // screenings: director · genre · time
+    struck?: string[];  // band names shown struck through
 }
 
 // Future gigs now live in the CSV (tools/event-build/events.csv) → events.ts.
@@ -62,6 +63,7 @@ const dbEntries: CalendarEntry[] = events.map(e => ({
     posterSrc: e.poster ? posterSrcMap[e.poster] : undefined,
     eventType: e.eventType !== 'gig' ? e.eventType : undefined,
     details: isScreening(e.eventType) ? e.bandDescriptions?.[e.bands[0]] : undefined,
+    struck: e.struck,
 }));
 
 const allEntries = [...manualFutureEntries, ...dbEntries]
@@ -237,9 +239,9 @@ for (const entry of allEntries) {
                                                 {band === "TBA" ? (
                                                     <span class="text-sm font-normal text-base-900/40 tracking-widest">{band}</span>
                                                 ) : href ? (
-                                                    <a href={href} target="_blank" rel="noopener noreferrer" class="band-name hover:underline underline-offset-2">{band}</a>
+                                                    <a href={href} target="_blank" rel="noopener noreferrer" class:list={["band-name hover:underline underline-offset-2", entry.struck?.includes(band) && "line-through"]}>{band}</a>
                                                 ) : (
-                                                    <span>{band}</span>
+                                                    <span class:list={[entry.struck?.includes(band) && "line-through"]}>{band}</span>
                                                 )}
                                                 {i < entry.bands.length - 1 && (
                                                     <span class="text-base-900/50 font-black text-lg leading-none">×</span>
@@ -284,25 +286,25 @@ for (const entry of allEntries) {
 <style is:global>
     #hero-poster-btn img {
         box-shadow:
-            0 0 0 1px rgba(255, 255, 255, 0.18),
-            0 2px 18px rgba(255, 255, 255, 0.22),
-            0 10px 60px rgba(255, 255, 255, 0.3),
-            0 0 120px rgba(255, 255, 255, 0.18);
+            0 0 0 1px rgba(255, 255, 255, 0.126),
+            0 2px 18px rgba(255, 255, 255, 0.154),
+            0 10px 60px rgba(255, 255, 255, 0.21),
+            0 0 120px rgba(255, 255, 255, 0.126);
         transition: box-shadow 0.3s ease;
     }
     #hero-poster-btn:hover img {
         box-shadow:
-            0 0 0 1px rgba(255, 255, 255, 0.28),
-            0 2px 24px rgba(255, 255, 255, 0.3),
-            0 12px 70px rgba(255, 255, 255, 0.4),
-            0 0 150px rgba(255, 255, 255, 0.28);
+            0 0 0 1px rgba(255, 255, 255, 0.196),
+            0 2px 24px rgba(255, 255, 255, 0.21),
+            0 12px 70px rgba(255, 255, 255, 0.28),
+            0 0 150px rgba(255, 255, 255, 0.196);
     }
 
     .cal-poster-btn {
         transition: color 0.2s ease, text-shadow 0.2s ease;
     }
     .cal-poster-btn:hover {
-        text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 3px rgba(255, 255, 255, 0.5);
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.68), 0 0 3px rgba(255, 255, 255, 0.425);
     }
 
     /* Calendar scroll-affordance: fade masks driven by data-fade state */

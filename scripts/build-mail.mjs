@@ -64,7 +64,7 @@ function bandBlock(ev) {
       : '';
     return `
           <tr><td style="padding-bottom:28px;border-top:1px solid rgba(250,249,247,0.12);padding-top:24px;text-align:center;">
-            <p style="margin:0 0 4px;${F}font-size:18px;font-weight:bold;letter-spacing:0.15em;text-transform:uppercase;color:#faf9f7;">${name}</p>
+            <p style="margin:0 0 4px;${F}font-size:18px;font-weight:bold;letter-spacing:0.15em;text-transform:uppercase;color:#faf9f7;${ev.struck?.includes(name) ? 'text-decoration:line-through;' : ''}">${name}</p>
             ${linkHtml}
             <p style="margin:0;${F}font-size:13px;line-height:1.75;color:rgba(250,249,247,0.75);">${desc}</p>
           </td></tr>`;

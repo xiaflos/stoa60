@@ -25,6 +25,7 @@ export interface Event {
   mailIntro?: string;
   bandDescriptions?: Record<string, string>;
   recordings?: Recording[];
+  struck?: string[];       // band names shown struck through (~~Name~~ in the CSV)
 }
 
 export const events: Event[] = [
@@ -128,11 +129,18 @@ export const events: Event[] = [
     "organiser": [
       "stoa60"
     ],
-    "poster": "",
+    "poster": "2026-2027/2026-11-27_sister-humachines.jpg",
     "bandLinks": {
       "Sister": "https://sister-gr.bandcamp.com/album/blood",
       "Humachines": "https://humachines.bandcamp.com/album/ep-panik"
-    }
+    },
+    "bandDescriptions": {
+      "Sister": "instrumental power trio από αθήνα έρχονται για πρώτη φορά στη Κρήτη.",
+      "Humachines": "Διπλό ημίχρονο Χ τελικό."
+    },
+    "struck": [
+      "Sister"
+    ]
   },
   {
     "date": "2026-11-25",

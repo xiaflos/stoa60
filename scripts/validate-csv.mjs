@@ -73,7 +73,8 @@ export function validateRows(rows, posterExists) {
       else if (!posterExists(rel)) errors.push(`${where}: poster file not found: ${rel}`);
     }
 
-    const bands = new Set(BAND_COLS.map(c => (row[c] || '').trim()).filter(Boolean));
+    // ~~Name~~ (struck-through band) is keyed by its plain name in links/descriptions
+    const bands = new Set(BAND_COLS.map(c => (row[c] || '').trim().replace(/^~~(.+)~~$/, '$1').trim()).filter(Boolean));
     for (const k of pairKeys(row.links))        if (!bands.has(k)) errors.push(`${where}: link key "${k}" matches no band`);
     for (const [k, url] of pairValues(row.links)) if (!SAFE_URL.test(url)) errors.push(`${where}: link for "${k}" must be an http(s) URL, got "${url}"`);
     for (const k of pairKeys(row.descriptions)) if (!bands.has(k)) errors.push(`${where}: description key "${k}" matches no band`);

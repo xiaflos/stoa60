@@ -61,10 +61,27 @@ function parseEventType(raw) {
   return t;  // keep as typed for multi-word / proper names
 }
 
-function parseBands(row) {
+// A band written as ~~Name~~ in the CSV is shown struck through (the name is
+// stylised that way, e.g. "~~Sister~~"). Links/descriptions use the plain name.
+const STRUCK = /^~~(.+)~~$/;
+export function bandName(raw) {
+  const s = (raw ?? '').trim();
+  const m = s.match(STRUCK);
+  return m ? m[1].trim() : s;
+}
+
+function bandCells(row) {
   return ['band_1','band_2','band_3','band_4','band_5','band_6']
     .map(k => (row[k] ?? '').trim())
     .filter(Boolean);
+}
+
+export function parseBands(row) {
+  return bandCells(row).map(bandName);
+}
+
+export function parseStruck(row) {
+  return bandCells(row).filter(c => STRUCK.test(c)).map(bandName);
 }
 
 export function parsePairs(raw) {
@@ -179,6 +196,7 @@ export interface Event {
   mailIntro?: string;
   bandDescriptions?: Record<string, string>;
   recordings?: Recording[];
+  struck?: string[];       // band names shown struck through (~~Name~~ in the CSV)
 }
 
 export const events: Event[] = `;
@@ -241,6 +259,8 @@ async function main() {
     if (parseIsNext(row.is_next))             ev.isNext = true;
     if (mailIntro)                            ev.mailIntro = mailIntro;
     if (Object.keys(bandDescriptions).length) ev.bandDescriptions = bandDescriptions;
+    const struck = parseStruck(row);
+    if (struck.length)                        ev.struck = struck;
     return ev;
   });
 

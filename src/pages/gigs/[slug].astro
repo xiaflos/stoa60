@@ -1,0 +1,235 @@
+---
+// One shareable page per gig, e.g. /gigs/2026-11-21_axeon-phoenixflight/
+// The slug is the poster's file name, the same one the newsletter uses.
+//
+// Only gigs from 2026 on that have band descriptions in the CSV and a poster
+// get a page. The newsletter intro (mailIntro) is shown when present.
+//
+// Each page carries Open Graph / Twitter tags so a pasted link shows the
+// poster, the line-up and the intro text as a preview.
+
+import Layout from "../../layouts/Layout.astro";
+import Container from "../../components/elements/Container.astro";
+import ImageContainer from "../../components/elements/ImageContainer.astro";
+import LanguageToggle from "../../components/elements/LanguageToggle.astro";
+import { events, type Event } from "../../data/events.ts";
+import { getImage } from "astro:assets";
+
+const posterImages = import.meta.glob<{ default: ImageMetadata }>(
+    "../../assets/images/posters/**/*.{jpg,jpeg,png}",
+    { eager: true }
+);
+const posterFor = (poster: string) =>
+    posterImages[`../../assets/images/posters/${poster}`]?.default;
+
+// getStaticPaths runs in isolation: everything it uses must be defined inside it.
+export function getStaticPaths() {
+    const FIRST_YEAR = "2026";
+    const slugOf = (ev: Event) => ev.poster.split("/").pop()!.replace(/\.[^.]+$/, "");
+    return events
+        .filter(ev => ev.date >= FIRST_YEAR && ev.bandDescriptions && ev.poster)
+        .map(ev => ({ params: { slug: slugOf(ev) }, props: { ev } }));
+}
+
+const { ev } = Astro.props as { ev: Event };
+const poster = posterFor(ev.poster);
+if (!poster) throw new Error(`gigs: poster file not found for ${ev.date}: ${ev.poster}`);
+
+// ── Date ────────────────────────────────────────────────────────────────
+const [y, m, d] = ev.date.split("-");
+const dateObj = new Date(Date.UTC(+y, +m - 1, +d));
+const weekdayEl = new Intl.DateTimeFormat("el-GR", { weekday: "long", timeZone: "UTC" }).format(dateObj);
+const shortDate = `${d}.${m}`;
+const fullDate = `${d}.${m}.${y}`;
+
+// ── Text helpers ────────────────────────────────────────────────────────
+const SAFE_URL = /^https?:\/\//i;
+const plain = (html: string) =>
+    html.replace(/<br\s*\/?>/gi, " ").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+const clip = (s: string, n: number) => (s.length <= n ? s : s.slice(0, n - 1).trimEnd() + "…");
+function linkLabel(url: string) {
+    try {
+        const h = new URL(url).hostname.replace(/^www\./, "");
+        if (h === "youtube.com" || h === "youtu.be") return "youtube";
+        if (h === "facebook.com") return "facebook";
+        return h;
+    } catch { return url; }
+}
+
+const lineup = ev.bands.filter(b => b && b !== "TBA");
+const bands = lineup.map(name => {
+    const raw = ev.bandLinks?.[name];
+    return {
+        name,
+        struck: ev.struck?.includes(name) ?? false,
+        link: raw && SAFE_URL.test(raw) ? raw : undefined,
+        desc: ev.bandDescriptions?.[name] ?? "",
+    };
+});
+
+// ── Link preview (Open Graph) ───────────────────────────────────────────
+const pageTitle = `${lineup.join(" + ")} · ${weekdayEl} ${fullDate}`;
+// The newsletter intro may open with its own date line ("Σάββατο 21/11" + a
+// blank line). The page already shows the date above it, so drop a short,
+// stand-alone first line that contains a number. Sentences that mention the
+// date inline ("Σάββατο 14 Νοεμβρίου Hex και…") are left alone.
+const intro = (ev.mailIntro ?? "").replace(/^\s*[^<]{0,30}\d[^<]{0,10}(?:<br\s*\/?>\s*)+/i, "");
+// Preview text: the intro, or (no intro) the band descriptions.
+const description = clip(plain(intro) || bands.map(b => `${b.name}: ${plain(b.desc)}`).join(" · "), 200);
+
+// The home venue is shown by name; other locations use their translated label.
+const venueLabel = ev.location === "underground" ? "ΣΤΟΑ 60" : undefined;
+const share = await getImage({ src: poster, width: Math.min(700, poster.width), format: "jpg", quality: 72 });
+const shareImage = {
+    src: share.src,
+    width: Number(share.attributes.width),
+    height: Number(share.attributes.height),
+    alt: `STOA60 poster: ${lineup.join(", ")}, ${fullDate}`,
+};
+---
+
+<Layout title={pageTitle} description={description} shareImage={shareImage} ogType="article"
+        tileBgOnMobile={true} mobileBgWide={true}
+        footerInnerClass="!justify-center min-[850px]:!justify-start min-[850px]:pl-[calc(50%+2.4rem)]">
+    <!--
+        Same grid as the home page (Hero.astro): two columns from 850px,
+        poster on the left sized to the window height, everything else on
+        the right. The poster spans both rows, so it sets the height:
+          row 1 (auto) = date + nav, its top level with the poster's top
+          row 2 (1fr)  = the info, whose bottom border sits on the poster's
+                         bottom edge; longer texts scroll inside it.
+        Mobile: one centred column like the newsletter — nav, poster, info.
+    -->
+    <Container variant={"xl"} class="grid grid-cols-1 min-[850px]:grid-cols-[minmax(0,38rem)_minmax(0,40rem)] min-[850px]:justify-center py-2 !gap-0 min-[850px]:!gap-x-20 min-[850px]:[grid-template-rows:auto_1fr] mt-6 min-[850px]:mt-16 mb-12">
+
+        <!-- 1. Date + nav (mobile: top / desktop: right column, top) -->
+        <header class="min-[850px]:col-start-2 min-[850px]:row-start-1 min-w-0
+                       flex flex-col min-[850px]:flex-row min-[850px]:flex-wrap min-[850px]:gap-8 min-[850px]:items-baseline items-center gap-1
+                       border-b border-base-900/30 pb-0.5">
+            <h1 class="title-flicker font-grunge uppercase text-base-900 tracking-tight leading-none text-64 min-[850px]:!text-[clamp(40pt,9vw,80pt)]">
+                {shortDate}
+            </h1>
+            <nav class="flex flex-wrap gap-4 min-[850px]:gap-8 items-center">
+                <a href="/" class="band-name text-base-900 font-grunge text-2xl min-[850px]:text-3xl" data-i18n="nav.home">Home</a>
+                <a href="/posters" class="band-name text-base-900 font-grunge text-2xl min-[850px]:text-3xl" data-i18n="nav.posters">Posters</a>
+                <a href="/about" class="band-name text-base-900 font-grunge text-2xl min-[850px]:text-3xl" data-i18n="nav.about">About</a>
+                <LanguageToggle />
+            </nav>
+        </header>
+
+        <!-- 2. Poster (mobile: after nav / desktop: left column, both rows) -->
+        <div class="min-[850px]:col-start-1 min-[850px]:row-start-1 min-[850px]:row-span-2 flex justify-center min-[850px]:justify-end mt-8 min-[850px]:mt-0">
+            <!-- Click opens the poster fullscreen, like the home page -->
+            <button type="button" id="gig-poster-btn"
+                    class="gig-poster block w-full max-w-[19rem] min-[850px]:max-w-none shrink-0 self-start cursor-pointer hover:opacity-80 transition-opacity"
+                    style={`--ar:${(poster.width / poster.height).toFixed(4)}`}
+                    aria-label="View poster fullscreen">
+                <ImageContainer src={poster} alt={shareImage.alt} />
+            </button>
+        </div>
+
+        <!-- 3. Info (mobile: after poster, in the flow / desktop: right column, pinned to the poster's height) -->
+        <div class="min-[850px]:col-start-2 min-[850px]:row-start-2 relative min-w-0 min-h-0 mt-8 min-[850px]:mt-0 w-full max-w-[32.5rem] mx-auto min-[850px]:max-w-none">
+            <article class="gig-info text-base-900 flex flex-col text-center min-[850px]:text-left
+                            min-[850px]:absolute min-[850px]:inset-0 min-[850px]:overflow-y-auto
+                            border-b border-base-900/30 max-[849px]:border-t">
+
+                <p class="font-bahnschrift font-bold uppercase tracking-widest text-14 text-base-900/60
+                          flex flex-wrap justify-center min-[850px]:justify-start gap-x-3 pt-4 pb-3">
+                    <span>{weekdayEl}</span>
+                    <span>{fullDate}</span>
+                    <span class="text-base-900/40">·</span>
+                    {venueLabel
+                        ? <span>{venueLabel}</span>
+                        : <span data-i18n={`loc.${ev.location}`}>{ev.location}</span>}
+                </p>
+
+                {intro && <p class="font-bahnschrift text-16 lg:text-18 leading-relaxed pb-5" set:html={intro} />}
+
+                {bands.map(b => (
+                    <section class="border-t border-base-900/15 py-4 flex flex-col items-center min-[850px]:items-start gap-1">
+                        <h2 class="font-bahnschrift font-bold uppercase tracking-[0.12em] text-18 lg:text-20 leading-tight">
+                            {b.link
+                                ? <a href={b.link} target="_blank" rel="noopener noreferrer" class:list={["band-name", b.struck && "line-through"]}>{b.name}</a>
+                                : <span class:list={[b.struck && "line-through"]}>{b.name}</span>}
+                        </h2>
+                        {b.link && (
+                            <a href={b.link} target="_blank" rel="noopener noreferrer"
+                               class="font-mono text-12 tracking-widest text-base-900/45 hover:text-base-900 transition-colors border-b border-base-900/20">
+                                {linkLabel(b.link)}
+                            </a>
+                        )}
+                        {b.desc && <p class="font-bahnschrift text-14 lg:text-16 leading-relaxed text-base-900/75 mt-1" set:html={b.desc} />}
+                    </section>
+                ))}
+
+                <p class="border-t border-base-900/15 mt-auto py-4 font-bahnschrift font-bold text-14 text-base-900/70" data-i18n="hero.subtitle2">
+                    Στηρίζουμε το κουτί. Σεβόμαστε τη γειτονιά.
+                </p>
+            </article>
+        </div>
+    </Container>
+
+    <!-- Fullscreen poster (same markup and behaviour as the home page's #hero-lightbox) -->
+    <div id="gig-lightbox" class="fixed inset-0 bg-black/90 z-50 items-center justify-center" style="display:none" role="dialog" aria-modal="true" aria-label="Poster fullscreen view">
+        <button id="gig-lightbox-close" class="absolute top-4 right-4 text-white text-4xl font-grunge hover:opacity-70 z-10" aria-label="Close lightbox">&times;</button>
+        <img id="gig-lightbox-img" src="" alt={shareImage.alt} class="max-h-[90vh] max-w-[85vw] object-contain" />
+    </div>
+</Layout>
+
+<script>
+    const lightbox = document.getElementById("gig-lightbox") as HTMLElement | null;
+    const img      = document.getElementById("gig-lightbox-img") as HTMLImageElement | null;
+    const closeBtn = document.getElementById("gig-lightbox-close");
+    const btn      = document.getElementById("gig-poster-btn");
+
+    if (lightbox && img && closeBtn && btn) {
+        const open = () => {
+            const poster = btn.querySelector("img");
+            img.src = poster?.currentSrc || poster?.getAttribute("src") || "";
+            lightbox.style.display = "flex";
+            closeBtn.focus();
+        };
+        const close = () => {
+            if (lightbox.style.display === "none") return;
+            lightbox.style.display = "none";
+            btn.focus();
+        };
+        btn.addEventListener("click", open);
+        closeBtn.addEventListener("click", close);
+        lightbox.addEventListener("click", (e) => { if (e.target === lightbox) close(); });
+        window.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+    }
+</script>
+
+<style>
+    /* Same glow as the home-page poster (#hero-poster-btn in Hero.astro),
+       resting and hover, at the current reduced strength. */
+    .gig-poster :global(img) {
+        box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.126),
+            0 2px 18px rgba(255, 255, 255, 0.154),
+            0 10px 60px rgba(255, 255, 255, 0.21),
+            0 0 120px rgba(255, 255, 255, 0.126);
+        transition: box-shadow 0.3s ease;
+    }
+    .gig-poster:hover :global(img) {
+        box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.196),
+            0 2px 24px rgba(255, 255, 255, 0.21),
+            0 12px 70px rgba(255, 255, 255, 0.28),
+            0 0 150px rgba(255, 255, 255, 0.196);
+    }
+    /* Desktop: the poster is as tall as the window allows (minus the top
+       margin and the footer), never narrower than the home page's 22rem and
+       never wider than its column. */
+    @media (min-width: 850px) {
+        .gig-poster {
+            width: clamp(22rem, calc((100svh - 13rem) * var(--ar)), 38rem);
+        }
+    }
+    .gig-info {
+        scrollbar-width: thin;
+        scrollbar-color: color-mix(in oklch, var(--color-base-900) 30%, transparent) transparent;
+    }
+</style>

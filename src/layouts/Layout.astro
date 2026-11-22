@@ -15,7 +15,7 @@ import bgWide from "../assets/images/bgwide.jpg";
 import { getImage } from "astro:assets";
 
 // props
-const { title, footerAlignRight = false, footerInnerClass = "", tileBgOnMobile = false, mobileBgWide = false, desktopNoScroll = false } = Astro.props;
+const { title, description, shareImage, ogType, footerAlignRight = false, footerInnerClass = "", tileBgOnMobile = false, mobileBgWide = false, desktopNoScroll = false } = Astro.props;
 
 const backgroundImage = await getImage({src: bg, format:'jpg'});
 const wideBgImage = mobileBgWide ? await getImage({src: bgWide, format:'jpg'}) : null;
@@ -23,7 +23,7 @@ const wideBgImage = mobileBgWide ? await getImage({src: bgWide, format:'jpg'}) :
 
 <!doctype html>
 <html lang="en" class:list={["scroll-smooth", desktopNoScroll && "no-page-scroll"]}>
-	<BaseHead pageTitle={title}/>
+	<BaseHead pageTitle={title} pageDescription={description} shareImage={shareImage} ogType={ogType}/>
 	{mobileBgWide && wideBgImage && (
 		<style set:html={`@media (max-width: 767px) { body { background-image: url(${wideBgImage.src}) !important; } }`}></style>
 	)}

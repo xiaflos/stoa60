@@ -38,6 +38,10 @@ test('http and https links allowed', () => {
   assert.deepEqual(validateRows([row({ links: 'AAA=http://aaa.com|BBB=https://bbb.bandcamp.com/album/x' })], ok), []);
 });
 
+test('~~struck~~ band matches its plain-name link and description keys', () => {
+  assert.deepEqual(validateRows([row({ band_1: '~~AAA~~', descriptions: 'AAA=hi' })], ok), []);
+});
+
 test('description key not a band reported', () => {
   assert.ok(validateRows([row({ descriptions: 'GHOST=hello' })], ok).some(x => /GHOST/.test(x)));
 });
