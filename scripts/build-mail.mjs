@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// scripts/build-mail.mjs <YYYY-MM-DD> [--location <loc>] [--force]
+// scripts/build-mail.mjs <YYYY-MM-DD> [--screening <YYYY-MM-DD>] [--location <loc>] [--force]
 // Renders a gig-announcement email from a mail-ready event in src/data/events.ts.
 
 import path from 'node:path';
@@ -71,7 +71,24 @@ function bandBlock(ev) {
   }).join('');
 }
 
-export function renderEmail(ev) {
+const WEEKDAYS = ['ΚΥΡΙΑΚΗ', 'ΔΕΥΤΕΡΑ', 'ΤΡΙΤΗ', 'ΤΕΤΑΡΤΗ', 'ΠΕΜΠΤΗ', 'ΠΑΡΑΣΚΕΥΗ', 'ΣΑΒΒΑΤΟ'];
+
+// Optional film-screening block (a Screening row: title + "Director · HH:MM").
+export function screeningBlock(sc) {
+  if (!sc) return '';
+  const [y, m, d] = sc.date.split('-').map(Number);
+  const day = WEEKDAYS[new Date(Date.UTC(y, m - 1, d)).getUTCDay()];
+  const title = sc.bands[0];
+  const info = sc.bandDescriptions?.[title] ?? '';
+  return `
+      <tr><td style="padding-bottom:28px;border-top:1px solid rgba(250,249,247,0.12);padding-top:24px;text-align:center;">
+        <p style="margin:0 0 8px;${F}font-size:11px;letter-spacing:0.15em;color:rgba(250,249,247,0.45);">ΠΡΟΒΟΛΗ · ${day} ${String(d).padStart(2, '0')}/${String(m).padStart(2, '0')}</p>
+        <p style="margin:0 0 4px;${F}font-size:18px;font-weight:bold;letter-spacing:0.15em;text-transform:uppercase;color:#faf9f7;">${title}</p>
+        <p style="margin:0;${F}font-size:13px;line-height:1.75;color:rgba(250,249,247,0.75);">${info}</p>
+      </td></tr>`;
+}
+
+export function renderEmail(ev, screening) {
   const posterUrl = `${GITHUB_RAW}/${ev.poster}`;
   return `<!DOCTYPE html>
 <html lang="el"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>STOA60</title><style>${FONT_FACES}</style></head>
@@ -88,6 +105,7 @@ export function renderEmail(ev) {
       <tr><td style="padding:28px 0;text-align:center;">
         <p style="margin:0;${F}font-size:14px;line-height:1.7;color:#faf9f7;">${ev.mailIntro}</p>
       </td></tr>
+      ${screeningBlock(screening)}
       ${bandBlock(ev)}
       <tr><td style="padding-bottom:36px;border-top:1px solid rgba(250,249,247,0.12);padding-top:24px;text-align:center;">
         <p style="margin:0;${F}font-size:13px;line-height:1.75;color:rgba(250,249,247,0.75);">${SIGN_OFF}</p>
@@ -105,8 +123,10 @@ function isMain() { return path.resolve(process.argv[1] || '') === fileURLToPath
 
 if (isMain()) {
   const args = process.argv.slice(2);
-  const date = args.find(a => /^\d{4}-\d{2}-\d{2}$/.test(a));
+  const date = args.find((a, i) => /^\d{4}-\d{2}-\d{2}$/.test(a) && args[i - 1] !== '--screening');
   const force = args.includes('--force');
+  const scIdx = args.indexOf('--screening');
+  const scDate = scIdx !== -1 ? args[scIdx + 1] : undefined;
   const locIdx = args.indexOf('--location');
   const loc = locIdx !== -1 ? args[locIdx + 1] : undefined;
   if (!date) { console.error('usage: build-mail.mjs <YYYY-MM-DD> [--location <loc>] [--force]'); process.exit(1); }
@@ -124,6 +144,11 @@ if (isMain()) {
   fs.mkdirSync(OUT_DIR, { recursive: true });
   const out = path.join(OUT_DIR, slugFromPoster(ev.poster) + '.html');
   if (fs.existsSync(out) && !force) { console.error(`Refusing to overwrite ${out} (use --force)`); process.exit(1); }
-  fs.writeFileSync(out, renderEmail(ev), 'utf8');
+  let screening;
+  if (scDate) {
+    screening = loadEvents().find(e => e.date === scDate && e.eventType === 'Screening');
+    if (!screening) { console.error(`No screening on ${scDate}`); process.exit(1); }
+  }
+  fs.writeFileSync(out, renderEmail(ev, screening), 'utf8');
   console.log(`✔ wrote ${path.relative(ROOT, out)}`);
 }

@@ -118,6 +118,32 @@ export const events: Event[] = [
     }
   },
   {
+    "date": "2026-11-29",
+    "bands": [
+      "Grim Machine",
+      "Thorivos",
+      "Runi Graph"
+    ],
+    "rawTitle": "Grim Machine, Thorivos, Runi Graph",
+    "eventType": "gig",
+    "location": "underground",
+    "organiser": [
+      "stoa60"
+    ],
+    "poster": "2026-2027/2026-11-29_grimmachine-thorivos-runigraph.jpg",
+    "bandLinks": {
+      "Grim Machine": "https://grimmachine.bandcamp.com",
+      "Thorivos": "https://soundcloud.com/thorivos",
+      "Runi Graph": "https://runigraph.bandcamp.com"
+    },
+    "mailIntro": "Κυριακή 29 Νοεμβρίου, 20:30. Χαλαρή θορυβώδης Κυριακή με 3 noise / ritual / experimental live acts.",
+    "bandDescriptions": {
+      "Grim Machine": "ritual noise / HNW · Αθήνα",
+      "Thorivos": "HNW, industrial noise · Αθήνα",
+      "Runi Graph": "tribal drums &amp; drones · Ρέθυμνο"
+    }
+  },
+  {
     "date": "2026-11-27",
     "bands": [
       "Sister",
@@ -134,9 +160,10 @@ export const events: Event[] = [
       "Sister": "https://sister-gr.bandcamp.com/album/blood",
       "Humachines": "https://humachines.bandcamp.com/album/ep-panik"
     },
+    "mailIntro": "Αυτή την Τετάρτη συνεχίζουμε τις προβολές με Pornostar του Toshiaki Toyoda, την Παρασκευή φιλοξενούμε τους Sister / Humachines και την Κυριακή πειραματικό noise για το οποίο θα σταλεί ξεχωριστή πρόσκληση.",
     "bandDescriptions": {
-      "Sister": "instrumental power trio από αθήνα έρχονται για πρώτη φορά στη Κρήτη.",
-      "Humachines": "Διπλό ημίχρονο Χ τελικό."
+      "Sister": "instrumental power trio από αθήνα έρχονται για πρώτη φορά στη Κρήτη για δύο συναυλίες σε στοά60 και Ρόσα Νέρα.",
+      "Humachines": "Διπλό ημίχρονο Χ τελικό.<br>Κάποιος πρέπει να κρατάει το post-punk στο Ηράκλειο και ευτυχώς υπάρχουν οι humachines."
     },
     "struck": [
       "Sister"
