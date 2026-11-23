@@ -13,6 +13,7 @@ import Container from "../../components/elements/Container.astro";
 import ImageContainer from "../../components/elements/ImageContainer.astro";
 import LanguageToggle from "../../components/elements/LanguageToggle.astro";
 import { events, type Event } from "../../data/events.ts";
+import { hasGigPage, gigSlug } from "../../data/gigPages.ts";
 import { getImage } from "astro:assets";
 
 const posterImages = import.meta.glob<{ default: ImageMetadata }>(
@@ -22,13 +23,12 @@ const posterImages = import.meta.glob<{ default: ImageMetadata }>(
 const posterFor = (poster: string) =>
     posterImages[`../../assets/images/posters/${poster}`]?.default;
 
-// getStaticPaths runs in isolation: everything it uses must be defined inside it.
+// getStaticPaths runs in isolation: it can use imports, but not constants
+// defined elsewhere in this file. The page rule lives in data/gigPages.ts.
 export function getStaticPaths() {
-    const FIRST_YEAR = "2026";
-    const slugOf = (ev: Event) => ev.poster.split("/").pop()!.replace(/\.[^.]+$/, "");
     return events
-        .filter(ev => ev.date >= FIRST_YEAR && ev.bandDescriptions && ev.poster)
-        .map(ev => ({ params: { slug: slugOf(ev) }, props: { ev } }));
+        .filter(hasGigPage)
+        .map(ev => ({ params: { slug: gigSlug(ev) }, props: { ev } }));
 }
 
 const { ev } = Astro.props as { ev: Event };
