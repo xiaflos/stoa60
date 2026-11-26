@@ -121,9 +121,10 @@ export const events: Event[] = [
     "date": "2026-11-29",
     "bands": [
       "Grim Machine",
+      "Sirap",
       "Runi Graph"
     ],
-    "rawTitle": "Grim Machine, Runi Graph",
+    "rawTitle": "Grim Machine, Sirap, Runi Graph",
     "eventType": "gig",
     "location": "underground",
     "organiser": [
@@ -134,9 +135,10 @@ export const events: Event[] = [
       "Grim Machine": "https://grimmachine.bandcamp.com",
       "Runi Graph": "https://runigraph.bandcamp.com"
     },
-    "mailIntro": "Κυριακή 29 Νοεμβρίου, 20:30. Χαλαρή θορυβώδης Κυριακή με 2 noise / ritual / experimental live acts.",
+    "mailIntro": "Κυριακή 29 Νοεμβρίου, 20:30. Χαλαρή θορυβώδης Κυριακή με 3 noise / ritual / experimental live acts.",
     "bandDescriptions": {
       "Grim Machine": "ritual noise / HNW · Αθήνα",
+      "Sirap": "broken beats",
       "Runi Graph": "tribal drums &amp; drones · Ρέθυμνο"
     }
   },
